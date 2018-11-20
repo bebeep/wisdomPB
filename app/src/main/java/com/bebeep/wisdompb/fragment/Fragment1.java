@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.NetworkImageHolderView;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
@@ -64,6 +65,8 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
         initHead("111");
         binding.title.flHead.setOnClickListener(this);
         binding.title.flHead.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
         binding.title.tvTitle.setText("智慧党建");
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
@@ -81,6 +84,9 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
             case R.id.fl_head://点击头像
                 MainActivity activity = (MainActivity) getActivity();
                 activity.showMenu();
+                break;
+            case R.id.iv_title_right:
+                MyTools.showToast(getActivity(),"search!");
                 break;
         }
     }
