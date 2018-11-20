@@ -25,7 +25,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
     private List<String> list = new ArrayList<>();
     private CommonAdapter adapter;
 
-
+ //123
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
