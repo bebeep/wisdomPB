@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#db3a32</color>
+    <color name="colorPrimaryDark">#db3a32</color>
+    <color name="colorAccent">#db3a32</color>
+
+    <color name="theme">#db3a32</color>
+</resources>

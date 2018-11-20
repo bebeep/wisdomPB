@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:bebeep="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.github.lzyzsd.circleprogress.ArcProgress
+        android:id="@+id/arc_progress"
+        bebeep:arc_progress="0"
+        bebeep:arc_max="100"
+        bebeep:arc_stroke_width="8dp"
+        bebeep:arc_bottom_text_size="12sp"
+        bebeep:arc_text_color="#ff0000"
+        bebeep:arc_unfinished_color="#ffffff"
+        bebeep:arc_finished_color="#ffff00"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

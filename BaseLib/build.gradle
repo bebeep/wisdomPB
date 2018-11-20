@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.0"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    //网络框架
+    api 'com.squareup.okhttp:okhttp:2.2.0'
+    api 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
+    //图片加载框架
+    api 'com.squareup.picasso:picasso:2.4.0'
+    //上拉刷新下拉加载
+    api 'cn.appsdream.nestrefresh:refreshLayout:0.2'
+    //带title的轮播
+    api 'com.bigkoo:convenientbanner:2.0.5'
+    //加载动画
+    api 'com.wang.avi:library:1.0.0'
+    //圆形进度条（上传/下载）
+    api 'com.github.lzyzsd:circleprogress:1.0.0@aar'
+
+    api files('libs/gson-2.2.4.jar')
+    api files('libs/sun.misc.BASE64Decoder.jar')
+
+    //视频播放
+    api 'com.linsea:universalvideoview:1.1.0@aar'
+
+
+}

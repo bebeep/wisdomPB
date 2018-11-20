@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="@drawable/bg_mytoast"
+             android:gravity="center"
+             android:minHeight="70dp"
+             android:minWidth="90dp"
+             android:paddingBottom="20dp"
+             android:paddingLeft="50dp"
+             android:paddingRight="50dp"
+             android:paddingTop="20dp">
+
+    <TextView
+        android:id="@+id/tv_mytoast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:maxWidth="120dp"
+        android:lineSpacingExtra="3dp"
+        android:gravity="center"
+        android:textColor="#FFFFFF"/>
+
+</FrameLayout>

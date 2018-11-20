@@ -1,0 +1,40 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--第一层阴影-->
+    <item>
+        <shape android:shape="rectangle">
+            <padding android:top="1dp" />
+            <solid android:color="#10CCCCCC" />
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <padding android:top="1dp" />
+            <solid android:color="#20CCCCCC" />
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <padding android:top="1dp" />
+            <solid android:color="#30CCCCCC" />
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <padding android:top="1dp" />
+            <solid android:color="#40CCCCCC" />
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+
+
+    <item>
+        <shape android:shape="rectangle">
+            <padding android:top="2dp" />
+            <solid android:color="@android:color/white" />
+            <corners android:radius="0dp" />
+        </shape>
+    </item>
+</layer-list>
