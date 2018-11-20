@@ -13,6 +13,7 @@ public class MyApplication extends Application {
     public static Gson gson;
     public static Context context;
 
+    //123
 
     public static MyApplication getInstance() {
         if(instance == null){
