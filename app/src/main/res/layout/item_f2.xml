@@ -12,7 +12,7 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/bg_rec_5dp_gray"
+        android:background="@drawable/bg_rec_2dp_gray"
         android:gravity="center"
         android:text="进行中"
         android:textColor="@color/c_white"

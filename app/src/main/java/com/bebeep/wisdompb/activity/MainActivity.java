@@ -128,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     }
 
 
+    public void addIgnoredView(View view){
+        binding.mDoubleSlideMenu.addIgnoredView(view);
+    }
+
     private void initArrowIcons(){
         fls = new FrameLayout[]{binding.ivArrowRight1,binding.ivArrowRight2,binding.ivArrowRight3,binding.ivArrowRight4,
                 binding.ivArrowRight5,binding.ivArrowRight6,binding.ivArrowRight7,binding.ivArrowRight8,binding.ivArrowRight9,
@@ -208,18 +212,23 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rb_1:
+                binding.mDoubleSlideMenu.setEnable(true);
                 switchFragment(0);
                 break;
             case R.id.rb_2:
+                binding.mDoubleSlideMenu.setEnable(false);
                 switchFragment(1);
                 break;
             case R.id.rb_3:
+                binding.mDoubleSlideMenu.setEnable(false);
                 switchFragment(2);
                 break;
             case R.id.rb_4:
+                binding.mDoubleSlideMenu.setEnable(false);
                 switchFragment(3);
                 break;
             default:
+                binding.mDoubleSlideMenu.setEnable(true);
                 switchFragment(0);
                 break;
         }

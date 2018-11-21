@@ -1,22 +1,18 @@
-package com.bebeep.wisdompb.fragment;
+package com.bebeep.wisdompb.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
-import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.SlideBackActivity;
 import com.bebeep.wisdompb.R;
-import com.bebeep.wisdompb.databinding.Fragment2Binding;
+import com.bebeep.wisdompb.databinding.ActivityChargeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,79 +20,74 @@ import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
-public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCheckedChangeListener,
+        OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
-    private Fragment2Binding binding;
-    private CommonAdapter adapter;
+    private ActivityChargeBinding binding;
     private List<String> list = new ArrayList<>();
+    private CommonAdapter adapter;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(binding == null){
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment2,container,false);
-            init();
-        }
-        return binding.getRoot();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_charge);
+        init();
     }
 
 
     private void init(){
         initAdapter();
+        binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
         binding.nrl.setOnLoadingListener(this);
-        binding.title.tvTitle.setText("在线考试");
-        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
-        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
+        binding.title.tvTitle.setText("党费缴纳");
 
-        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyTools.showToast(getActivity(),"search");
-            }
-        });
+
 
         binding.rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
-                    case R.id.rb1:
+                    case R.id.rb1://待缴费
 
                         break;
-                    case R.id.rb2:
+                    case R.id.rb2://已缴费
 
                         break;
                 }
             }
         });
-    }
 
+        binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     private void initAdapter(){
         list.add("");
         list.add("");
         list.add("");
         list.add("");
-        adapter = new CommonAdapter<String>(getActivity(),R.layout.item_f2,list){
+        adapter = new CommonAdapter<String>(this,R.layout.item_charge,list){
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
-                if(position%3 == 0) {
-                    holder.setText(R.id.tv_state,"进行中");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_yellow);
-                }else if(position%3 == 1) {
-                    holder.setText(R.id.tv_state,"未开始");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
-                }else if(position%3 == 2) {
-                    holder.setText(R.id.tv_state,"已过期");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
-                }
 
             }
         };
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
     }
 
     @Override
@@ -108,12 +99,10 @@ public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLa
             }
         },500);
     }
-
     @Override
     public void onRefresh(AbsRefreshLayout listLoader) {
 
     }
-
     @Override
     public void onLoading(AbsRefreshLayout listLoader) {
         binding.nrl.postDelayed(new Runnable() {

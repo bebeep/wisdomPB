@@ -1,22 +1,21 @@
-package com.bebeep.wisdompb.fragment;
+package com.bebeep.wisdompb.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
+import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
-import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.SlideBackActivity;
 import com.bebeep.wisdompb.R;
-import com.bebeep.wisdompb.databinding.Fragment2Binding;
+import com.bebeep.wisdompb.databinding.ActivityPublicShowBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,39 +23,30 @@ import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
-public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+/**
+ * 党内公示
+ */
+public class PublicShowActivity extends SlideBackActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
-    private Fragment2Binding binding;
+    private ActivityPublicShowBinding binding;
     private CommonAdapter adapter;
     private List<String> list = new ArrayList<>();
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if(binding == null){
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment2,container,false);
-            init();
-        }
-        return binding.getRoot();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_public_show);
+        init();
     }
-
 
     private void init(){
         initAdapter();
+        binding.title.ivBack.setVisibility(View.VISIBLE);
+        binding.title.tvTitle.setText("党内公示");
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
         binding.nrl.setOnLoadingListener(this);
-        binding.title.tvTitle.setText("在线考试");
-        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
-        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
-
-        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyTools.showToast(getActivity(),"search");
-            }
-        });
 
         binding.rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -71,33 +61,42 @@ public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLa
                 }
             }
         });
-    }
 
+        binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     private void initAdapter(){
         list.add("");
         list.add("");
         list.add("");
         list.add("");
-        adapter = new CommonAdapter<String>(getActivity(),R.layout.item_f2,list){
+        adapter = new CommonAdapter<String>(this,R.layout.item_public_show,list){
             @Override
             protected void convert(ViewHolder holder, String s, int position) {
-                if(position%3 == 0) {
-                    holder.setText(R.id.tv_state,"进行中");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_yellow);
-                }else if(position%3 == 1) {
-                    holder.setText(R.id.tv_state,"未开始");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
-                }else if(position%3 == 2) {
-                    holder.setText(R.id.tv_state,"已过期");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
-                }
+
 
             }
         };
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         binding.recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(PublicShowActivity.this, NewsDetailActivity.class).putExtra("title","党内公示"));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
+
 
     @Override
     public void onRefresh() {

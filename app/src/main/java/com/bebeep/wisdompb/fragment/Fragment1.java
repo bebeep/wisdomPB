@@ -1,6 +1,7 @@
 package com.bebeep.wisdompb.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,18 +14,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
+import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.NetworkImageHolderView;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.activity.ChargeActivity;
 import com.bebeep.wisdompb.activity.MainActivity;
+import com.bebeep.wisdompb.activity.NewsDetailActivity;
+import com.bebeep.wisdompb.activity.PublicShowActivity;
 import com.bebeep.wisdompb.databinding.Fragment1Binding;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -41,12 +49,19 @@ import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
-public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
+import static android.content.ContentValues.TAG;
 
+public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
+    private MainActivity mainActivity;
     private Fragment1Binding binding;
+    private LinearLayout[] menus ;
+
+
     private List<String> imgList = new ArrayList<>();
     private CommonAdapter adapter;
     private List<String> list = new ArrayList<>();
+
+
 
     @Nullable
     @Override
@@ -63,6 +78,13 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
         initAdapter();
         initBanner();
         initHead("111");
+        initMenus();
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.addIgnoredView(binding.banner);
+        mainActivity.addIgnoredView(binding.hs);
+
+        binding.setVariable(BR.onClickListener,this);
         binding.title.flHead.setOnClickListener(this);
         binding.title.flHead.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setVisibility(View.VISIBLE);
@@ -82,15 +104,43 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fl_head://点击头像
-                MainActivity activity = (MainActivity) getActivity();
-                activity.showMenu();
+                mainActivity.showMenu();
                 break;
             case R.id.iv_title_right:
                 MyTools.showToast(getActivity(),"search!");
                 break;
+            case R.id.ll_f1_t1://图书馆
+
+                break;
+            case R.id.ll_f1_t2://党组织活动
+
+                break;
+            case R.id.ll_f1_t3://党内公示
+                startActivity(new Intent(getActivity(), PublicShowActivity.class));
+                break;
+            case R.id.ll_f1_t4://党费缴纳
+                startActivity(new Intent(getActivity(), ChargeActivity.class));
+                break;
+            case R.id.ll_f1_t5://党建通讯录
+
+                break;
+            case R.id.ll_f1_t6://党建相册
+
+                break;
+            case R.id.ll_f1_t7://通知公告
+
+                break;
         }
     }
 
+    private void initMenus(){
+        menus = new LinearLayout[]{binding.llF1T1,binding.llF1T2,binding.llF1T3,binding.llF1T4,binding.llF1T5,binding.llF1T6,binding.llF1T7};
+        for (LinearLayout linearLayout:menus){
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+            params.width = MyTools.getWidth(getActivity()) / 4;
+            linearLayout.setLayoutParams(params);
+        }
+    }
 
     private void initHead(String path){
         Picasso.with(getActivity()).load(path + "")
@@ -115,6 +165,17 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(getActivity(),NewsDetailActivity.class).putExtra("title","党建要闻"));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
 
@@ -153,6 +214,7 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
                     }
                 })
                 .start();
+
     }
 
     public void startPlay(){
@@ -196,6 +258,4 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
             }
         },300);
     }
-
-
 }

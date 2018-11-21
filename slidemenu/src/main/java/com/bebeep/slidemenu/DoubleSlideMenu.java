@@ -14,6 +14,9 @@ import android.widget.FrameLayout;
 
 import com.nineoldandroids.view.ViewHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DoubleSlideMenu extends FrameLayout {
 
     private View slideMenu;//菜单栏栏对象
@@ -24,12 +27,14 @@ public class DoubleSlideMenu extends FrameLayout {
     private int width; //控件宽度
     private float dragRange; //拖拽范围
     private float offsetX = 0.8f; //菜单栏的占比，默认为占屏幕的60%
+    private boolean enable = true;
 
     private DragState menulocation = DragState.LEFT; //滑动菜单栏的位置（控制从左侧滑出还是从右侧滑出）
     private DragState currentState = DragState.STATE_CLOSE;
     private onDragStateChangeListener listener;
 
 
+    private List<View> ignoredViews = new ArrayList<>();
 
     public interface onDragStateChangeListener{
         //菜单栏打开
@@ -93,6 +98,17 @@ public class DoubleSlideMenu extends FrameLayout {
         this.offsetX = offsetX;
     }
 
+    //设置是否可用
+    public void setEnable(boolean enable){
+        this.enable = enable;
+    }
+
+
+    public void addIgnoredView(View view){
+        if(ignoredViews.contains(view)) return;
+        ignoredViews.add(view);
+    }
+
     /******** end ********/
 
     @Override
@@ -109,7 +125,16 @@ public class DoubleSlideMenu extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        //让viewDragHlper来判断是否拦截
+        int x = (int) ev.getRawX();
+        int y = (int) ev.getRawY();
+        if(ignoredViews!=null && ignoredViews.size()>0){
+            for (View view:ignoredViews){
+                if(isTouchPointInView(view,x,y)){
+                    return super.onInterceptTouchEvent(ev);
+                }
+            }
+        }
+
         return viewDragHelper.shouldInterceptTouchEvent(ev);
     }
 
@@ -119,7 +144,6 @@ public class DoubleSlideMenu extends FrameLayout {
         viewDragHelper.processTouchEvent(event);
         return true;
     }
-
 
 
 
@@ -143,7 +167,7 @@ public class DoubleSlideMenu extends FrameLayout {
     private ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
         @Override
         public boolean tryCaptureView(@NonNull View view, int i) {
-            return view == slideMenu || view == mainMenu;
+            return (view == slideMenu || view == mainMenu) && enable;
         }
 
         @Override
@@ -275,5 +299,23 @@ public class DoubleSlideMenu extends FrameLayout {
     }
 
 
+
+    private boolean isTouchPointInView(View view, int x, int y) {
+        if (view == null) {
+            return false;
+        }
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int left = location[0];
+        int top = location[1];
+        int right = left + view.getMeasuredWidth();
+        int bottom = top + view.getMeasuredHeight();
+        //view.isClickable() &&
+        if (y >= top && y <= bottom && x >= left
+                && x <= right) {
+            return true;
+        }
+        return false;
+    }
 
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.databinding.Fragment3Binding;
 
@@ -37,7 +38,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
 
     private void init(){
         initAdapter();
-        binding.setOnClickListener(this);
+        binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("会议签到");
         binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
