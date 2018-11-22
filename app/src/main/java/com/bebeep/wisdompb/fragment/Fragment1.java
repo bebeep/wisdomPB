@@ -29,10 +29,13 @@ import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.NetworkImageHolderView;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.activity.AddressBookActivity;
 import com.bebeep.wisdompb.activity.ChargeActivity;
 import com.bebeep.wisdompb.activity.MainActivity;
 import com.bebeep.wisdompb.activity.NewsDetailActivity;
+import com.bebeep.wisdompb.activity.PartyActActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
+import com.bebeep.wisdompb.activity.UserInfoActivity;
 import com.bebeep.wisdompb.databinding.Fragment1Binding;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -103,6 +106,7 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            //主界面
             case R.id.fl_head://点击头像
                 mainActivity.showMenu();
                 break;
@@ -113,7 +117,7 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
 
                 break;
             case R.id.ll_f1_t2://党组织活动
-
+                startActivity(new Intent(getActivity(), PartyActActivity.class));
                 break;
             case R.id.ll_f1_t3://党内公示
                 startActivity(new Intent(getActivity(), PublicShowActivity.class));
@@ -122,7 +126,7 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
                 startActivity(new Intent(getActivity(), ChargeActivity.class));
                 break;
             case R.id.ll_f1_t5://党建通讯录
-
+                startActivity(new Intent(getActivity(), AddressBookActivity.class));
                 break;
             case R.id.ll_f1_t6://党建相册
 

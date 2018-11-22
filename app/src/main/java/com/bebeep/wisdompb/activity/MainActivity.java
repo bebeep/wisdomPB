@@ -1,5 +1,6 @@
 package com.bebeep.wisdompb.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
@@ -79,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rimg_head://
-                Log.e("TAG","head");
+                binding.mDoubleSlideMenu.close();
+                startActivity(new Intent(this, UserInfoActivity.class));
                 break;
             case R.id.fl_menu1://我的考试
 
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
                 break;
             case R.id.fl_menu4://我的积分
-
+                startActivity(new Intent(this,JifenDetailsActivity.class));
                 break;
             case R.id.fl_menu5://我的会议
 

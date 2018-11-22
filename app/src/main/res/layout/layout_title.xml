@@ -64,6 +64,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:padding="12dp"
+            android:onClick="onClick"
             android:visibility="gone" />
 
     </FrameLayout>

@@ -69,8 +69,7 @@
                                     android:background="@drawable/bg_fl_click"
                                     android:gravity="center"
                                     android:onClick="@{onClickListener}"
-                                    android:orientation="vertical"
-                                    android:paddingLeft="15dp">
+                                    android:orientation="vertical">
 
                                     <ImageView
                                         android:layout_width="40dp"
@@ -142,8 +141,7 @@
                                     android:background="@drawable/bg_fl_click"
                                     android:gravity="center"
                                     android:onClick="@{onClickListener}"
-                                    android:orientation="vertical"
-                                    android:paddingRight="15dp">
+                                    android:orientation="vertical">
 
                                     <ImageView
                                         android:layout_width="40dp"
@@ -167,8 +165,7 @@
                                     android:background="@drawable/bg_fl_click"
                                     android:gravity="center"
                                     android:onClick="@{onClickListener}"
-                                    android:orientation="vertical"
-                                    android:paddingRight="15dp">
+                                    android:orientation="vertical">
 
                                     <ImageView
                                         android:layout_width="40dp"
@@ -192,8 +189,7 @@
                                     android:background="@drawable/bg_fl_click"
                                     android:gravity="center"
                                     android:onClick="@{onClickListener}"
-                                    android:orientation="vertical"
-                                    android:paddingRight="15dp">
+                                    android:orientation="vertical">
 
                                     <ImageView
                                         android:layout_width="40dp"
@@ -217,8 +213,7 @@
                                     android:background="@drawable/bg_fl_click"
                                     android:gravity="center"
                                     android:onClick="@{onClickListener}"
-                                    android:orientation="vertical"
-                                    android:paddingRight="15dp">
+                                    android:orientation="vertical">
 
                                     <ImageView
                                         android:layout_width="40dp"

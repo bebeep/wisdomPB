@@ -23,6 +23,13 @@
         <activity android:name=".activity.ChargeActivity" />
         <activity android:name=".activity.NewsDetailActivity"  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".activity.PublicShowActivity"  />
+        <activity android:name=".activity.AddressBookActivity"  />
+        <activity android:name=".activity.MemberInfoActivity"  />
+        <activity android:name=".activity.PartyActActivity"  />
+        <activity android:name=".activity.PartyActDetailsActivity" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" ></activity>
+        <activity android:name=".activity.UserInfoActivity" />
+        <activity android:name=".activity.JifenDetailsActivity" />
     </application>
 
 </manifest>

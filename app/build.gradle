@@ -31,5 +31,9 @@ dependencies {
     implementation project(':Baselib')
     implementation project(':slidemenu')
 
+    //广告
     implementation 'com.youth.banner:banner:1.4.9'
+
+    //自适应排版布局
+    implementation 'com.nex3z:flow-layout:1.0.0'
 }

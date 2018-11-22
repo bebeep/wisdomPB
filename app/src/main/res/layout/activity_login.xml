@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <data>
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"/>
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_white"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/title"
+            android:visibility="gone"
+            layout="@layout/layout_title" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@drawable/bg_login">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="60dp"
+                        android:text="智慧党建"
+                        android:textColor="@color/c_white"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/icon_head_login" />
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="91dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="20dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/bg_rec_login"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_username" />
+
+                    <EditText
+                        android:id="@+id/et_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="请输入手机号"
+                        android:textColor="@color/c_sblack"
+                        android:textColorHint="@color/c_gray"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center"
+                        android:background="@color/c_line" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_password" />
+
+                    <EditText
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="45dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="请输入密码"
+                        android:inputType="textPassword"
+                        android:textColor="@color/c_sblack"
+                        android:textColorHint="@color/c_gray"
+                        android:textSize="15sp" />
+
+                </FrameLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_btn_join"
+                    android:gravity="center"
+                    android:onClick="@{onClickListener}"
+                    android:text="立即登录"
+                    android:textColor="@color/c_white"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_forget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="30dp"
+                    android:onClick="@{onClickListener}"
+                    android:orientation="horizontal"
+                    android:paddingRight="15dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_forget" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center_vertical"
+                        android:text="忘记密码"
+                        android:layout_marginLeft="3dp"
+                        android:textColor="@color/c_gray"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
+</layout>
+
