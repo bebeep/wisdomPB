@@ -30,6 +30,8 @@
         <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" ></activity>
         <activity android:name=".activity.UserInfoActivity" />
         <activity android:name=".activity.JifenDetailsActivity" />
+        <activity android:name=".activity.MeetingMinutesActivity" />
+        <activity android:name=".activity.PayDetailsActivity" />
     </application>
 
 </manifest>

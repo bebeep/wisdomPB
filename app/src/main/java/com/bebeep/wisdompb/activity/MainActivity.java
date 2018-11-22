@@ -78,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     @Override
     public void onClick(View v) {
+        binding.mDoubleSlideMenu.close();
         switch (v.getId()){
             case R.id.rimg_head://
-                binding.mDoubleSlideMenu.close();
                 startActivity(new Intent(this, UserInfoActivity.class));
                 break;
             case R.id.fl_menu1://我的考试

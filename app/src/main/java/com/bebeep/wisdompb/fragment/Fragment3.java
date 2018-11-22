@@ -1,5 +1,6 @@
 package com.bebeep.wisdompb.fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.activity.MeetingMinutesActivity;
 import com.bebeep.wisdompb.databinding.Fragment3Binding;
 
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
                 MyTools.showToast(getActivity(),"预约会议");
                 break;
             case R.id.ll_f3_3:
-                MyTools.showToast(getActivity(),"预约会议");
+                startActivity(new Intent(getActivity(),MeetingMinutesActivity.class));
                 break;
         }
     }

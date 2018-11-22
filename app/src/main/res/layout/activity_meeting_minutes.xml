@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+        <cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout
+            android:id="@+id/nrl"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/srl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:minHeight="25dp"
+                            android:text="大学生志愿者暑期关爱农民工子女"
+                            android:textColor="@color/c_sblack"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/tv_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="15dp"
+                            android:text="2018-11-11 —— 2018-12-11"
+                            android:textColor="@color/c_gray"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/icon_meeting_minutes_release" />
+
+                            <TextView
+                                android:id="@+id/tv_addr"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="3dp"
+                                android:layout_weight="1"
+                                android:text="项目部月度会议 "
+                                android:textColor="@color/c_gray"
+                                android:textSize="13sp" />
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/c_qing" />
+
+                        <WebView
+                            android:id="@+id/webview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:scrollbars="none" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/c_qing" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:paddingLeft="15dp">
+
+                            <TextView
+                                android:id="@+id/tv_comment_user"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="已参与人员（16）"
+                                android:textColor="@color/c_sblack"
+                                android:textSize="13sp" />
+
+
+                            <LinearLayout
+                                android:id="@+id/ll_user_open"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="right"
+                                android:gravity="center"
+                                android:onClick="@{onClickListener}"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp">
+
+                                <TextView
+                                    android:id="@+id/tv_user_open"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="展开"
+                                    android:textColor="@color/c_blue"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:id="@+id/iv_user_open"
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_marginLeft="3dp"
+                                    android:padding="2dp"
+                                    android:src="@drawable/icon_arrow_down" />
+                            </LinearLayout>
+
+                            <!--<com.nex3z.flowlayout.FlowLayout-->
+                            <!--android:id="@+id/fl5"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:minHeight="40dp" />-->
+                        </FrameLayout>
+
+
+                        <TextView
+                            android:id="@+id/tv_user_names"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/c_gray"
+                            android:textSize="13sp" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/c_line" />
+
+                        <TextView
+                            android:id="@+id/tv_comments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="5dp"
+                            android:text="评论（6）"
+                            android:textColor="@color/c_sblack"
+                            android:textSize="13sp" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+
+                    </LinearLayout>
+                </android.support.v4.widget.NestedScrollView>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/c_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/c_qing"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:minHeight="45dp"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp">
+
+            <EditText
+                android:id="@+id/et_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_et_comment"
+                android:hint="说点什么吧..."
+                android:lineSpacingExtra="3dp"
+                android:maxHeight="90dp"
+                android:minHeight="35dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/c_sblack"
+                android:textColorHint="@color/c_gray"
+                android:textCursorDrawable="@null"
+                android:textSize="15sp" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:onClick="@{onClickListener}"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:paddingTop="5dp"
+                    android:src="@drawable/icon_news_detail_comment" />
+
+                <TextView
+                    android:id="@+id/tv_comment_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:text="999"
+                    android:textColor="@color/c_gray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/bg_tv_send_gray"
+                android:gravity="center"
+                android:onClick="@{onClickListener}"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="发表"
+                android:textColor="@color/c_white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>
+
