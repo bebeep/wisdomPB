@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:layout_height="50dp">
+
+    <com.bebeep.commontools.views.RoundImage
+        android:id="@+id/rimg_head"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon_head"
+        android:layout_gravity="center_vertical"/>
+
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:text="吴彦祖"
+        android:textSize="13sp"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="45dp"
+        android:textColor="@color/c_dblack"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+    
+    <TextView
+        android:id="@+id/tv_time"
+        android:text="2018-11-23 09:00:00"
+        android:textSize="12sp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="45dp"
+        android:textColor="@color/c_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_height="1dp"
+        android:background="@color/c_line"
+        />
+
+</FrameLayout>

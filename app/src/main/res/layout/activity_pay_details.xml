@@ -186,6 +186,17 @@
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:scrollbars="none"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="35dp"

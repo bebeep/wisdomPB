@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
                 break;
             case R.id.fl_menu11://设置
-
+                startActivity(new Intent(this, ConfigActivity.class));
                 break;
             case R.id.fl_menu12://关于
 

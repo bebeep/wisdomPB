@@ -32,6 +32,15 @@
         <activity android:name=".activity.JifenDetailsActivity" />
         <activity android:name=".activity.MeetingMinutesActivity" />
         <activity android:name=".activity.PayDetailsActivity" />
+        <activity android:name=".activity.MeetingDetailsActivity" />
+        <activity android:name=".activity.MeetingLeaveActivity" />
+        <activity android:name=".activity.MeetingJoinActivity" />
+        <activity android:name=".activity.ConfigActivity" />
+        <activity android:name=".activity.WebViewActivity" />
+        <activity android:name=".activity.NoticeActivity" />
+        <activity android:name=".activity.LibraryTypeActivity" />
+        <activity android:name=".activity.LibraryListActivity" />
+        <activity android:name=".activity.BookDetailsActivity" />
     </application>
 
 </manifest>

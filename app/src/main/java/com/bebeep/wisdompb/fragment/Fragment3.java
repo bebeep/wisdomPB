@@ -7,15 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
+import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.activity.MeetingDetailsActivity;
 import com.bebeep.wisdompb.activity.MeetingMinutesActivity;
 import com.bebeep.wisdompb.databinding.Fragment3Binding;
 
@@ -83,5 +86,16 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(getActivity(),MeetingDetailsActivity.class));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 }

@@ -31,8 +31,10 @@ import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.AddressBookActivity;
 import com.bebeep.wisdompb.activity.ChargeActivity;
+import com.bebeep.wisdompb.activity.LibraryTypeActivity;
 import com.bebeep.wisdompb.activity.MainActivity;
 import com.bebeep.wisdompb.activity.NewsDetailActivity;
+import com.bebeep.wisdompb.activity.NoticeActivity;
 import com.bebeep.wisdompb.activity.PartyActActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
 import com.bebeep.wisdompb.activity.UserInfoActivity;
@@ -114,7 +116,7 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
                 MyTools.showToast(getActivity(),"search!");
                 break;
             case R.id.ll_f1_t1://图书馆
-
+                startActivity(new Intent(getActivity(), LibraryTypeActivity.class));
                 break;
             case R.id.ll_f1_t2://党组织活动
                 startActivity(new Intent(getActivity(), PartyActActivity.class));
@@ -132,7 +134,7 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
 
                 break;
             case R.id.ll_f1_t7://通知公告
-
+                startActivity(new Intent(getActivity(), NoticeActivity.class));
                 break;
         }
     }

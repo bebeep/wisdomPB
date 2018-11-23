@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_FindFragment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="45dp"
+            android:background="@color/c_white"
+            app:tabIndicatorColor="@color/theme_d"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/theme_d"
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+            app:tabTextColor="@color/c_sblack" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="85dp"
+            android:background="@color/c_line" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_FindFragment_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="86dp" />
+    </FrameLayout>
+
+</layout>
+

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_line">
+
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:background="@color/c_white"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="请假人"
+                android:textColor="@color/c_sblack"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_nam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:text="吴彦祖"
+                android:textColor="@color/c_gray"
+                android:textSize="14sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="125dp"
+            android:background="@color/c_white"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:text="请假事由" />
+
+
+            <EditText
+                android:id="@+id/et_reason"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/c_qing"
+                android:maxLength="100"
+                android:padding="5dp"
+                android:gravity="top"
+                android:textColor="@color/c_sblack"
+                android:textCursorDrawable="@null"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_text_num"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="right|bottom"
+                android:layout_marginRight="15dp"
+                android:gravity="center_vertical"
+                android:text="0/100" />
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tv_submit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="15dp"
+            android:background="@drawable/bg_btn_join"
+            android:gravity="center"
+            android:onClick="@{onClickListener}"
+            android:text="请假"
+            android:textColor="@color/c_white"
+            android:textSize="16sp" />
+
+    </FrameLayout>
+</layout>
+
