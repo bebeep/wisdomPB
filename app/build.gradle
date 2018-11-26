@@ -36,4 +36,5 @@ dependencies {
 
     //自适应排版布局
     implementation 'com.nex3z:flow-layout:1.0.0'
+    implementation project(path: ':StickyItemDecoration')
 }

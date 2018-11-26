@@ -53,6 +53,10 @@ public class PartyActActivity extends SlideBackActivity implements OnPullListene
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
+        binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
+        binding.srl.setOnRefreshListener(this);
+        binding.nrl.setPullRefreshEnable(false);
+        binding.nrl.setOnLoadingListener(this);
 
 
         binding.title.ivBack.setOnClickListener(new View.OnClickListener() {

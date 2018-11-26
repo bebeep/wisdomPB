@@ -1,5 +1,6 @@
 package com.bebeep.wisdompb.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -58,6 +59,9 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
         switch (v.getId()){
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.fl_catalog://目录
+                startActivity(new Intent(this, CatalogActivity.class).putExtra("title","图书目录"));
                 break;
             case R.id.tv_send://发送评论
                 binding.etComment.setText("");

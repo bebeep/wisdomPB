@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_line">
+
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="45dp"
+            android:background="@color/c_white"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+
+            <RadioButton
+                android:id="@+id/rb1"
+                style="@style/rb_style"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rb_f1"
+                android:checked="true"
+                android:text="组织活动"
+                android:textColor="@color/tv_rb_main"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/rb2"
+                style="@style/rb_style"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rb_f1"
+                android:text="我的会议"
+                android:textColor="@color/tv_rb_main"
+                android:textSize="15sp" />
+            <RadioButton
+                android:id="@+id/rb3"
+                style="@style/rb_style"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rb_f1"
+                android:text="党建要闻"
+                android:textColor="@color/tv_rb_main"
+                android:textSize="15sp" />
+
+        </RadioGroup>
+
+
+        <cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout
+            android:id="@+id/nrl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="86dp">
+
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/srl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                         />
+
+                    <TextView
+                        android:id="@+id/tv_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="暂无内容"
+                        android:textColor="@color/c_gray"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout>
+
+
+    </FrameLayout>
+
+</layout>

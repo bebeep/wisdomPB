@@ -11,8 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:name=".MyApplication"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,27 +21,35 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ChargeActivity" />
-        <activity android:name=".activity.NewsDetailActivity"  android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activity.PublicShowActivity"  />
-        <activity android:name=".activity.AddressBookActivity"  />
-        <activity android:name=".activity.MemberInfoActivity"  />
-        <activity android:name=".activity.PartyActActivity"  />
-        <activity android:name=".activity.PartyActDetailsActivity" android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" ></activity>
-        <activity android:name=".activity.UserInfoActivity" />
-        <activity android:name=".activity.JifenDetailsActivity" />
-        <activity android:name=".activity.MeetingMinutesActivity" />
-        <activity android:name=".activity.PayDetailsActivity" />
-        <activity android:name=".activity.MeetingDetailsActivity" />
-        <activity android:name=".activity.MeetingLeaveActivity" />
-        <activity android:name=".activity.MeetingJoinActivity" />
-        <activity android:name=".activity.ConfigActivity" />
-        <activity android:name=".activity.WebViewActivity" />
-        <activity android:name=".activity.NoticeActivity" />
-        <activity android:name=".activity.LibraryTypeActivity" />
-        <activity android:name=".activity.LibraryListActivity" />
-        <activity android:name=".activity.BookDetailsActivity" />
+        <activity android:name=".activity.ChargeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NewsDetailActivity"  android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PublicShowActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.AddressBookActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MemberInfoActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PartyActActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PartyActDetailsActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.UserInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.JifenDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MeetingMinutesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PayDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MeetingDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MeetingLeaveActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MeetingJoinActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ConfigActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WebViewActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.NoticeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LibraryTypeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LibraryListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BookDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.CatalogActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BookContentActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyNoteListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyNoteActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyJifenActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyCommentActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyCollectionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MyBookrackActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

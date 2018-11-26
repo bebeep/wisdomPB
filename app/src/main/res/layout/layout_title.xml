@@ -56,6 +56,7 @@
             android:paddingRight="15dp"
             android:textColor="@color/c_white"
             android:textSize="16sp"
+            android:onClick="onClick"
             android:visibility="gone" />
 
         <ImageView

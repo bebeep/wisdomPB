@@ -87,13 +87,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
                 break;
             case R.id.fl_menu2://我的书架
-
+                startActivity(new Intent(this,MyBookrackActivity.class));
                 break;
             case R.id.fl_menu3://我的笔记
-
+                startActivity(new Intent(this,MyNoteListActivity.class));
                 break;
             case R.id.fl_menu4://我的积分
-                startActivity(new Intent(this,JifenDetailsActivity.class));
+                startActivity(new Intent(this,MyJifenActivity.class));
                 break;
             case R.id.fl_menu5://我的会议
 
@@ -102,10 +102,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
                 break;
             case R.id.fl_menu7://我的收藏
-
+                startActivity(new Intent(this,MyCollectionActivity.class));
                 break;
             case R.id.fl_menu8://我的评论
-
+                startActivity(new Intent(this,MyCommentActivity.class));
                 break;
             case R.id.fl_menu9://我提起的
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"/>
+    </data>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_title"
+            android:id="@+id/title"/>
+
+        <cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout
+            android:id="@+id/nrl"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/srl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/tv_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="暂无内容"
+                        android:textColor="@color/c_gray"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_del_all"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/fl_del_all"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:onClick="@{onClickListener}"
+                android:background="@drawable/bg_fl_click">
+
+                <ImageView
+                    android:id="@+id/iv_check_all"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/icon_checkall_n"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_marginLeft="35dp"
+                    android:text="全选"
+                    android:textSize="15sp"
+                    android:textColor="@color/c_gray"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_del"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/c_white"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:onClick="@{onClickListener}"
+                android:text="删除"
+                android:background="@drawable/bg_click_red"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
+
