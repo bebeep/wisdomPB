@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_qing">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="45dp"
+            android:background="@color/c_white"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_choose_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_fl_click"
+                    android:gravity="center_vertical"
+                    android:onClick="@{onClickListener}"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="类型"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="*"
+                        android:textColor="@color/theme_d"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="请选择类型"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp" />
+
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:padding="5dp"
+                        android:src="@drawable/icon_arrow_right" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/c_line" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="标题"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:text="*"
+                        android:textColor="@color/theme_d"
+                        android:textSize="14sp" />
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
+                        android:layout_weight="1">
+
+                        <EditText
+                            android:id="@+id/et_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="15dp"
+                            android:background="@null"
+                            android:gravity="center_vertical|right"
+                            android:hint="请输入标题，1-64字"
+                            android:lineSpacingExtra="3dp"
+                            android:minHeight="45dp"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="15dp"
+                            android:maxLength="64"
+                            android:singleLine="true"
+                            android:paddingTop="5dp"
+                            android:textColor="@color/c_sblack"
+                            android:textColorHint="@color/c_gray"
+                            android:textCursorDrawable="@null"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/c_line" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="内容"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="3dp"
+                        android:text="*"
+                        android:textColor="@color/theme_d"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@null"
+                    android:gravity="left|top"
+                    android:hint="请输入内容，1-2000字"
+                    android:lineSpacingExtra="3dp"
+                    android:minHeight="120dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:maxLength="2000"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/c_sblack"
+                    android:textColorHint="@color/c_gray"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="最多可再上传4张照片"
+                    android:textColor="@color/c_gray"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/c_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/fl_pic_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_fl_click"
+                        android:paddingRight="5dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="15dp"
+                            android:src="@drawable/icon_upload_pic" />
+
+                        <TextView
+                            android:id="@+id/tv_pic_num"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/bg_round_tv_red"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textColor="@color/c_white"
+                            android:textSize="8sp" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/fl_anonymity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_fl_click"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="10dp">
+
+                        <ImageView
+                            android:id="@+id/iv_show_name"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/icon_choose_u" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="28dp"
+                            android:text="匿名"
+                            android:textColor="@color/c_gray"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_submit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_marginRight="15dp"
+                            android:background="@drawable/bg_btn_join"
+                            android:gravity="center"
+                            android:onClick="@{onClickListener}"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="提交"
+                            android:textColor="@color/c_white"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_line" />
+            </LinearLayout>
+
+        </ScrollView>
+    </FrameLayout>
+</layout>
+

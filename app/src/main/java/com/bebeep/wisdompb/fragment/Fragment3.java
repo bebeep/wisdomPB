@@ -20,6 +20,7 @@ import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.MeetingDetailsActivity;
 import com.bebeep.wisdompb.activity.MeetingMinutesActivity;
+import com.bebeep.wisdompb.activity.OrderMeetingActivity;
 import com.bebeep.wisdompb.databinding.Fragment3Binding;
 
 import java.util.ArrayList;
@@ -60,10 +61,10 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
                 MyTools.showToast(getActivity(),"search");
                 break;
             case R.id.ll_f3_1:
-                MyTools.showToast(getActivity(),"预约会议");
+                startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
                 break;
             case R.id.ll_f3_2:
-                MyTools.showToast(getActivity(),"预约会议");
+                startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
                 break;
             case R.id.ll_f3_3:
                 startActivity(new Intent(getActivity(),MeetingMinutesActivity.class));

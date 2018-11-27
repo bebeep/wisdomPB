@@ -1,1 +1,1 @@
-include ':app','Baselib','slidemenu',"StickyItemDecoration"
+include ':app','Baselib','slidemenu',"StickyItemDecoration",'photopicker'

@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 startActivity(new Intent(this,MyCommentActivity.class));
                 break;
             case R.id.fl_menu9://我提起的
-
+                startActivity(new Intent(this,MySubmitActivity.class));
                 break;
             case R.id.fl_menu10://意见反馈
-
+                startActivity(new Intent(this,TicklingActivity.class));
                 break;
             case R.id.fl_menu11://设置
                 startActivity(new Intent(this, ConfigActivity.class));
