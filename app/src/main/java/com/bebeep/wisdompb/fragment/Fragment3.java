@@ -20,13 +20,15 @@ import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.MeetingDetailsActivity;
 import com.bebeep.wisdompb.activity.MeetingMinutesActivity;
+import com.bebeep.wisdompb.activity.MyMeetingActivity;
 import com.bebeep.wisdompb.activity.OrderMeetingActivity;
+import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.databinding.Fragment3Binding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment3 extends Fragment implements View.OnClickListener{
+public class Fragment3 extends BaseFragment implements View.OnClickListener{
 
     private Fragment3Binding binding;
     private List<String> list = new ArrayList<>();
@@ -64,7 +66,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
                 break;
             case R.id.ll_f3_2:
-                startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
+                startActivity(new Intent(getActivity(),MyMeetingActivity.class));
                 break;
             case R.id.ll_f3_3:
                 startActivity(new Intent(getActivity(),MeetingMinutesActivity.class));

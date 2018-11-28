@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_white"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/c_qing"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <ImageView
+                android:id="@+id/iv_menu"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="10dp"
+                android:src="@drawable/icon_notice_menu" />
+
+            <TextView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/bg_circle_red_9"
+                android:gravity="center"
+                android:text="99"
+                android:textColor="@color/c_white"
+                android:textSize="10sp" />
+
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/bg_rec_search"
+                android:hint="输入想要搜索的关键字"
+                android:imeOptions="actionSearch"
+                android:maxLength="20"
+                android:paddingLeft="30dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                android:textColor="@color/c_sblack"
+                android:textColorHint="@color/c_gray"
+                android:textCursorDrawable="@null"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="55dp"
+                android:padding="6dp"
+                android:src="@drawable/icon_search_gray" />
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/c_line" />
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_FindFragment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/c_white"
+            app:tabIndicatorColor="@color/theme_d"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/theme_d"
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+            app:tabTextColor="@color/c_sblack" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/c_line" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_FindFragment_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</layout>
+

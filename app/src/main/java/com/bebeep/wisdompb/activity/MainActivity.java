@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 startActivity(new Intent(this, UserInfoActivity.class));
                 break;
             case R.id.fl_menu1://我的考试
-
+                startActivity(new Intent(this,MyExamActivity.class));
                 break;
             case R.id.fl_menu2://我的书架
                 startActivity(new Intent(this,MyBookrackActivity.class));
@@ -96,10 +96,10 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 startActivity(new Intent(this,MyJifenActivity.class));
                 break;
             case R.id.fl_menu5://我的会议
-
+                startActivity(new Intent(this,MyMeetingActivity.class));
                 break;
             case R.id.fl_menu6://我的活动
-
+                startActivity(new Intent(this,MyActActivity.class));
                 break;
             case R.id.fl_menu7://我的收藏
                 startActivity(new Intent(this,MyCollectionActivity.class));
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
                 break;
             case R.id.fl_menu13://政治生日卡
-
+                startActivity(new Intent(this, BirthdayCardActivity.class));
                 break;
         }
     }

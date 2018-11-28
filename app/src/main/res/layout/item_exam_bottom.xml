@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="60dp"
+    android:padding="10dp">
+
+
+    <FrameLayout
+        android:id="@+id/fl_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_exam_anwser"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/iv_check"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bg_ring_exam_u" />
+
+        <TextView
+            android:id="@+id/tv_anwser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="3dp"
+            android:minHeight="35dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="A、全面深化改革按理说看到啦；矢口抵赖；奥斯卡大声道（测试多行文字）"
+            android:textColor="@color/c_sblack"
+            android:textSize="14sp" />
+    </FrameLayout>
+</FrameLayout>

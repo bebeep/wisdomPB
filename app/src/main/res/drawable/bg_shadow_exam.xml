@@ -3,10 +3,10 @@
     <item>
         <shape android:shape="rectangle">
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
+                android:top="2px" />
             <solid android:color="#10E9433A" />
             <corners android:radius="@dimen/radius_exam" />
         </shape>
@@ -14,10 +14,10 @@
     <item>
         <shape android:shape="rectangle">
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
+                android:top="2px" />
             <solid android:color="#20E9433A" />
             <corners android:radius="@dimen/radius_exam" />
         </shape>
@@ -25,10 +25,10 @@
     <item>
         <shape android:shape="rectangle">
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
+                android:top="2px" />
             <solid android:color="#30E9433A" />
             <corners android:radius="@dimen/radius_exam" />
         </shape>
@@ -36,10 +36,10 @@
     <item>
         <shape android:shape="rectangle">
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
+                android:top="2px" />
             <solid android:color="#40E9433A" />
             <corners android:radius="@dimen/radius_exam" />
         </shape>
@@ -47,10 +47,10 @@
     <item>
         <shape android:shape="rectangle">
             <padding
-                android:bottom="1dp"
-                android:left="1dp"
-                android:right="1dp"
-                android:top="1dp" />
+                android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
+                android:top="2px" />
             <solid android:color="#50E9433A" />
             <corners android:radius="@dimen/radius_exam" />
         </shape>
@@ -61,10 +61,10 @@
     <item >
         <shape android:shape="rectangle">
             <padding
-                android:bottom="2dp"
-                android:left="2dp"
-                android:right="2dp"
-                android:top="2dp" />
+                android:bottom="2px"
+                android:left="2px"
+                android:right="2px"
+                android:top="2px" />
             <solid android:color="@android:color/white"/>
             <corners android:radius="@dimen/radius_exam" />
         </shape>

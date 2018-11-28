@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 public class MyApplication extends Application {
 
-
+    public static final int ACTIVITY_BACK_CODE = 9527;
     public static MyApplication instance;
     public static Gson gson;
     public static Context context;

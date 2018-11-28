@@ -224,6 +224,29 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="5dp"
+                                        android:text="专题教育"
+                                        android:textColor="@color/c_sblack"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/ll_f1_t8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/bg_fl_click"
+                                    android:gravity="center"
+                                    android:onClick="@{onClickListener}"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:src="@drawable/icon_f1_t7" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
                                         android:text="通知公告"
                                         android:textColor="@color/c_sblack"
                                         android:textSize="14sp" />

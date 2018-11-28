@@ -57,6 +57,13 @@
         <activity android:name=".activity.TicklingActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".activity.OrderMeetingActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activity.ExamActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.TestingActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.TestResultActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.SpecialEduActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.BirthdayCardActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.MyExamActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.MyActActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.MyMeetingActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

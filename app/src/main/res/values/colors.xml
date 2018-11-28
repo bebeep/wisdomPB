@@ -6,8 +6,10 @@
 
     <color name="theme">#db3a32</color>
     <color name="theme_d">#E9433A</color>
+    <color name="c_orange">#f19b32</color>
     <color name="yellow">#ffcc00</color>
     <color name="yellow_d">#e2b70a</color>
+    <color name="yellow_l">#7cf2d664</color>
     <color name="green">#5bba46</color>
     <color name="c_blue_d">#2FA2E4</color>
     <color name="c_dblack">#585756</color>

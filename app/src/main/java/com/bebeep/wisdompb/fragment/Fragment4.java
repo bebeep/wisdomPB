@@ -18,6 +18,7 @@ import com.bebeep.commontools.recylcerview_adapter.MultiItemDivider;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.databinding.Fragment4Binding;
 import com.squareup.picasso.Picasso;
 
@@ -27,7 +28,7 @@ import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
-public class Fragment4 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class Fragment4 extends BaseFragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
     private Fragment4Binding binding;
     private CommonAdapter adapter;

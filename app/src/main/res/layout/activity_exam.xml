@@ -38,7 +38,7 @@
                 android:lineSpacingExtra="5dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:text="考试题目-----了卡时间段卡拉是假的克拉斯就快到了建设大街（测试多行文字）"
+                android:text="考试题目-----关于学习新形势下党内政治生活的若干准则与若干纪律的测试（测试多行文字）"
                 android:textColor="@color/c_white"
                 android:textSize="16sp" />
 
@@ -115,7 +115,7 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/icon_exam_all_score" />
+                            android:src="@drawable/icon_exam_pass" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -170,7 +170,7 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/icon_exam_all_score" />
+                            android:src="@drawable/icon_total_questions" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -267,7 +267,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/icon_exam_all_score" />
+                            android:src="@drawable/icon_exam_total_time" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -304,7 +304,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
                             android:text="至"
                             android:textColor="@color/c_gray"
                             android:textSize="13sp" />
@@ -313,7 +312,6 @@
                             android:id="@+id/tv_end_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
                             android:text="2011-12-25 11:30:00"
                             android:textColor="@color/c_gray"
                             android:textSize="13sp" />
@@ -345,7 +343,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/icon_exam_all_score" />
+                            android:src="@drawable/icon_exam_explain" />
 
                         <TextView
                             android:layout_width="wrap_content"

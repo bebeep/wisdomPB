@@ -37,7 +37,9 @@ import com.bebeep.wisdompb.activity.NewsDetailActivity;
 import com.bebeep.wisdompb.activity.NoticeActivity;
 import com.bebeep.wisdompb.activity.PartyActActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
+import com.bebeep.wisdompb.activity.SpecialEduActivity;
 import com.bebeep.wisdompb.activity.UserInfoActivity;
+import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.databinding.Fragment1Binding;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -56,8 +58,7 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 
 import static android.content.ContentValues.TAG;
 
-public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
-    private MainActivity mainActivity;
+public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
     private Fragment1Binding binding;
     private LinearLayout[] menus ;
 
@@ -133,7 +134,10 @@ public class Fragment1 extends Fragment implements OnPullListener,SwipeRefreshLa
             case R.id.ll_f1_t6://党建相册
 
                 break;
-            case R.id.ll_f1_t7://通知公告
+            case R.id.ll_f1_t7://专题教育
+                startActivity(new Intent(getActivity(), SpecialEduActivity.class));
+                break;
+            case R.id.ll_f1_t8://通知公告
                 startActivity(new Intent(getActivity(), NoticeActivity.class));
                 break;
         }

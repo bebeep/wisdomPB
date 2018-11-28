@@ -18,8 +18,10 @@ import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.ExamActivity;
+import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.databinding.Fragment2Binding;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
-public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
     private Fragment2Binding binding;
     private CommonAdapter adapter;
@@ -105,7 +107,7 @@ public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLa
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(getActivity(),ExamActivity.class));
+                startActivityForResult(new Intent(getActivity(),ExamActivity.class), MyApplication.ACTIVITY_BACK_CODE);
             }
 
             @Override
@@ -141,5 +143,18 @@ public class Fragment2 extends Fragment implements OnPullListener,SwipeRefreshLa
                 binding.nrl.onLoadFinished();
             }
         },500);
+    }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == getActivity().RESULT_OK){
+            if(requestCode == MyApplication.ACTIVITY_BACK_CODE){
+                mainActivity.showFragment(0);
+            }
+        }
     }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/bg_birthday_card">
+
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_birthday_card_content"
+                android:lineSpacingExtra="5dp"
+                android:paddingBottom="40dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="35dp"
+                android:gravity="center"
+                android:paddingTop="40dp"
+                android:text="2003年10月1日，您加入了中国共产党，今天是2018年10月1日，您已成为党员5475天"
+                android:textColor="@color/c_sblack"
+                android:textSize="15sp" />
+
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+</layout>
+
