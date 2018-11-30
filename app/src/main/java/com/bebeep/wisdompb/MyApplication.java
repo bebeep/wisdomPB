@@ -2,6 +2,7 @@ package com.bebeep.wisdompb;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.DisplayMetrics;
 
 import com.bebeep.commontools.utils.MyTools;
 import com.google.gson.Gson;
@@ -12,6 +13,7 @@ public class MyApplication extends Application {
     public static MyApplication instance;
     public static Gson gson;
     public static Context context;
+
 
     //123456789
 

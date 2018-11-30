@@ -7,16 +7,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,11 +22,11 @@ import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
-import com.bebeep.commontools.utils.NetworkImageHolderView;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.AddressBookActivity;
 import com.bebeep.wisdompb.activity.ChargeActivity;
+import com.bebeep.wisdompb.activity.GalleryListActivity;
 import com.bebeep.wisdompb.activity.LibraryTypeActivity;
 import com.bebeep.wisdompb.activity.MainActivity;
 import com.bebeep.wisdompb.activity.NewsDetailActivity;
@@ -38,12 +34,8 @@ import com.bebeep.wisdompb.activity.NoticeActivity;
 import com.bebeep.wisdompb.activity.PartyActActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
 import com.bebeep.wisdompb.activity.SpecialEduActivity;
-import com.bebeep.wisdompb.activity.UserInfoActivity;
 import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.databinding.Fragment1Binding;
-import com.bigkoo.convenientbanner.ConvenientBanner;
-import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -55,8 +47,6 @@ import java.util.List;
 
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
-
-import static android.content.ContentValues.TAG;
 
 public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefreshLayout.OnRefreshListener,View.OnClickListener{
     private Fragment1Binding binding;
@@ -132,7 +122,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 startActivity(new Intent(getActivity(), AddressBookActivity.class));
                 break;
             case R.id.ll_f1_t6://党建相册
-
+                startActivity(new Intent(getActivity(), GalleryListActivity.class));
                 break;
             case R.id.ll_f1_t7://专题教育
                 startActivity(new Intent(getActivity(), SpecialEduActivity.class));
@@ -144,7 +134,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     }
 
     private void initMenus(){
-        menus = new LinearLayout[]{binding.llF1T1,binding.llF1T2,binding.llF1T3,binding.llF1T4,binding.llF1T5,binding.llF1T6,binding.llF1T7};
+        menus = new LinearLayout[]{binding.llF1T1,binding.llF1T2,binding.llF1T3,binding.llF1T4,binding.llF1T5,binding.llF1T6,binding.llF1T7,binding.llF1T8};
         for (LinearLayout linearLayout:menus){
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
             params.width = MyTools.getWidth(getActivity()) / 4;

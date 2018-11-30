@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bebeep.wisdompb">
 
 
@@ -11,10 +12,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon_logo"
-        android:label="@string/app_name"
+        android:label="甘孜机关党建"
         android:supportsRtl="true"
         android:name=".MyApplication"
         android:screenOrientation="portrait"
+        tools:replace="android:icon, android:theme, android:label"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
@@ -64,6 +66,8 @@
         <activity android:name=".activity.MyExamActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.MyActActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.MyMeetingActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.GalleryListActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.GalleryActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>
