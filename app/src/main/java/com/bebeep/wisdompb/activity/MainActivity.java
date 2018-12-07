@@ -15,18 +15,24 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.PicassoUtil;
 import com.bebeep.slidemenu.DoubleSlideMenu;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseActivity;
+import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityMainBinding;
 import com.bebeep.wisdompb.fragment.Fragment1;
 import com.bebeep.wisdompb.fragment.Fragment2;
 import com.bebeep.wisdompb.fragment.Fragment3;
 import com.bebeep.wisdompb.fragment.Fragment4;
+import com.bebeep.wisdompb.util.PreferenceUtils;
+import com.bebeep.wisdompb.util.URLS;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
     private ActivityMainBinding binding;
 
     private FrameLayout[] fls;
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     }
 
     private void init(){
+        initUserInfo();
         binding.setOnClickListener(this);
         initRadioButtonSize();
         initFrgament();
@@ -72,6 +79,21 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 else fragment1.stopPlay();
             }
         });
+
+        long timestamp = System.currentTimeMillis();
+        long deltaMillis = timestamp - PreferenceUtils.getPrefLong("timestamp",0);
+        Log.e("TAG","deltaMillis:"+deltaMillis);
+        if(deltaMillis >= 2 * 3600 * 1000){ //如果两次刷新token的间隔超过2个小时，就自动刷新
+            refreshToken();
+        }
+    }
+
+    private void initUserInfo(){
+        UserInfo info = MyApplication.getInstance().getUserInfo();
+        PicassoUtil.setImageUrl(this, binding.rimgHead, URLS.IMAGE_PRE + info.getPhoto(),R.drawable.icon_head,60,60);
+        binding.tvName.setText(info.getName());
+        binding.ivSex.setImageResource(info.getSex() == 1?R.drawable.icon_sex_man:R.drawable.icon_sex_man);
+        binding.tvGroup.setText(info.getOffice());
 
     }
 

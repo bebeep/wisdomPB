@@ -18,13 +18,25 @@
         android:screenOrientation="portrait"
         tools:replace="android:icon, android:theme, android:label"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
+
+
+
+        <activity android:name=".activity.StartActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.MainActivity" android:screenOrientation="portrait">
+
+        </activity>
+
+
+        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait">
+        </activity>
+
 
         <activity android:name=".activity.ChargeActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.NewsDetailActivity"  android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
@@ -33,7 +45,6 @@
         <activity android:name=".activity.MemberInfoActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.PartyActActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.PartyActDetailsActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"></activity>
         <activity android:name=".activity.UserInfoActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.JifenDetailsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.MeetingMinutesActivity" android:screenOrientation="portrait"/>

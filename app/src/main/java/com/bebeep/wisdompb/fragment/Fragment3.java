@@ -62,13 +62,13 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
             case R.id.iv_title_right:
                 MyTools.showToast(getActivity(),"search");
                 break;
-            case R.id.ll_f3_1:
+            case R.id.ll_f3_1://预约会议
                 startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
                 break;
-            case R.id.ll_f3_2:
+            case R.id.ll_f3_2://我的会议
                 startActivity(new Intent(getActivity(),MyMeetingActivity.class));
                 break;
-            case R.id.ll_f3_3:
+            case R.id.ll_f3_3://会议纪要
                 startActivity(new Intent(getActivity(),MeetingMinutesActivity.class));
                 break;
         }

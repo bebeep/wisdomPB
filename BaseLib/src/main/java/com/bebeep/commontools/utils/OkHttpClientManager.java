@@ -115,8 +115,8 @@ public class OkHttpClientManager {
 	 *            post的参数
 	 * @return
 	 */
-	private Response _post(String url, Param... params) throws IOException {
-		Request request = buildPostRequest(url, params);
+	private Response _post(String url, HashMap header,Param... params) throws IOException {
+		Request request = buildPostRequest(url, header,params);
 		Response response = mOkHttpClient.newCall(request).execute();
 		return response;
 	}
@@ -129,9 +129,9 @@ public class OkHttpClientManager {
 	 *            post的参数
 	 * @return 字符串
 	 */
-	private String _postAsString(String url, Param... params)
+	private String _postAsString(String url,HashMap header, Param... params)
 			throws IOException {
-		Response response = _post(url, params);
+		Response response = _post(url, header,params);
 		return response.body().string();
 	}
 
@@ -143,8 +143,8 @@ public class OkHttpClientManager {
 	 * @param params
 	 */
 	private void _postAsyn(String url, final ResultCallback callback,
-						   Param... params) {
-		Request request = buildPostRequest(url, params);
+						   HashMap header,Param... params) {
+		Request request = buildPostRequest(url, header, params);
 		deliveryResult(callback, request);
 	}
 
@@ -155,10 +155,10 @@ public class OkHttpClientManager {
 	 * @param callback
 	 * @param params
 	 */
-	private void _postAsyn(String url, final ResultCallback callback,
+	private void _postAsyn(String url, final ResultCallback callback,HashMap header,
 						   Map<String, String> params) {
 		Param[] paramsArr = map2Params(params);
-		Request request = buildPostRequest(url, paramsArr);
+		Request request = buildPostRequest(url, header,paramsArr);
 		deliveryResult(callback, request);
 	}
 
@@ -322,23 +322,23 @@ public class OkHttpClientManager {
 		getInstance()._getAsyn(url, callback);
 	}
 
-	public static Response post(String url, Param... params) throws IOException {
-		return getInstance()._post(url, params);
+	public static Response post(String url, HashMap header,Param... params) throws IOException {
+		return getInstance()._post(url, header,params);
 	}
 
-	public static String postAsString(String url, Param... params)
+	public static String postAsString(String url, HashMap header,Param... params)
 			throws IOException {
-		return getInstance()._postAsString(url, params);
+		return getInstance()._postAsString(url, header,params);
 	}
 
 	public static void postAsyn(String url, final ResultCallback callback,
-								Param... params) {
-		getInstance()._postAsyn(url, callback, params);
+								HashMap header,Param... params) {
+		getInstance()._postAsyn(url, callback,header, params);
 	}
 
 	public static void postAsyn(String url, final ResultCallback callback,
-								Map<String, String> params) {
-		getInstance()._postAsyn(url, callback, params);
+								HashMap header, Map<String, String> params) {
+		getInstance()._postAsyn(url, callback, header, params);
 	}
 
 	public static Response post(String url, File[] files, String[] fileKeys,
@@ -495,7 +495,7 @@ public class OkHttpClientManager {
 		});
 	}
 
-	private Request buildPostRequest(String url, Param[] params) {
+	private Request buildPostRequest(String url, HashMap header,Param[] params) {
 		if (params == null) {
 			params = new Param[0];
 		}
@@ -504,7 +504,17 @@ public class OkHttpClientManager {
 			builder.add(param.key, param.value);
 		}
 		RequestBody requestBody = builder.build();
-		return new Request.Builder().url(url).post(requestBody).build();
+		Request.Builder requestBuilder = new Request.Builder();
+
+		if(header!=null && !header.isEmpty()){
+			Set<Map.Entry<String, String>> set = header.entrySet();
+			for (Map.Entry<String, String> me : set) {
+				String key = me.getKey();
+				String value = me.getValue();
+				requestBuilder.addHeader(key,value);
+			}
+		}
+		return requestBuilder.url(url).post(requestBody).build();
 	}
 
 	public static abstract class ResultCallback<T> {

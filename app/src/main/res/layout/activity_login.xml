@@ -85,10 +85,12 @@
                         android:layout_marginRight="15dp"
                         android:background="@null"
                         android:gravity="center_vertical"
-                        android:hint="请输入手机号"
+                        android:hint="请输入身份证号"
                         android:textCursorDrawable="@null"
                         android:textColor="@color/c_sblack"
                         android:textColorHint="@color/c_gray"
+                        android:maxLength="20"
+                        android:singleLine="true"
                         android:textSize="15sp" />
 
                     <View
@@ -114,6 +116,8 @@
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:hint="请输入密码"
+                        android:maxLength="16"
+                        android:singleLine="true"
                         android:textCursorDrawable="@null"
                         android:inputType="textPassword"
                         android:textColor="@color/c_sblack"

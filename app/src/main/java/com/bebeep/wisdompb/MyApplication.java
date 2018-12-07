@@ -2,9 +2,12 @@ package com.bebeep.wisdompb;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.wisdompb.bean.UserInfo;
+import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.google.gson.Gson;
 
 public class MyApplication extends Application {
@@ -28,24 +31,28 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         gson = new Gson();
-        context = this;
+        context = getApplicationContext();
+        instance = this;
     }
 
 
-
-    /**
-     * 接口请求错误时，判断各种情况
-     * @param e
-     */
-    public static void statusMsg(Exception e,int code){
-        if(!MyTools.getNetStatus(context)){ //断网
-            MyTools.showToast(context,"网络已断开");
-        }else {
-            if(code == 1){
-                MyTools.showToast(context,"解析错误");
-            }else{ //其他-"请求错误"
-                MyTools.showToast(context,"请求错误");
-            }
+    //获取用户信息
+    public UserInfo getUserInfo(){
+        String userJson = PreferenceUtils.getPrefString("userInfo","");
+        if(!TextUtils.isEmpty(userJson)){
+            return gson.fromJson(userJson,UserInfo.class);
         }
+        return new UserInfo();
+    }
+
+
+    //获取access_token
+    public String getAccessToken(){
+        return PreferenceUtils.getPrefString("access_token","");
+    }
+
+    //获取refresh_token
+    public String getRefreshToken(){
+        return PreferenceUtils.getPrefString("refresh_token","");
     }
 }

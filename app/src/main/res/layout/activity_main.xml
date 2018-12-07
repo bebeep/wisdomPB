@@ -68,7 +68,6 @@
                                 android:id="@+id/tv_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="吴彦祖"
                                 android:textColor="@color/c_white"
                                 android:textSize="22sp" />
 
@@ -89,8 +88,8 @@
                             android:layout_alignParentBottom="true"
                             android:layout_marginBottom="15dp"
                             android:layout_marginLeft="90dp"
+                            android:layout_marginRight="50dp"
                             android:gravity="center_vertical"
-                            android:text="集团第一支部  集团工会"
                             android:textColor="@color/c_white"
                             android:textSize="14sp" />
                     </RelativeLayout>

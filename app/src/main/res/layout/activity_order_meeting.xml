@@ -36,6 +36,7 @@
                     android:layout_height="45dp"
                     android:background="@drawable/bg_fl_click"
                     android:gravity="center_vertical"
+                    android:visibility="gone"
                     android:onClick="@{onClickListener}"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
@@ -81,6 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
+                    android:visibility="gone"
                     android:background="@color/c_line" />
 
                 <LinearLayout
@@ -240,12 +242,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
+                    android:visibility="gone"
                     android:background="@color/c_line" />
 
                 <FrameLayout
                     android:id="@+id/fl_add_time_address"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:visibility="gone"
                     android:background="@drawable/bg_fl_click"
                     android:onClick="@{onClickListener}"
                     android:paddingLeft="15dp">
@@ -380,6 +384,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
+                    android:visibility="gone"
                     android:paddingRight="10dp" />
 
                 <TextView
@@ -387,6 +392,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     android:text="最多可再上传4张照片"
                     android:textColor="@color/c_gray"
                     android:textSize="12sp" />
