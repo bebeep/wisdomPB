@@ -1,5 +1,6 @@
 package com.bebeep.wisdompb.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -7,6 +8,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,20 +25,33 @@ import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
+import com.bebeep.commontools.utils.PicassoUtil;
 import com.bebeep.wisdompb.BR;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.AddressBookActivity;
 import com.bebeep.wisdompb.activity.ChargeActivity;
 import com.bebeep.wisdompb.activity.GalleryListActivity;
 import com.bebeep.wisdompb.activity.LibraryTypeActivity;
+import com.bebeep.wisdompb.activity.LoginActivity;
 import com.bebeep.wisdompb.activity.MainActivity;
 import com.bebeep.wisdompb.activity.NewsDetailActivity;
 import com.bebeep.wisdompb.activity.NoticeActivity;
 import com.bebeep.wisdompb.activity.PartyActActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
 import com.bebeep.wisdompb.activity.SpecialEduActivity;
+import com.bebeep.wisdompb.activity.WebViewActivity;
+import com.bebeep.wisdompb.adapter.TitleFragmentAdapter;
 import com.bebeep.wisdompb.base.BaseFragment;
+import com.bebeep.wisdompb.bean.AdsEntity;
+import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.LoginEntity;
 import com.bebeep.wisdompb.databinding.Fragment1Binding;
+import com.bebeep.wisdompb.util.PreferenceUtils;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -43,6 +59,7 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
@@ -54,10 +71,14 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
 
 
     private List<String> imgList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
     private CommonAdapter adapter;
     private List<String> list = new ArrayList<>();
 
 
+    private List<Fragment> fragmentList = new ArrayList<>();
+    private List<String> listTitle = new ArrayList<>();
+    private TitleFragmentAdapter fragmentAdapter;
 
     @Nullable
     @Override
@@ -70,11 +91,15 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     }
 
 
+    @SuppressLint("NewApi")
     private void init(){
+//        initFragment();
+        firstBanner();
+        getads();
         initAdapter();
-        initBanner();
         initHead("111");
         initMenus();
+
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.addIgnoredView(binding.banner);
@@ -91,8 +116,38 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.nrl.setPullRefreshEnable(false);
         binding.nrl.setOnLoadingListener(this);
 
+
+        setOnRefreshTokenListener(new OnRefreshTokenListener() {
+            @Override
+            public void onRefreshTokenSuccess() {
+                getads();
+            }
+            @Override
+            public void onRefreshTokenFail() {
+                startActivityForResult(new Intent(getActivity(), LoginActivity.class).putExtra("tag",1),88);
+            }
+        });
+
+
     }
 
+    private void initFragment(){
+        fragmentList.add(new Fragment_SpecialEdu().newInstance("1"));
+        fragmentList.add(new Fragment_SpecialEdu().newInstance("2"));
+        fragmentList.add(new Fragment_SpecialEdu().newInstance("3"));
+        fragmentList.add(new Fragment_SpecialEdu().newInstance("4"));
+        fragmentList.add(new Fragment_SpecialEdu().newInstance("5"));
+        fragmentList.add(new Fragment_SpecialEdu().newInstance("6"));
+        listTitle.add("全部");
+        listTitle.add("两学一做");
+        listTitle.add("三会一课");
+        listTitle.add("一带一路");
+        listTitle.add("一带一路");
+        listTitle.add("一带一路");
+        fragmentAdapter = new TitleFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, listTitle);
+        binding.vpFindFragmentPager.setAdapter(fragmentAdapter);
+        binding.tabF1Title.setupWithViewPager(binding.vpFindFragmentPager);
+    }
 
 
 
@@ -179,28 +234,39 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     }
 
 
+    private void firstBanner(){
+        List<AdsEntity> adsList = new ArrayList<>();
+        adsList.add(new AdsEntity("123213213"));
+        initBanner(adsList);
+    }
+
+
 
     //初始化轮播图
-    private void initBanner(){
-        imgList.add("http://b.hiphotos.baidu.com/image/h%3D300/sign=87021db3be1c8701c9b6b4e6177e9e6e/0d338744ebf81a4cf87e4f9eda2a6059252da61d.jpg");
-        imgList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542698304325&di=93085e2f3efb8f0b5a47b3eb8c1bde63&imgtype=0&src=http%3A%2F%2Fpic31.nipic.com%2F20130731%2F13345615_081322573195_2.jpg");
-        imgList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542698317839&di=bece7e5f8897859c4793ee723053216b&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F02%2F20150702160115_VFR2u.jpeg");
-        imgList.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542698327640&di=be7b898f853940fd1adc09658c86d0fd&imgtype=0&src=http%3A%2F%2Fpic36.nipic.com%2F20131202%2F445991_145804524184_2.jpg");
+    private void initBanner(final List<AdsEntity> adsList){
+        if(adsList == null || adsList.size()==0)return;
+        imgList.clear();
+        titleList.clear();
+        for (AdsEntity entity: adsList) {
+            imgList.add(URLS.IMAGE_PRE+entity.getPictureAddress());
+            titleList.add(entity.getTitle()+"");
+        }
         binding.banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                 .setImages(imgList)
                 .setBannerAnimation(Transformer.Default)
-                .setBannerTitles(imgList)
+                .setBannerTitles(titleList)
                 .setDelayTime(2000)
                 .isAutoPlay(true)
                 .setIndicatorGravity(BannerConfig.RIGHT)
                 .setImageLoader(new ImageLoader() {
                     @Override
                     public void displayImage(Context context, Object path, ImageView imageView) {
+                        Log.e("TAG","path:"+path);
                         if(TextUtils.isEmpty((CharSequence) path)){
                             Picasso.with(context).load(com.bebeep.commontools.R.drawable.icon_error).into(imageView);
                         }else{
-                            Picasso.with(context).load(path + "")
-                                    .placeholder(com.bebeep.commontools.R.drawable.defaultpic)
+                            Picasso.with(context).load(String.valueOf(path))
+                                    .placeholder(com.bebeep.commontools.R.drawable.icon_error)
                                     .config(Bitmap.Config.RGB_565)
                                     .error(com.bebeep.commontools.R.drawable.icon_error)
                                     .into(imageView);
@@ -210,12 +276,58 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                        Log.e("TAG","position:"+position);
+                        String url = adsList.get(position).getUrl();
+                        if(!TextUtils.isEmpty(url)){
+                            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",imgList.get(position)).putExtra("title",titleList.get(position)));
+                        }
                     }
                 })
                 .start();
+        binding.banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+            @Override
+            public void onPageSelected(int i) {
+                if(i== 0 || i == 1 || i == imgList.size()+1){
+                   mainActivity.removeIgnoredView(binding.banner);
+                }else mainActivity.addIgnoredView(binding.banner);
+            }
 
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
+
+
+
+    /**
+     * 获取广告
+     */
+    private void getads(){
+        HashMap header = new HashMap();
+        header.put("Authorization", MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("", "");
+        OkHttpClientManager.postAsyn(URLS.ADS, new OkHttpClientManager.ResultCallback<BaseList<AdsEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseList<AdsEntity> response) {
+                Log.e("TAG","getads json="+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    initBanner(response.getData());
+                }else{
+                    MyTools.showToast(getActivity(), response.getMsg());
+                }
+            }
+        },header,map);
+    }
+
 
     public void startPlay(){
         if(binding.banner!=null) {
@@ -257,5 +369,14 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 binding.srl.setRefreshing(false);
             }
         },300);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 88 && resultCode == getActivity().RESULT_OK) {
+            getads();
+        }
     }
 }

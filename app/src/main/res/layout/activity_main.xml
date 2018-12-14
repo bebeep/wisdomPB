@@ -490,6 +490,7 @@
 
                         </FrameLayout>
                     </FrameLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -685,150 +686,166 @@
             android:layout_height="match_parent"
             android:background="@color/c_white">
 
-
-            <FrameLayout
-                android:id="@+id/fl_content"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="45dp"></FrameLayout>
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/fl_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"></FrameLayout>
+
+                <View
+                    android:id="@+id/v_empty_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+            </LinearLayout>
 
 
-            <View
+            <FrameLayout
+                android:id="@+id/fl_bottom"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/bg_shadow_bottom" />
+                android:layout_height="80dp"
+                android:layout_gravity="bottom">
 
-
-            <View
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="6dp"
-                android:background="@drawable/bg_shadow_circle" />
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:background="@color/c_white" />
-
-
-            <RadioGroup
-                android:id="@+id/rg"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rb_1"
-                    style="@style/rb_style"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:drawableTop="@drawable/bg_rb1"
-                    android:paddingTop="3dp"
-                    android:text="首页"
-                    android:textColor="@color/tv_rb_main"
-                    android:textSize="12sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_2"
-                    style="@style/rb_style"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/bg_rb2"
-                    android:paddingTop="3dp"
-                    android:text="在线考试"
-                    android:textColor="@color/tv_rb_main"
-                    android:textSize="12sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_shadow_bottom" />
 
 
                 <View
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent" />
-
-                <RadioButton
-                    android:id="@+id/rb_3"
-                    style="@style/rb_style"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/bg_rb3"
-                    android:paddingTop="3dp"
-                    android:text="三会一课"
-                    android:textColor="@color/tv_rb_main"
-                    android:textSize="12sp" />
-
-                <RadioButton
-                    android:id="@+id/rb_4"
-                    style="@style/rb_style"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/bg_rb4"
-                    android:paddingTop="3dp"
-                    android:text="发现"
-                    android:textColor="@color/tv_rb_main"
-                    android:textSize="12sp" />
-
-            </RadioGroup>
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/bg_shadow_circle" />
 
 
-            <FrameLayout
-                android:id="@+id/fl_msg"
-                android:layout_width="80dp"
-                android:layout_height="63dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:onClick="@{onClickListener}">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/c_white" />
 
 
-                <ImageView
-                    android:layout_width="45dp"
+                <RadioGroup
+                    android:id="@+id/rg"
+                    android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="16dp"
-                    android:src="@drawable/icon_f3" />
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="16dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:gravity="top"
-                    android:text="我的消息"
-                    android:textColor="@color/c_sblack"
-                    android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/rb_1"
+                        style="@style/rb_style"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:drawableTop="@drawable/bg_rb1"
+                        android:paddingTop="3dp"
+                        android:text="首页"
+                        android:textColor="@color/tv_rb_main"
+                        android:textSize="12sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_2"
+                        style="@style/rb_style"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/bg_rb2"
+                        android:paddingTop="3dp"
+                        android:text="在线考试"
+                        android:textColor="@color/tv_rb_main"
+                        android:textSize="12sp" />
+
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <RadioButton
+                        android:id="@+id/rb_3"
+                        style="@style/rb_style"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/bg_rb3"
+                        android:paddingTop="3dp"
+                        android:text="三会一课"
+                        android:textColor="@color/tv_rb_main"
+                        android:textSize="12sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_4"
+                        style="@style/rb_style"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableTop="@drawable/bg_rb4"
+                        android:paddingTop="3dp"
+                        android:text="发现"
+                        android:textColor="@color/tv_rb_main"
+                        android:textSize="12sp" />
+
+                </RadioGroup>
 
 
                 <FrameLayout
-                    android:id="@+id/fl_msgNum"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="22dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_circle_white_8">
+                    android:id="@+id/fl_msg"
+                    android:layout_width="80dp"
+                    android:layout_height="63dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:onClick="@{onClickListener}">
+
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="16dp"
+                        android:src="@drawable/icon_f3" />
 
                     <TextView
-                        android:id="@+id/tv_tv_msgNum"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/bg_circle_red_7"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:text="99"
-                        android:textColor="@color/c_white"
-                        android:textSize="9sp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:gravity="top"
+                        android:text="我的消息"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="12sp" />
+
+
+                    <FrameLayout
+                        android:id="@+id/fl_msgNum"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="22dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_circle_white_8">
+
+                        <TextView
+                            android:id="@+id/tv_tv_msgNum"
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_circle_red_7"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="99"
+                            android:textColor="@color/c_white"
+                            android:textSize="9sp" />
+                    </FrameLayout>
+
+
                 </FrameLayout>
-
-
             </FrameLayout>
-
 
         </com.bebeep.slidemenu.MainLayout>
 

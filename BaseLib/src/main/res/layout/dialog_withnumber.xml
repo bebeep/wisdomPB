@@ -12,7 +12,7 @@
         bebeep:arc_bottom_text_size="12sp"
         bebeep:arc_text_color="#ff0000"
         bebeep:arc_unfinished_color="#ffffff"
-        bebeep:arc_finished_color="#ffff00"
+        bebeep:arc_finished_color="#ff0000"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_centerInParent="true"/>

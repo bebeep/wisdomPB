@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--菜单-->
+    <FrameLayout
+        android:id="@+id/fl_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/c_line">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/bg_menu_top">
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/bg_circle_white_30" />
+
+                    <com.bebeep.commontools.views.RoundImage
+                        android:id="@+id/rimg_head"
+                        android:layout_width="58dp"
+                        android:layout_height="58dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
+                        
+                        android:src="@drawable/icon_logo" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="45dp"
+                        android:layout_marginLeft="90dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/c_white"
+                            android:textSize="22sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_sex"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:padding="5dp"
+                            android:src="@drawable/icon_sex_man" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginRight="50dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/c_white"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的考试"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right1"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+
+                <FrameLayout
+                    android:id="@+id/fl_menu2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的书架"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right2"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的笔记"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right3"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的积分"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right4"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu5"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的会议"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right5"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu6"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu6" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的活动"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right6"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu7"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu7" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的收藏"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right7"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu8"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu8" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我的评论"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right8"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu9"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu9" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="我提起的"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right9"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu13"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu13" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="政治生日卡"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right13"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_line" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/c_line" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu10"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="意见反馈"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right10"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu11"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu11" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="设置"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right11"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_qing" />
+
+                <FrameLayout
+                    android:id="@+id/fl_menu12"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_fl_click">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_menu12" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="50dp"
+                        android:text="关于"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="15sp" />
+
+                    <FrameLayout
+                        android:id="@+id/iv_arrow_right12"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_marginRight="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_right" />
+
+                    </FrameLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+</LinearLayout>

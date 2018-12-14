@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_fl_click_qing"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <com.bebeep.commontools.views.RoundImage
+            android:id="@+id/rimg_head"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="40dp"
+            android:singleLine="true"
+            android:textColor="@color/c_sblack"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/c_gray"
+            android:textSize="12sp" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="40dp"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/c_sblack"
+        android:textSize="14sp" />
+
+</LinearLayout>

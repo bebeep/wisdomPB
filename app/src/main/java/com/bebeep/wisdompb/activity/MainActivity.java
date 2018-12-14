@@ -1,16 +1,21 @@
 package com.bebeep.wisdompb.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
@@ -26,6 +31,7 @@ import com.bebeep.wisdompb.fragment.Fragment1;
 import com.bebeep.wisdompb.fragment.Fragment2;
 import com.bebeep.wisdompb.fragment.Fragment3;
 import com.bebeep.wisdompb.fragment.Fragment4;
+import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 
@@ -82,7 +88,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
         long timestamp = System.currentTimeMillis();
         long deltaMillis = timestamp - PreferenceUtils.getPrefLong("timestamp",0);
-        Log.e("TAG","deltaMillis:"+deltaMillis);
+        Log.e("TAG","deltaMillis:"+deltaMillis/1000/3600);
         if(deltaMillis >= 2 * 3600 * 1000){ //如果两次刷新token的间隔超过2个小时，就自动刷新
             refreshToken();
         }
@@ -100,6 +106,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     @Override
     public void onClick(View v) {
+        if(binding.mDoubleSlideMenu.getDragState() == DoubleSlideMenu.DragState.STATE_CLOSE) return;
         binding.mDoubleSlideMenu.close();
         switch (v.getId()){
             case R.id.rimg_head://
@@ -147,13 +154,21 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
     }
 
+    public void showBottom(boolean show){
+        binding.flBottom.setVisibility(show?View.VISIBLE:View.GONE);
+        binding.vEmptySpace.setVisibility(show?View.VISIBLE:View.GONE);
+    }
+
     public void showMenu(){
         if(binding.mDoubleSlideMenu!=null)binding.mDoubleSlideMenu.open();
     }
 
-
     public void addIgnoredView(View view){
         binding.mDoubleSlideMenu.addIgnoredView(view);
+    }
+
+    public void removeIgnoredView(View view){
+        binding.mDoubleSlideMenu.reMoveIgnoredView(view);
     }
 
     private void initArrowIcons(){
@@ -284,4 +299,21 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         binding.rb4.setCompoundDrawables(null, drawable_4, null, null);
     }
 
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        LogUtil.showLog("onKeyDown:"+keyCode);
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

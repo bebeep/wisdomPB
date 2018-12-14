@@ -5,7 +5,7 @@ import java.util.List;
 public class BaseList<T> {
     private boolean success;
     private int errorCode;
-    private String meg;
+    private String msg;
     private List<T> data;
 
 
@@ -25,12 +25,12 @@ public class BaseList<T> {
         this.errorCode = errorCode;
     }
 
-    public String getMeg() {
-        return meg;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMeg(String meg) {
-        this.meg = meg;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public List<T> getData() {

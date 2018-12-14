@@ -109,6 +109,11 @@ public class DoubleSlideMenu extends FrameLayout {
         ignoredViews.add(view);
     }
 
+    public void reMoveIgnoredView(View view){
+        if(!ignoredViews.contains(view)) return;
+        ignoredViews.remove(view);
+    }
+
     /******** end ********/
 
     @Override

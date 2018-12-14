@@ -35,6 +35,7 @@
                 android:layout_height="match_parent">
 
                 <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/nestedScrollView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbars="none">
@@ -256,62 +257,27 @@
                         </HorizontalScrollView>
 
 
-                        <RadioGroup
-                            android:id="@+id/rg"
+
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tab_f1_title"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_marginTop="5dp"
                             android:background="@color/c_white"
-                            android:orientation="horizontal"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp">
+                            app:tabIndicatorColor="@color/theme_d"
+                            app:tabMode="scrollable"
+                            android:layout_marginTop="5dp"
+                            app:tabSelectedTextColor="@color/theme_d"
+                            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+                            app:tabTextColor="@color/c_sblack" />
 
 
-                            <RadioButton
-                                android:id="@+id/rb1"
-                                style="@style/rb_style"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/bg_rb_f1"
-                                android:checked="true"
-                                android:text="党建要闻"
-                                android:textColor="@color/tv_rb_main"
-                                android:textSize="15sp" />
 
-                            <RadioButton
-                                android:id="@+id/rb2"
-                                style="@style/rb_style"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/bg_rb_f1"
-                                android:text="反腐倡廉"
-                                android:textColor="@color/tv_rb_main"
-                                android:textSize="15sp"
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/vp_FindFragment_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-                                />
 
-                            <RadioButton
-                                android:id="@+id/rb3"
-                                style="@style/rb_style"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/bg_rb_f1"
-                                android:text="政策法规"
-                                android:textColor="@color/tv_rb_main"
-                                android:textSize="15sp"
-
-                                />
-
-                        </RadioGroup>
 
 
                         <android.support.v7.widget.RecyclerView
@@ -319,8 +285,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:visibility="gone"
                             android:background="@color/c_white"
                             android:nestedScrollingEnabled="false" />
+
                     </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>
             </android.support.v4.widget.SwipeRefreshLayout>

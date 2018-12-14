@@ -20,4 +20,5 @@
     <color name="c_alpa">#2f000000</color>
     <color name="c_alpa_start">#5f000000</color>
     <color name="c_alpa_end">#00000000</color>
+    <color name="c_alpha_red">#cFE64A19</color>
 </resources>

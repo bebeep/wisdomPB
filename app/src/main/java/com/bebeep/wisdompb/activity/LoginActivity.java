@@ -42,6 +42,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private CustomProgressDialog dialog;
     private CustomDialog customDialog;
 
+    private int tag = 0;//0跳转到首页，1直接关闭页面
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     private void init(){
         initDialog();
+        tag = getIntent().getIntExtra("tag",0);
         dialog = new CustomProgressDialog(this);
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("登录");
@@ -127,7 +130,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 if(response.isSuccess()){
                     UserInfo entity = response.getData();
                     PreferenceUtils.setPrefString("userInfo", MyApplication.gson.toJson(entity));
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    if(tag == 0)startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    else if(tag == 1) setResult(RESULT_OK);
                     finish();
                 }else{
                     MyTools.showToast(LoginActivity.this, response.getMsg());

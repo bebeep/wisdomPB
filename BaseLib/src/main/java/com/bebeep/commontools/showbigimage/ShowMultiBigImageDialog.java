@@ -5,12 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bebeep.commontools.R;
 import com.bebeep.commontools.utils.MyTools;
@@ -30,6 +32,7 @@ public class ShowMultiBigImageDialog extends Dialog {
     private List<String> mImgUrls;
     private List<View> mViews;
     private ShowImagesAdapter mAdapter;
+    private TextView tv;
 
     public ShowMultiBigImageDialog(@NonNull Context context, List<String> imgUrls) {
         super(context, R.style.BigPicDialog);
@@ -43,6 +46,7 @@ public class ShowMultiBigImageDialog extends Dialog {
         mView = View.inflate(mContext, R.layout.dialog_images_brower, null);//通过inflate()方法找到我们写好的包含ViewPager的布局文件
         mViewPager = (ShowImagesViewPager) mView.findViewById(R.id.vp_images);//找到ViewPager控件并且实例化
         mViews = new ArrayList<>();//创建一个控件的数组，我们可以在ViewPager中加入很多图片，滑动改变图片
+        tv = mView.findViewById(R.id.tv);
     }
 
     @Override
@@ -71,6 +75,7 @@ public class ShowMultiBigImageDialog extends Dialog {
             }
         };
         for (int i = 0; i < mImgUrls.size(); i++) {
+            Log.e("TAG","mImgUrls:"+mImgUrls.get(i));
             final PhotoView photoView = new uk.co.senab.photoview.PhotoView(mContext);
             //创建一个PhotoView对象
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -82,6 +87,7 @@ public class ShowMultiBigImageDialog extends Dialog {
             mViews.add(photoView);//最后把我们加载的所有PhotoView传给View数组
         }
 
+        tv.setText("1/"+mImgUrls.size());
         mAdapter = new ShowImagesAdapter(mViews);//给适配器传入图片控件数组
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -101,6 +107,12 @@ public class ShowMultiBigImageDialog extends Dialog {
 
             }
         });
+    }
 
+
+    public void show(int position){
+        tv.setText((position+1)+"/"+mImgUrls.size());
+        mViewPager.setCurrentItem(position);
+        show();
     }
 }

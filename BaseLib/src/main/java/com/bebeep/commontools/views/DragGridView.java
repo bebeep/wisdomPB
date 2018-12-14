@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +28,8 @@ public class DragGridView extends GridView {
     //拖拽响应的时间 默认为1s
     private long mDragResponseMs = 100;
 
-    private int[] enableIndex;
+    //不能点击的index
+    private int enableIndex = -1;
 
     //是否支持拖拽，默认不支持
     private boolean isDrag = false;
@@ -78,9 +80,10 @@ public class DragGridView extends GridView {
 
     private Handler mHandler;
 
-    public void setEnableIndex(int[] enableIndex){
+    public void setEnableIndex(int enableIndex){
         this.enableIndex = enableIndex;
     }
+
 
 
     /**
@@ -154,11 +157,7 @@ public class DragGridView extends GridView {
                     return super.dispatchTouchEvent(ev);
                 }
 
-                if(enableIndex!=null&&enableIndex.length>0){
-                    for (int i = 0;i<enableIndex.length;i++){
-                        if(mDragPosition<= enableIndex[i]) return super.dispatchTouchEvent(ev);
-                    }
-                }
+                if(mDragPosition == enableIndex) return super.dispatchTouchEvent(ev);
 
                 //延时长按执行mLongClickRunable
                 mHandler.postDelayed(mLongClickRunable,mDragResponseMs);
@@ -220,12 +219,13 @@ public class DragGridView extends GridView {
                 case MotionEvent.ACTION_MOVE:
                     mMoveX = (int)ev.getX();
                     mMoveY = (int)ev.getY();
-
+                    if(changeListener!=null)changeListener.onChange(mDragPosition,-1,mMoveX,mMoveY-mDownY ,true);
                     onDragItem(mMoveX,mMoveY);
                     break;
                 case MotionEvent.ACTION_UP:
                     onStopDrag();
                     isDrag = false;
+                    if(changeListener!=null)changeListener.onChange(mDragPosition,-1,mMoveX,mMoveY-mDownY ,false);
                     break;
                 default:
                     break;
@@ -337,11 +337,7 @@ public class DragGridView extends GridView {
         //更新镜像位置
         mWindowManager.updateViewLayout(mDragMirrorView,mLayoutParams);
 
-        if(enableIndex!=null&&enableIndex.length>0){
-            for (int i = 0;i<enableIndex.length;i++){
-                if(pointToPosition(mMoveX,mMoveY) <= enableIndex[i]) return;
-            }
-        }
+        if(pointToPosition(mMoveX,mMoveY) == enableIndex) return;
 
         onSwapItem(x,y);
 
@@ -359,7 +355,7 @@ public class DragGridView extends GridView {
 
         if (tmpPosition != INVALID_POSITION && tmpPosition != mDragPosition){
             if (changeListener != null){
-                changeListener.onChange(mDragPosition,tmpPosition);
+                changeListener.onChange(mDragPosition,tmpPosition,x,y,true);
             }
             //隐藏tmpPosition
             getChildAt(tmpPosition - getFirstVisiblePosition()).setVisibility(INVISIBLE);
@@ -368,7 +364,6 @@ public class DragGridView extends GridView {
 
             mDragPosition = tmpPosition;
         }
-
     }
 
     /**
@@ -388,7 +383,7 @@ public class DragGridView extends GridView {
         mLayoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         //透明度
-        mLayoutParams.alpha = 0.4f;
+        mLayoutParams.alpha = 0.8f;
         //指定标志 不能获取焦点和触摸
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
@@ -404,7 +399,7 @@ public class DragGridView extends GridView {
      * item 交换时的回调接口
      */
     public interface OnItemChangeListener{
-        void onChange(int from,int to);
+        void onChange(int from,int to,int x, int y, boolean dragging);
     }
 
 

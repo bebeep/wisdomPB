@@ -103,7 +103,27 @@ public class OkHttpClientManager {
 	 * @param callback
 	 */
 	private void _getAsyn(String url, final ResultCallback callback) {
-		final Request request = new Request.Builder().url(url).build();
+		Request.Builder builder = new Request.Builder();
+		final Request request = builder.url(url).build();
+		deliveryResult(callback, request);
+	}
+	/**
+	 * 异步的get请求带header
+	 *
+	 * @param url
+	 * @param callback
+	 */
+	private void _getAsyn(String url, final ResultCallback callback,HashMap header) {
+		Request.Builder builder = new Request.Builder();
+		if(header!=null && !header.isEmpty()){
+			Set<Map.Entry<String, String>> set = header.entrySet();
+			for (Map.Entry<String, String> me : set) {
+				String key = me.getKey();
+				String value = me.getValue();
+				builder.addHeader(key,value);
+			}
+		}
+		final Request request = builder.url(url).build();
 		deliveryResult(callback, request);
 	}
 
@@ -320,6 +340,9 @@ public class OkHttpClientManager {
 
 	public static void getAsyn(String url, ResultCallback callback) {
 		getInstance()._getAsyn(url, callback);
+	}
+	public static void getAsyn(String url, ResultCallback callback,HashMap header) {
+		getInstance()._getAsyn(url, callback,header);
 	}
 
 	public static Response post(String url, HashMap header,Param... params) throws IOException {

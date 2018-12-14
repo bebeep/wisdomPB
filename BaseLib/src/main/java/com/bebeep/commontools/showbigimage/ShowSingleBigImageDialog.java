@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,9 +44,9 @@ public class ShowSingleBigImageDialog extends Dialog{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_show_big_image, null);
         photoView = layout.findViewById(R.id.photoview);
-
+        photoView.setMaximumScale(2);
         mAttacher = new PhotoViewAttacher(photoView);
-        mAttacher.canZoom();
+        mAttacher.update();
 
         mAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
             @Override
@@ -61,7 +63,6 @@ public class ShowSingleBigImageDialog extends Dialog{
                 dialog.dismiss();
             }
         });
-
         dialog.addContentView(layout, new ViewGroup.LayoutParams(MyTools.getWidth(context), MyTools.getHight(context)));
 
 

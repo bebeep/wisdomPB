@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -22,6 +23,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.IBinder;
 import android.os.StatFs;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -34,9 +36,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,9 +52,11 @@ import com.bebeep.commontools.views.ToastUtil;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -86,6 +92,57 @@ public class MyTools {
     private static final double EARTH_RADIUS = 6378137.0;
     private static long lastClickTime = 0;
 
+
+    /**
+     * 将bitmap转化为file并通知相册
+     * 这样可以在相册中找到图片
+     */
+    public static String saveBitmapFile(Context context, Bitmap bmp) {
+        // 首先保存图片
+        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "wisdomPB";
+        File appDir = new File(storePath);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = System.currentTimeMillis() + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            //通过io流的方式来压缩保存图片
+            boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 40, fos);
+            fos.flush();
+            fos.close();
+
+            //把文件插入到系统图库
+            //MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);
+
+            //保存图片后发送广播通知更新数据库
+            Uri uri = Uri.fromFile(file);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+            if (isSuccess) {
+                return file.getPath();
+            } else {
+                return "";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String saveBitmapFile(Bitmap bitmap) {
+        String filePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "wisdomPB/"+ System.currentTimeMillis()+".JPG";
+        File file = new File(filePath);//将要保存图片的路径
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bos);
+            bos.flush();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return filePath;
+    }
 
     /**
      * 保留小数点后两位
@@ -377,11 +434,43 @@ public class MyTools {
         imm.toggleSoftInput(0, InputMethodManager.RESULT_SHOWN);
     }
 
+    //隐藏软键盘；
+    public static void hideKeyboard(Context context,View v){
+        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
     //隐藏软键盘
     public static void hideKeyboard(Context context){
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
+
+    public static void hideKeyboard(MotionEvent event, View view,
+                                    Activity activity) {
+        try {
+            if (view != null && view instanceof EditText) {
+                int[] location = { 0, 0 };
+                view.getLocationInWindow(location);
+                int left = location[0], top = location[1], right = left
+                        + view.getWidth(), bootom = top + view.getHeight();
+                // 判断焦点位置坐标是否在空间内，如果位置在控件外，则隐藏键盘
+                if (event.getRawX() < left || event.getRawX() > right
+                        || event.getY() < top || event.getRawY() > bootom) {
+                    // 隐藏键盘
+                    IBinder token = view.getWindowToken();
+                    InputMethodManager inputMethodManager = (InputMethodManager) activity
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(token,
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //四舍五入
     public static int floatToInt(float f){
@@ -395,7 +484,12 @@ public class MyTools {
     }
 
 
-    //优化时间格式
+    /**
+     *
+     * @param time
+     * @param style "yyyy-MM-dd HH:mm:ss"
+     * @return
+     */
     public static String formateTimeString(String time){
         long time1 = getTimeStamp(time, "yyyy-MM-dd HH:mm:ss");
         long time2 = System.currentTimeMillis()/1000;
