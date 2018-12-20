@@ -96,6 +96,7 @@
         <activity android:name=".activity.GalleryListActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.GalleryActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.TakePhotoActivity" android:screenOrientation="portrait" />
+        <activity android:name=".activity.ChooseJoinerAcivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.PlayVideoActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:configChanges="orientation|screenSize" />
     </application>
 

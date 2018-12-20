@@ -29,7 +29,6 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
-        android:text="人大常委会委员：财产公示应写入公务员法"
         android:textColor="@color/c_sblack"
         android:textSize="14sp" />
 

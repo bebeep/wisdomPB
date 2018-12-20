@@ -491,7 +491,7 @@ public class MyTools {
      * @return
      */
     public static String formateTimeString(String time){
-        long time1 = getTimeStamp(time, "yyyy-MM-dd HH:mm:ss");
+        long time1 = getTimeStamp(time, "yyyy-MM-dd HH:mm:ss")/1000;
         long time2 = System.currentTimeMillis()/1000;
         long dTime = (time2 - time1);
         if(dTime<5 * 60){ //5分钟
@@ -588,6 +588,17 @@ public class MyTools {
         return blockSize * availableBlocks;
     }
 
+    //获取文件名称
+    public static String getFileName(String pathandname){
+        int start=pathandname.lastIndexOf("/");
+        int end=pathandname.lastIndexOf(".");
+        if (start!=-1 && end!=-1) {
+            return pathandname.substring(start+1,pathandname.length());
+        }
+        else {
+            return "";
+        }
+    }
 
 
     //获取文件路径

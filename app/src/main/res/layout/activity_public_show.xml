@@ -20,6 +20,7 @@
             android:background="@color/c_white"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
+            android:visibility="gone"
             android:paddingRight="20dp">
 
 
@@ -56,7 +57,7 @@
             android:id="@+id/nrl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="87dp">
+            android:layout_marginTop="46dp">
 
 
             <android.support.v4.widget.SwipeRefreshLayout
@@ -78,8 +79,8 @@
 
                     <TextView
                         android:id="@+id/tv_empty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
                         android:gravity="center"
                         android:text="暂无内容"
                         android:textColor="@color/c_gray"

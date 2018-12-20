@@ -36,11 +36,11 @@
                     android:layout_height="45dp"
                     android:background="@drawable/bg_fl_click"
                     android:gravity="center_vertical"
-                    android:visibility="gone"
                     android:onClick="@{onClickListener}"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -82,8 +82,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
-                    android:visibility="gone"
-                    android:background="@color/c_line" />
+                    android:background="@color/c_line"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/ll_choose_start_time"
@@ -185,6 +185,61 @@
                         android:src="@drawable/icon_arrow_right" />
                 </LinearLayout>
 
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/c_line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_choose_joiner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_fl_click"
+                    android:gravity="center_vertical"
+                    android:minHeight="45dp"
+                    android:onClick="@{onClickListener}"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="参会人员"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="*"
+                        android:textColor="@color/theme_d"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_joiner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="请选择参会人员"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp" />
+
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:padding="5dp"
+                        android:src="@drawable/icon_arrow_right" />
+
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -194,10 +249,9 @@
                 <LinearLayout
                     android:id="@+id/ll_choose_address"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/bg_fl_click"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:onClick="@{onClickListener}"
+                    android:minHeight="45dp"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
                     android:paddingRight="10dp">
@@ -218,58 +272,27 @@
                         android:textSize="14sp" />
 
 
-                    <TextView
-                        android:id="@+id/tv_end_address"
+                    <EditText
+                        android:id="@+id/et_addr"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
                         android:layout_weight="1"
-                        android:gravity="right"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:text="请选择/填写会议地点"
-                        android:textColor="@color/c_gray"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入会议地点,最多60字"
+                        android:maxLength="60"
+                        android:minHeight="45dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="5dp"
+                        android:singleLine="true"
+                        android:textColor="@color/c_sblack"
+                        android:textColorHint="@color/c_gray"
+                        android:textCursorDrawable="@null"
                         android:textSize="14sp" />
 
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:padding="5dp"
-                        android:src="@drawable/icon_arrow_right" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="15dp"
-                    android:visibility="gone"
-                    android:background="@color/c_line" />
-
-                <FrameLayout
-                    android:id="@+id/fl_add_time_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:visibility="gone"
-                    android:background="@drawable/bg_fl_click"
-                    android:onClick="@{onClickListener}"
-                    android:paddingLeft="15dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/icon_add_time_address" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="25dp"
-                        android:text="添加会议时间地点"
-                        android:textColor="@color/theme_d"
-                        android:textSize="14sp" />
-                </FrameLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
@@ -313,14 +336,14 @@
                             android:layout_marginRight="15dp"
                             android:background="@null"
                             android:gravity="center_vertical|right"
-                            android:hint="请输入会议主题，最多64字"
+                            android:hint="请输入会议主题，最多60字"
                             android:lineSpacingExtra="3dp"
-                            android:maxLength="64"
-                            android:singleLine="true"
+                            android:maxLength="60"
                             android:minHeight="45dp"
                             android:paddingBottom="5dp"
                             android:paddingLeft="15dp"
                             android:paddingTop="5dp"
+                            android:singleLine="true"
                             android:textColor="@color/c_sblack"
                             android:textColorHint="@color/c_gray"
                             android:textCursorDrawable="@null"
@@ -365,9 +388,9 @@
                     android:layout_gravity="right"
                     android:background="@null"
                     android:gravity="left|top"
-                    android:hint="请输入会议议题，最多2000字"
+                    android:hint="请输入会议议题，最多500字"
                     android:lineSpacingExtra="3dp"
-                    android:maxLength="2000"
+                    android:maxLength="500"
                     android:minHeight="60dp"
                     android:paddingBottom="5dp"
                     android:paddingLeft="15dp"
@@ -379,23 +402,15 @@
                     android:textSize="14sp" />
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:visibility="gone"
-                    android:paddingRight="10dp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone"
                     android:text="最多可再上传4张照片"
                     android:textColor="@color/c_gray"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
@@ -421,9 +436,9 @@
                     android:layout_gravity="right"
                     android:background="@null"
                     android:gravity="left|top"
-                    android:hint="请输入会议要求，如服装、人数、携带物件等，最多500字"
+                    android:hint="请输入会议要求，如服装、人数、携带物件等，最多200字"
                     android:lineSpacingExtra="3dp"
-                    android:maxLength="500"
+                    android:maxLength="200"
                     android:minHeight="60dp"
                     android:paddingBottom="5dp"
                     android:paddingLeft="15dp"
@@ -440,14 +455,29 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/c_line" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center_vertical"
-                    android:text="附件"
-                    android:textColor="@color/c_sblack"
-                    android:textSize="14sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:text="附件"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:text="(仅支持上传pdf/word/excel文件)"
+                        android:textColor="@color/c_gray"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
 
                 <FrameLayout
@@ -462,8 +492,8 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center_vertical"
-                        android:onClick="@{onClickListener}"
-                        android:src="@drawable/icon_file1" />
+                        android:background="@color/c_qing"
+                        android:onClick="@{onClickListener}" />
 
 
                     <ImageView
@@ -473,7 +503,17 @@
                         android:layout_marginLeft="35dp"
                         android:onClick="@{onClickListener}"
                         android:padding="5dp"
-                        android:src="@drawable/icon_pic_del" />
+                        android:src="@drawable/icon_pic_del"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_file_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:textColor="@color/c_gray"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="13sp" />
                 </FrameLayout>
 
             </LinearLayout>

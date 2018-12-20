@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_fl_click_qing"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="30dp">
 
         <com.bebeep.commontools.views.RoundImage
             android:id="@+id/rimg_head"

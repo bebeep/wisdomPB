@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,14 +42,13 @@ import com.bebeep.wisdompb.activity.PartyActActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
 import com.bebeep.wisdompb.activity.SpecialEduActivity;
 import com.bebeep.wisdompb.activity.WebViewActivity;
-import com.bebeep.wisdompb.adapter.TitleFragmentAdapter;
 import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.bean.AdsEntity;
 import com.bebeep.wisdompb.bean.BaseList;
-import com.bebeep.wisdompb.bean.BaseObject;
-import com.bebeep.wisdompb.bean.LoginEntity;
+import com.bebeep.wisdompb.bean.CommonTypeEntity;
+import com.bebeep.wisdompb.bean.NewsEntity;
 import com.bebeep.wisdompb.databinding.Fragment1Binding;
-import com.bebeep.wisdompb.util.PreferenceUtils;
+import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
 import com.squareup.picasso.Picasso;
@@ -73,12 +72,11 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     private List<String> imgList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
     private CommonAdapter adapter;
-    private List<String> list = new ArrayList<>();
 
-
-    private List<Fragment> fragmentList = new ArrayList<>();
-    private List<String> listTitle = new ArrayList<>();
-    private TitleFragmentAdapter fragmentAdapter;
+    private List<NewsEntity> list = new ArrayList<>();
+    private List<CommonTypeEntity> typeList = new ArrayList<>();
+    private String selectTypeId = "",selectTypeName = "";//被选中的类型id
+    private int pageNo = 1;
 
     @Nullable
     @Override
@@ -93,17 +91,16 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
 
     @SuppressLint("NewApi")
     private void init(){
-//        initFragment();
         firstBanner();
         getads();
         initAdapter();
-        initHead("111");
         initMenus();
-
+        getType();
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.addIgnoredView(binding.banner);
         mainActivity.addIgnoredView(binding.hs);
+        mainActivity.addIgnoredView(binding.tabF1Title);
 
         binding.setVariable(BR.onClickListener,this);
         binding.title.flHead.setOnClickListener(this);
@@ -111,6 +108,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
         binding.title.tvTitle.setText("智慧党建");
+        PicassoUtil.setImageUrl(getActivity(),binding.title.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,40,40);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
@@ -131,22 +129,38 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
 
     }
 
-    private void initFragment(){
-        fragmentList.add(new Fragment_SpecialEdu().newInstance("1"));
-        fragmentList.add(new Fragment_SpecialEdu().newInstance("2"));
-        fragmentList.add(new Fragment_SpecialEdu().newInstance("3"));
-        fragmentList.add(new Fragment_SpecialEdu().newInstance("4"));
-        fragmentList.add(new Fragment_SpecialEdu().newInstance("5"));
-        fragmentList.add(new Fragment_SpecialEdu().newInstance("6"));
-        listTitle.add("全部");
-        listTitle.add("两学一做");
-        listTitle.add("三会一课");
-        listTitle.add("一带一路");
-        listTitle.add("一带一路");
-        listTitle.add("一带一路");
-        fragmentAdapter = new TitleFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList, listTitle);
-        binding.vpFindFragmentPager.setAdapter(fragmentAdapter);
-        binding.tabF1Title.setupWithViewPager(binding.vpFindFragmentPager);
+
+
+
+    private void initTab(){
+        if(typeList == null || typeList.size() == 0){
+            binding.tvEmpty.setVisibility(View.VISIBLE);
+            return;
+        }
+        binding.tabF1Title.removeAllTabs();
+        for (int i=0;i<typeList.size();i++) {
+            binding.tabF1Title.addTab(binding.tabF1Title.newTab().setText(typeList.get(i).getTitle()).setTag(i));
+        }
+        selectTypeId = typeList.get(0).getId();
+        selectTypeName = typeList.get(0).getTitle();
+        getData();
+        binding.tabF1Title.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = (int) tab.getTag();
+                LogUtil.showLog("tab:"+tab.getTag());
+                pageNo = 1;
+                selectTypeId = typeList.get(position).getId();
+                selectTypeName = typeList.get(position).getTitle();
+                getData();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
 
@@ -197,40 +211,28 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         }
     }
 
-    private void initHead(String path){
-        Picasso.with(getActivity()).load(path + "")
-                .placeholder(R.drawable.icon_head)
-                .config(Bitmap.Config.RGB_565)
-                .error(R.drawable.icon_head)
-                .into(binding.title.rimgHead);
-    }
 
     private void initAdapter(){
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        adapter = new CommonAdapter<String>(getActivity(),R.layout.item_f1,list){
+        adapter = new CommonAdapter<NewsEntity>(getActivity(),R.layout.item_f1,list){
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, final NewsEntity entity, int position) {
+                holder.setImageUrl((ImageView)holder.getView(R.id.iv_head),URLS.IMAGE_PRE + entity.getPictureAddress(),R.drawable.default_error,60,80);
+                holder.setText(R.id.tv_title,entity.getTitle());
+                holder.setText(R.id.tv_time,entity.getUpdateDate());
+                holder.setVisible(R.id.iv_link,TextUtils.equals(entity.getWhetherUrlAddress(),"1"));
 
+                holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(TextUtils.equals(entity.getWhetherUrlAddress(),"1")){
+                            startActivity(new Intent(getActivity(),WebViewActivity.class).putExtra("title",entity.getTitle()).putExtra("url",entity.getUrl()));
+                        }else startActivity(new Intent(getActivity(),NewsDetailActivity.class).putExtra("title",entity.getTitle()).putExtra("id",entity.getId()).putExtra("tag",1));
+                    }
+                });
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(adapter);
-
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(getActivity(),NewsDetailActivity.class).putExtra("title","党建要闻"));
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
     }
 
 
@@ -308,12 +310,13 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
      */
     private void getads(){
         HashMap header = new HashMap();
-        header.put("Authorization", MyApplication.getInstance().getAccessToken());
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         HashMap map = new HashMap();
         map.put("", "");
         OkHttpClientManager.postAsyn(URLS.ADS, new OkHttpClientManager.ResultCallback<BaseList<AdsEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
+                binding.srl.setRefreshing(false);
                 statusMsg(e,code);
             }
             @Override
@@ -324,6 +327,72 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 }else{
                     MyTools.showToast(getActivity(), response.getMsg());
                 }
+            }
+        },header,map);
+    }
+    /**
+     * 获取类型
+     */
+    private void getType(){
+        HashMap header = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("", "");
+        OkHttpClientManager.postAsyn(URLS.HOST_TYPE, new OkHttpClientManager.ResultCallback<BaseList<CommonTypeEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.srl.setRefreshing(false);
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseList<CommonTypeEntity> response) {
+                binding.srl.setRefreshing(false);
+                Log.e("TAG","获取新闻类型 json="+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    typeList = response.getData();
+                    initTab();
+                }else{
+                    MyTools.showToast(getActivity(), response.getMsg());
+                }
+            }
+        },header,map);
+    }
+
+
+    /**
+     * 获取新闻列表
+     */
+    private void getData(){
+        HashMap header = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("pageNo", String.valueOf(pageNo));
+        map.put("pageSize", "20");
+        map.put("homeNewsTypeIds", selectTypeId);
+        OkHttpClientManager.postAsyn(URLS.HOST_LIST, new OkHttpClientManager.ResultCallback<BaseList<NewsEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.nrl.onLoadFinished();
+                binding.srl.setRefreshing(false);
+                statusMsg(e,code);
+                binding.tvEmpty.setVisibility(list == null || list.size() ==0?View.VISIBLE:View.GONE);
+            }
+            @Override
+            public void onResponse(BaseList<NewsEntity> response) {
+                binding.srl.setRefreshing(false);
+                binding.nrl.onLoadFinished();
+                Log.e("TAG","获取新闻列表 json="+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    if(pageNo == 1)list = response.getData();
+                    else {
+                        if(response.getData() == null || response.getData().size() ==0)MyTools.showToast(getActivity(),"没有更多内容了");
+                        else list.addAll(response.getData());
+                    }
+                    adapter.refresh(list);
+                }else{
+                    MyTools.showToast(getActivity(), response.getMsg());
+                }
+                binding.tvEmpty.setVisibility(list == null || list.size() ==0?View.VISIBLE:View.GONE);
             }
         },header,map);
     }
@@ -351,12 +420,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     public void onLoading(AbsRefreshLayout listLoader) {
         binding.nrl.postDelayed(new Runnable() {
             @Override
-            public void run() {
-                list.add("");
-                list.add("");
-                list.add("");
-                adapter.refresh(list);
-                binding.nrl.onLoadFinished();
+            public void run() {pageNo ++;getData();
             }
         },300);
     }
@@ -366,7 +430,12 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                getads();
+                if(typeList == null || typeList.size() == 0)getType();
+                else {
+                    pageNo = 1;
+                    getData();
+                }
             }
         },300);
     }
@@ -377,6 +446,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 88 && resultCode == getActivity().RESULT_OK) {
             getads();
+            getType();
         }
     }
 }

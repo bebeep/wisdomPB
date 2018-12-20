@@ -37,9 +37,11 @@ import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.showbigimage.ShowSingleBigImageDialog;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
+import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.activity.NewsDetailActivity;
 import com.bebeep.wisdompb.activity.PlayVideoActivity;
 import com.bebeep.wisdompb.activity.ReleaseDiscoverActivity;
 import com.bebeep.wisdompb.base.BaseFragment;
@@ -71,6 +73,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     private List<DiscoverEntity> list = new ArrayList<>();
     private int pageNo = 1;
     private ShowSingleBigImageDialog showSingleBigImageDialog;
+    private CustomDialog customDialog;
     private boolean showKeyBoard = false;
 
 
@@ -79,7 +82,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         return showKeyBoard;
     }
 
-    private String crcleFriendsId = "",parentId="0",repliedUserId="0";
+    private String crcleFriendsId = "",parentId="0",repliedUserId="0",delCommentId="";
 
     @Nullable
     @Override
@@ -104,6 +107,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     private void init(){
         showSingleBigImageDialog = new ShowSingleBigImageDialog(getActivity());
         initAdapter();
+        initDialog();
         getData();
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("发现");
@@ -143,6 +147,23 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         });
     }
 
+    private void initDialog(){
+        customDialog = new CustomDialog.Builder(getActivity())
+                .setMessage("您确定要删除该条评论吗")
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog.cancel();
+                    }
+                }).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog.cancel();
+                        delComment(delCommentId);
+                    }
+                })
+                .createTwoButtonDialog();
+    }
 
     @Override
     public void onClick(View v) {
@@ -222,6 +243,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                     parentId = "0";
                     repliedUserId = "0";
                     setEditEnable(false,getView());
+                    getData();
                 }
             }
         },header,map);
@@ -256,7 +278,33 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         },header,map);
     }
 
+    /**
+     * 删除评论
+     */
+    private void delComment(String commentId){
+        progressDialog.show();
+        HashMap header = new HashMap(),map =new HashMap();
+        header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
+        map.put("id",commentId);
+        LogUtil.showLog("提交评论："+ map.toString());
+        OkHttpClientManager.postAsyn(URLS.DISCOVER_COMMENT_DELETE, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                progressDialog.cancel();
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("删除评论 response："+ MyApplication.gson.toJson(response));
+                progressDialog.cancel();
+                MyTools.showToast(getActivity(), response.getMsg());
+                if(response.isSuccess()){
+                    getData();
+                }
+            }
+        },header,map);
 
+    }
 
     //软键盘显示与隐藏
     public void setEditEnable(boolean enable, View v){
@@ -282,22 +330,6 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         adapter = new CommonAdapter<DiscoverEntity>(getActivity(),R.layout.item_f4,list){
             @Override
             protected void convert(final ViewHolder holder, final DiscoverEntity entity, int position) {
-//                holder.setOnClickListener(R.id.iv_comment, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        crcleFriendsId = entity.getId();
-//                        parentId = "0";
-//                        getComment(entity);
-//
-//                        entity.setShowComment(!entity.isShowComment());
-//                        holder.setVisible(R.id.tv_comment,entity.isShowComment());
-//                        holder.setVisible(R.id.recyclerView,entity.isShowComment());
-//                        if(!entity.isShowComment()){
-//                            setEditEnable(false,v);
-//                        }
-//                    }
-//                });
-
                 holder.setOnClickListener(R.id.tv_comment, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -305,6 +337,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                         parentId = "0";
                         repliedUserId = "0";
                         setEditEnable(true,v);
+                        binding.etComment.setHint("说点什么吧...");
                     }
                 });
 
@@ -375,7 +408,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         CommonAdapter adapter = new CommonAdapter<CommentEntity>(getActivity(), R.layout.item_f4_inner2,commentList){
             @Override
             protected void convert(ViewHolder holder, final CommentEntity entity, final int position) {
-                holder.setImageUrl((ImageView)holder.getView(R.id.rimg_head), URLS.IMAGE_PRE + entity.getPhoto(),R.drawable.default_error,60,90);
+                holder.setImageUrl((ImageView)holder.getView(R.id.rimg_head), URLS.IMAGE_PRE + entity.getPhoto(),R.drawable.icon_head,60,60);
                 holder.setText(R.id.tv_name, entity.getName());
                 holder.setText(R.id.tv_time, MyTools.formateTimeString(entity.getCreateDate()));
 
@@ -388,15 +421,25 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                     public void onClick(View v) {
                         crcleFriendsId = list.get(listPos).getId();
                         parentId = entity.getId();
-                        repliedUserId = entity.getRepliedUserId();
+                        repliedUserId = entity.getUserId();
+                        binding.etComment.setHint("回复"+entity.getName()+":");
                         setEditEnable(true,v);
+                    }
+                });
+                holder.setOnLongClickListener(R.id.ll_parent, new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getId())) {//表示是用户自己发布的评论
+                            delCommentId = entity.getId();
+                            if(customDialog!=null)customDialog.show();
+                            return true;
+                        }return false;
                     }
                 });
             }
         };
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-
     }
 
 

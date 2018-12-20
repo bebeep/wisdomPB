@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="onClickListener"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -16,84 +17,20 @@
             android:id="@+id/title"
             layout="@layout/layout_title" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="@color/yellow_l"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="剩余时间:"
-                android:textColor="@color/c_sblack"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_time_residue"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="10分59秒"
-                android:textColor="@color/c_orange"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_question_residue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1/12"
-                android:textColor="@color/c_orange"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp" />
-
-        <android.support.v4.widget.NestedScrollView
+        <FrameLayout
+            android:id="@+id/fl_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:paddingTop="10dp"
+            android:visibility="gone"
             android:layout_weight="1">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_question"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/bg_exam_question"
-                    android:lineSpacingExtra="3dp"
-                    android:padding="10dp"
-                    android:text="1、以下称为悬垂钓法的是？(多选题，5分)"
-                    android:textColor="@color/c_dblack"
-                    android:textSize="14sp" />
+        </FrameLayout>
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_marginTop="15dp" />
-
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <View
             android:layout_width="match_parent"
@@ -101,42 +38,85 @@
             android:background="@color/c_line" />
 
         <LinearLayout
+            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
 
             <TextView
-                android:id="@+id/tv_last"
-                android:layout_width="0dp"
+                android:id="@+id/tv_submit"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_rec_5dp_exam_u"
-                android:gravity="center"
-                android:text="上一题"
+                android:gravity="center_vertical"
                 android:onClick="@{onClickListener}"
-                android:textColor="@color/c_gray"
-                android:textSize="15sp" />
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:text="交卷"
+                android:textColor="@color/green"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_next"
+            <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_answer_right" />
+
+            <TextView
+                android:id="@+id/tv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="0"
+                android:textColor="@color/green"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_rec_5dp_exam_c"
-                android:gravity="center"
-                android:text="下一题"
-                android:onClick="@{onClickListener}"
-                android:textColor="@color/theme_d"
-                android:textSize="15sp" />
+                android:src="@drawable/icon_answer_wrong" />
 
+            <TextView
+                android:id="@+id/tv_wrong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="0"
+                android:textColor="@color/c_red"
+                android:textSize="13sp" />
+
+            <FrameLayout
+                android:id="@+id/fl_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:onClick="@{onClickListener}"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/icon_zan_gallery" />
+
+                <TextView
+                    android:id="@+id/tv_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30dp"
+                    android:text="0/100"
+                    android:textColor="@color/c_dblack"
+                    android:textSize="13sp" />
+
+            </FrameLayout>
         </LinearLayout>
 
     </LinearLayout>

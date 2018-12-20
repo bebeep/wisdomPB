@@ -6,6 +6,26 @@ public class CommonTypeEntity {
     private String title;
 
 
+    private int isCorrect; //是否为正确答案  0否 1是
+    private boolean result; //用户答题结果
+
+
+    public boolean isResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
+    }
+
+    public int getIsCorrect() {
+        return isCorrect;
+    }
+
+    public void setIsCorrect(int isCorrect) {
+        this.isCorrect = isCorrect;
+    }
+
     public String getId() {
         return id;
     }

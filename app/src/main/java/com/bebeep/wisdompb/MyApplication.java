@@ -25,7 +25,6 @@ public class MyApplication extends Application {
     public static final String AUTHORIZATION = "Authorization";
     public static final String FILEKEY = "file";
 
-
     //123456789
 
     public static MyApplication getInstance() {

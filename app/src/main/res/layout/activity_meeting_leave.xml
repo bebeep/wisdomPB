@@ -39,7 +39,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:text="吴彦祖"
                 android:textColor="@color/c_gray"
                 android:textSize="14sp" />
 

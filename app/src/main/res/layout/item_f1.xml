@@ -24,7 +24,6 @@
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="人大常委会委员：财产公示应写入公务员法"
         android:textSize="14sp" />
 
     <TextView
@@ -35,7 +34,6 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="95dp"
         android:gravity="top"
-        android:text="2018-11-11"
         android:textColor="@color/c_gray"
         android:textSize="11sp" />
 
@@ -60,14 +58,16 @@
             android:paddingTop="2dp"
             android:text="置顶"
             android:textColor="@color/c_white"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_link"
             android:layout_width="12dp"
-            android:layout_marginLeft="5dp"
             android:layout_height="12dp"
-            android:src="@drawable/icon_link" />
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/icon_link"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -57,9 +57,9 @@ public class BaseFragment extends Fragment {
             if(code == 1){
                 return "未登录";
             }
-            else if(e.getCause().equals(SocketTimeoutException.class)){ //超时
-                return "请求超时";
-            }
+//            else if(e.getCause().equals(SocketTimeoutException.class)){ //超时
+//                return "请求超时";
+//            }
             else{ //其他-"请求错误"
                 return "请求错误";
             }

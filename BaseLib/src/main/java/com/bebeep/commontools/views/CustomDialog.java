@@ -37,6 +37,7 @@ public class CustomDialog extends Dialog {
         private View.OnClickListener positiveButtonClickListener;
         private View.OnClickListener negativeButtonClickListener;
         private View.OnClickListener singleButtonClickListener;
+        private boolean cancelEnable = true;
 
         private View layout;
         private CustomDialog dialog;
@@ -56,6 +57,10 @@ public class CustomDialog extends Dialog {
 
         public Builder setContentView(View v) {
             this.contentView = v;
+            return this;
+        }
+        public Builder setCancelEnable(boolean enable) {
+            this.cancelEnable = enable;
             return this;
         }
 
@@ -130,7 +135,7 @@ public class CustomDialog extends Dialog {
             }
             dialog.setContentView(layout);
             dialog.setCancelable(true);     //用户可以点击手机Back键取消对话框显示
-            dialog.setCanceledOnTouchOutside(false);        //用户不能通过点击对话框之外的地方取消对话框显示
+            dialog.setCanceledOnTouchOutside(cancelEnable);        //用户不能通过点击对话框之外的地方取消对话框显示
         }
 
         /**

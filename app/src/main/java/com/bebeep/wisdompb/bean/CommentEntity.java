@@ -7,12 +7,21 @@ public class CommentEntity {
     private String crcleFriendsId;//发现id
     private String id;//评论id
     private String content;//评论内容
+    private String userId;//评论者用户id
     private String name;//评论人名字
     private String photo;//评论人头像
     private String repliedUserId;//被回复的id；
     private String repliedUserName;//被回复的用户姓名
     private String createDate;//评论时间
 
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getCrcleFriendsId() {
         return crcleFriendsId;

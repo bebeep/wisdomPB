@@ -38,7 +38,6 @@
                 android:lineSpacingExtra="5dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:text="考试题目-----关于学习新形势下党内政治生活的若干准则与若干纪律的测试（测试多行文字）"
                 android:textColor="@color/c_white"
                 android:textSize="16sp" />
 
@@ -90,7 +89,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="100分"
                                 android:textColor="@color/c_sblack"
                                 android:textSize="15sp" />
 
@@ -135,7 +133,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="60分"
                                 android:textColor="@color/c_sblack"
                                 android:textSize="15sp" />
 
@@ -190,7 +187,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="20题"
                                 android:textColor="@color/c_sblack"
                                 android:textSize="15sp" />
 
@@ -235,7 +231,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="30分钟"
                                 android:textColor="@color/c_sblack"
                                 android:textSize="15sp" />
 
@@ -297,7 +292,6 @@
                             android:id="@+id/tv_start_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2011-12-25 09:30:00"
                             android:textColor="@color/c_gray"
                             android:textSize="13sp" />
 
@@ -312,7 +306,6 @@
                             android:id="@+id/tv_end_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2011-12-25 11:30:00"
                             android:textColor="@color/c_gray"
                             android:textSize="13sp" />
 
@@ -370,9 +363,8 @@
                         android:gravity="center"
                         android:maxLines="3"
                         android:padding="5dp"
-                        android:text="考试说明、、"
                         android:textColor="@color/c_gray"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <View

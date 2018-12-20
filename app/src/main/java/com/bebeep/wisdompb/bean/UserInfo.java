@@ -1,7 +1,7 @@
 package com.bebeep.wisdompb.bean;
 
 public class UserInfo {
-
+    private String id;
     private String loginName;// 513330194611300017,
     private String name;// 周永康,
     private int sex;// 性别  1男 2女
@@ -9,7 +9,24 @@ public class UserInfo {
     private String office;// 所属党支部
     private String joiningPartyOrganizationDate;// 入党日期
     private String becomingFullMemberDate;// 转为正式党员日期
+    private boolean checked;
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     public String getLoginName() {
         return loginName;

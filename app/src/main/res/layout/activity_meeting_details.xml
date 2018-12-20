@@ -53,7 +53,6 @@
                             android:id="@+id/tv_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="项目部月度会议"
                             android:textColor="@color/c_white"
                             android:textSize="25sp" />
 
@@ -88,7 +87,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
-                                android:text="吴彦祖"
                                 android:textColor="@color/c_white" />
 
                             <View
@@ -128,14 +126,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
-                                android:text="2018年11月23日 星期五 13：30~14：00"
                                 android:textColor="@color/c_white"
                                 android:textSize="13sp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="20dp"
+                            android:layout_height="wrap_content"
+                            android:minHeight="20dp"
                             android:layout_marginLeft="40dp"
                             android:layout_marginRight="40dp"
                             android:layout_marginTop="3dp"
@@ -164,7 +162,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="61dp"
                             android:layout_marginRight="40dp"
-                            android:text="成都市青羊区文庙西街101号"
                             android:textColor="@color/c_line"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -246,11 +243,11 @@
                                         android:id="@+id/tv_joined_person"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="已有6人参加"
                                         android:textColor="@color/c_gray"
                                         android:textSize="13sp" />
 
                                     <View
+                                        android:id="@+id/v_split"
                                         android:layout_width="1dp"
                                         android:layout_height="match_parent"
                                         android:layout_marginBottom="5dp"
@@ -263,7 +260,6 @@
                                         android:id="@+id/tv_leaved_person"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="2人请假"
                                         android:textColor="@color/c_gray"
                                         android:textSize="13sp" />
                                 </LinearLayout>

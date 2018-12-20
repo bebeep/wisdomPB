@@ -44,6 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/app_name"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/c_white"
             android:textSize="18sp" />
 

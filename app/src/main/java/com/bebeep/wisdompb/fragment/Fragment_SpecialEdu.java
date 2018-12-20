@@ -25,6 +25,7 @@ import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.LoginActivity;
+import com.bebeep.wisdompb.activity.NewsDetailActivity;
 import com.bebeep.wisdompb.activity.WebViewActivity;
 import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.base.CommonFragment;
@@ -151,7 +152,7 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
                     public void onClick(View v) {
                         if(TextUtils.equals(entity.getWhetherUrlAddress(),"1")){
                             startActivity(new Intent(getActivity(),WebViewActivity.class).putExtra("title",entity.getTitle()).putExtra("url",entity.getUrl()));
-                        }
+                        }else startActivity(new Intent(getActivity(),NewsDetailActivity.class).putExtra("title",entity.getTitle()).putExtra("id",entity.getId()).putExtra("tag",2));
                     }
                 });
             }

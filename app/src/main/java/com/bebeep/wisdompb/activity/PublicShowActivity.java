@@ -7,17 +7,29 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseSlideActivity;
+import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.NewsEntity;
 import com.bebeep.wisdompb.databinding.ActivityPublicShowBinding;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
@@ -26,11 +38,13 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 /**
  * 党内公示
  */
-public class PublicShowActivity extends SlideBackActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class PublicShowActivity extends BaseSlideActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
     private ActivityPublicShowBinding binding;
     private CommonAdapter adapter;
-    private List<String> list = new ArrayList<>();
+    private List<NewsEntity> list = new ArrayList<>();
+
+    private int pageNo = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +55,7 @@ public class PublicShowActivity extends SlideBackActivity implements OnPullListe
 
     private void init(){
         initAdapter();
+        getData();
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText("党内公示");
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
@@ -71,14 +86,14 @@ public class PublicShowActivity extends SlideBackActivity implements OnPullListe
     }
 
     private void initAdapter(){
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        adapter = new CommonAdapter<String>(this,R.layout.item_public_show,list){
+        adapter = new CommonAdapter<NewsEntity>(this,R.layout.item_public_show,list){
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-
+            protected void convert(ViewHolder holder, NewsEntity entity, int position) {
+                holder.setImageUrl((ImageView)holder.getView(R.id.iv_head),URLS.IMAGE_PRE+entity.getPictureAddress(),R.drawable.default_error,100,80);
+                holder.setText(R.id.tv_title,entity.getTitle());
+                holder.setText(R.id.tv_time,entity.getUpdateDate());
+                holder.setText(R.id.tv_time,entity.getUpdateDate());
+                holder.setVisible(R.id.iv_link,TextUtils.equals(entity.getWhetherUrlAddress(),"1"));
 
             }
         };
@@ -87,9 +102,11 @@ public class PublicShowActivity extends SlideBackActivity implements OnPullListe
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(PublicShowActivity.this, NewsDetailActivity.class).putExtra("title","党内公示"));
+                NewsEntity entity = list.get(position);
+                if(TextUtils.equals(entity.getWhetherUrlAddress(),"1")){
+                    startActivity(new Intent(PublicShowActivity.this,WebViewActivity.class).putExtra("title",entity.getTitle()).putExtra("url",entity.getUrl()));
+                }else startActivity(new Intent(PublicShowActivity.this,NewsDetailActivity.class).putExtra("title",entity.getTitle()).putExtra("id",entity.getId()).putExtra("tag",3));
             }
-
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
@@ -98,12 +115,50 @@ public class PublicShowActivity extends SlideBackActivity implements OnPullListe
     }
 
 
+    /**
+     * 获取新闻列表
+     */
+    private void getData(){
+        HashMap header = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("pageNo", String.valueOf(pageNo));
+        map.put("pageSize", "20");
+        OkHttpClientManager.postAsyn(URLS.PUBLIC_SHOW_LIST, new OkHttpClientManager.ResultCallback<BaseList<NewsEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.nrl.onLoadFinished();
+                binding.srl.setRefreshing(false);
+                statusMsg(e,code);
+                binding.tvEmpty.setVisibility(list == null || list.size() ==0?View.VISIBLE:View.GONE);
+            }
+            @Override
+            public void onResponse(BaseList<NewsEntity> response) {
+                binding.srl.setRefreshing(false);
+                binding.nrl.onLoadFinished();
+                Log.e("TAG","获取新闻列表 json="+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    if(pageNo == 1)list = response.getData();
+                    else {
+                        if(response.getData() == null || response.getData().size() ==0) MyTools.showToast(PublicShowActivity.this,"没有更多内容了");
+                        else list.addAll(response.getData());
+                    }
+                    adapter.refresh(list);
+                }else{
+                    MyTools.showToast(PublicShowActivity.this, response.getMsg());
+                }
+                binding.tvEmpty.setVisibility(list == null || list.size() ==0?View.VISIBLE:View.GONE);
+            }
+        },header,map);
+    }
+
     @Override
     public void onRefresh() {
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+               pageNo=1;
+               getData();
             }
         },500);
     }
@@ -118,10 +173,7 @@ public class PublicShowActivity extends SlideBackActivity implements OnPullListe
         binding.nrl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.add("");
-                list.add("");
-                adapter.refresh(list);
-                binding.nrl.onLoadFinished();
+                pageNo++;getData();
             }
         },500);
     }
