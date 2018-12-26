@@ -7,15 +7,16 @@ public class CommonTypeEntity {
 
 
     private int isCorrect; //是否为正确答案  0否 1是
-    private boolean result; //用户答题结果
+    private boolean isChecked;//用户是否已经选择了这个答案
 
 
-    public boolean isResult() {
-        return result;
+
+    public boolean isChecked() {
+        return isChecked;
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public int getIsCorrect() {

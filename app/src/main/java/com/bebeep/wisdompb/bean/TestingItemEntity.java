@@ -1,15 +1,43 @@
 package com.bebeep.wisdompb.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TestingItemEntity {
+public class TestingItemEntity implements Serializable{
     private String id; //主题ID
     private String itemBankId;  //题目id
     private String title; //题目名称
     private String fractionNum; //题目分数
-    private String type; //题目类型；0 单选题;1 多选题 ;2 判断题 ;3 简答题
+    private int type; //题目类型；0 单选题;1 多选题 ;2 判断题 ;3 简答题
+    private boolean hasChecked;//用户是否已经答题；
+    private boolean showAnwsers;//是否显示正确答案
+    private boolean right;//用户答案是否正确；
     private List<CommonTypeEntity> itemBankAnswerList; //答案
 
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public boolean isHasChecked() {
+        return hasChecked;
+    }
+
+    public void setHasChecked(boolean hasChecked) {
+        this.hasChecked = hasChecked;
+    }
+
+    public boolean isShowAnwsers() {
+        return showAnwsers;
+    }
+
+    public void setShowAnwsers(boolean showAnwsers) {
+        this.showAnwsers = showAnwsers;
+    }
 
     public String getId() {
         return id;
@@ -43,11 +71,11 @@ public class TestingItemEntity {
         this.fractionNum = fractionNum;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

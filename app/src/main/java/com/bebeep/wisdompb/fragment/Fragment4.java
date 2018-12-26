@@ -222,12 +222,13 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         progressDialog.show();
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
-        map.put("crcleFriendsId",crcleFriendsId);
+        map.put("themeId",crcleFriendsId);
         map.put("parentId",parentId);
         map.put("repliedUserId",repliedUserId);
-        map.put("content", binding.etComment.getText().toString());
+        map.put("content",binding.etComment.getText().toString());
+        map.put("type","4");
         LogUtil.showLog("提交评论："+ map.toString());
-        OkHttpClientManager.postAsyn(URLS.DISCOVER_COMMENT_SUBMIT, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        OkHttpClientManager.postAsyn(URLS.COMMENT_SUBMIT, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 progressDialog.cancel();
@@ -256,10 +257,10 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     private void getComment(final int position,final DiscoverEntity entity){
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
-        map.put("crcleFriendsId",entity.getId());
-        map.put("parentId","0");
+        map.put("themeId",entity.getId());
+        map.put("type","4");
         LogUtil.showLog("获取评论："+ map.toString());
-        OkHttpClientManager.postAsyn(URLS.DISCOVER_COMMENT_GET, new OkHttpClientManager.ResultCallback<BaseList<CommentEntity>>() {
+        OkHttpClientManager.postAsyn(URLS.COMMENT_GET, new OkHttpClientManager.ResultCallback<BaseList<CommentEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 progressDialog.cancel();
@@ -285,9 +286,10 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         progressDialog.show();
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
-        map.put("id",commentId);
+        map.put("id", commentId);
+        map.put("type","4");
         LogUtil.showLog("提交评论："+ map.toString());
-        OkHttpClientManager.postAsyn(URLS.DISCOVER_COMMENT_DELETE, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        OkHttpClientManager.postAsyn(URLS.COMMENT_DEL, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 progressDialog.cancel();

@@ -44,6 +44,7 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
     private Fragment2Binding binding;
     private CommonAdapter adapter;
     private List<ExamEntity> list = new ArrayList<>();
+    private int flag = 1;
 
     @Nullable
     @Override
@@ -80,10 +81,12 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.rb1:
-
+                        flag = 1;
+                        getData();
                         break;
                     case R.id.rb2:
-
+                        flag = 2;
+                        getData();
                         break;
                 }
             }
@@ -94,7 +97,7 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
         HashMap header = new HashMap(),map = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         map.put("","");
-        OkHttpClientManager.postAsyn(URLS.EXAM_LIST, new OkHttpClientManager.ResultCallback<BaseList<ExamEntity>>() {
+        OkHttpClientManager.postAsyn(flag == 1?URLS.EXAM_LIST : URLS.EXAMED_LIST, new OkHttpClientManager.ResultCallback<BaseList<ExamEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);

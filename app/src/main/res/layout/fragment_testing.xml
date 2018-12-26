@@ -3,6 +3,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:background="@color/c_white"
         android:layout_height="match_parent">
 
         <com.bebeep.commontools.views.MScrollView
@@ -15,23 +16,62 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                <com.bebeep.commontools.views.AutoSplitTextView
-                    android:id="@+id/tv_title"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="4dp"
-                    android:text="这是考试题目1"
-                    android:textColor="@color/c_sblack"
-                    android:textSize="15sp" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:background="@drawable/bg_rec_15dp_green"
+                        android:gravity="center"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text="单选题"
+                        android:textColor="@color/c_white"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <com.bebeep.commontools.views.AutoSplitTextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:lineSpacingExtra="4dp"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
 
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="10dp" />
 
+                <TextView
+                    android:id="@+id/tv_sure"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_rec_15dp_gray"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:visibility="gone"
+                    android:textColor="@color/c_white"
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </com.bebeep.commontools.views.MScrollView>

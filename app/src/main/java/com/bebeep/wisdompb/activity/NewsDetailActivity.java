@@ -59,7 +59,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
     private NewsEntity entity;
 
 
-    private String URL_DETAILS,URL_GET_COMMENT,URL_SUBMIT_COMMENT,URL_DELETE_COMMENT,URL_ZAN,URL_COLLECT,KEY_COMMENT;
+    private String URL_DETAILS,KEY_TYPE;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,30 +105,15 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
         switch (tag){
             case 1: //首页
                 URL_DETAILS = URLS.HOST_DETAILS;
-                URL_GET_COMMENT = URLS.HOST_COMMENT;
-                URL_SUBMIT_COMMENT = URLS.HOST_COMMENT_SUBMIT;
-                URL_DELETE_COMMENT = URLS.HOST_COMMENT_DELETE;
-                URL_ZAN = URLS.HOST_COMMENT_ZAN;
-                URL_COLLECT = URLS.HOST_COMMENT_COLLECT;
-                KEY_COMMENT = "homeNewsId";
+                KEY_TYPE = "0";
                 break;
             case 2: //专题教育
                 URL_DETAILS = URLS.SPECIAL_EDU_DETAILS;
-                URL_GET_COMMENT = URLS.SPECIAL_EDU_COMMENT;
-                URL_SUBMIT_COMMENT = URLS.SPECIAL_EDU_COMMENT_SUBMIT;
-                URL_DELETE_COMMENT = URLS.SPECIAL_EDU_COMMENT_DELETE;
-                URL_ZAN = URLS.SPECIAL_EDU_COMMENT_ZAN;
-                URL_COLLECT = URLS.SPECIAL_EDU_COMMENT_COLLECT;
-                KEY_COMMENT = "thematiceducationNewsId";
+                KEY_TYPE = "1";
                 break;
             case 3://党内公示
                 URL_DETAILS = URLS.PUBLIC_SHOW_DETAILS;
-                URL_GET_COMMENT = URLS.PUBLIC_SHOW_COMMENT;
-                URL_SUBMIT_COMMENT = URLS.PUBLIC_SHOW_COMMENT_SUBMIT;
-                URL_DELETE_COMMENT = URLS.PUBLIC_SHOW_COMMENT_DELETE;
-                URL_ZAN = URLS.PUBLIC_SHOW_COMMENT_ZAN;
-                URL_COLLECT = URLS.PUBLIC_SHOW_COMMENT_COLLECT;
-                KEY_COMMENT = "publicityWithinthePartyId";
+                KEY_TYPE = "2";
                 break;
         }
     }
@@ -149,8 +134,8 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
             binding.tvFileName.setText(entity.getEnclosureNmae());
             binding.tvFileSize.setText(entity.getFilesSize());
         }
-        binding.ivZan.setImageResource(entity.getIsDz() == 0?R.drawable.icon_zan:R.drawable.icon_zan_yellow);
-        binding.ivCollect.setImageResource(entity.getIsCollection() == 0?R.drawable.icon_collect:R.drawable.icon_zan_yellow);
+        binding.ivZan.setImageResource(entity.getIsDz() == 0?R.drawable.icon_zan:R.drawable.icon_zan_c);
+        binding.ivCollect.setImageResource(entity.getIsCollection() == 0?R.drawable.icon_collect:R.drawable.icon_collect_c);
 
     }
 
@@ -295,10 +280,9 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
         HashMap header = new HashMap();
         header.put("Authorization", MyApplication.getInstance().getAccessToken());
         HashMap map = new HashMap();
-        map.put(KEY_COMMENT, id);
-        map.put("parentId","0");
-        LogUtil.showLog("新闻详情"+URL_GET_COMMENT+"-》获取评论："+map);
-        OkHttpClientManager.postAsyn(URL_GET_COMMENT, new OkHttpClientManager.ResultCallback<BaseList<CommentEntity>>() {
+        map.put("themeId", id);
+        map.put("type",KEY_TYPE);
+        OkHttpClientManager.postAsyn(URLS.COMMENT_GET, new OkHttpClientManager.ResultCallback<BaseList<CommentEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
@@ -327,12 +311,12 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
         progressDialog.show();
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
-        map.put(KEY_COMMENT,id);
+        map.put("themeId",id);
         map.put("parentId",parentId);
+        map.put("type",KEY_TYPE);
         map.put("repliedUserId",repliedUserId);
         map.put("content", binding.etComment.getText().toString());
-        LogUtil.showLog("新闻详情"+URL_SUBMIT_COMMENT+"-》提交评论："+map);
-        OkHttpClientManager.postAsyn(URL_SUBMIT_COMMENT, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        OkHttpClientManager.postAsyn(URLS.COMMENT_SUBMIT, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 progressDialog.cancel();
@@ -364,8 +348,9 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("id",commentId);
+        map.put("type",KEY_TYPE);
         LogUtil.showLog("删除评论："+ map);
-        OkHttpClientManager.postAsyn(URL_DELETE_COMMENT, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        OkHttpClientManager.postAsyn(URLS.COMMENT_DEL, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 progressDialog.cancel();
@@ -391,8 +376,9 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
     private void zan(){
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
-        map.put("id",id);
-        OkHttpClientManager.postAsyn(URL_ZAN, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        map.put("themeId",id);
+        map.put("type",KEY_TYPE);
+        OkHttpClientManager.postAsyn(URLS.ZAN, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
@@ -402,7 +388,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                 LogUtil.showLog("点赞 response："+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     int errorCode = response.getErrorCode();
-                    binding.ivZan.setImageResource(errorCode == 6?R.drawable.icon_zan:R.drawable.icon_zan_yellow);
+                    binding.ivZan.setImageResource(errorCode == 6?R.drawable.icon_zan:R.drawable.icon_zan_c);
                 }else MyTools.showToast(NewsDetailActivity.this, response.getMsg());
             }
         },header,map);
@@ -414,8 +400,9 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
     private void collect(){
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
-        map.put("id",id);
-        OkHttpClientManager.postAsyn(URL_COLLECT, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        map.put("themeId",id);
+        map.put("type", KEY_TYPE);
+        OkHttpClientManager.postAsyn(URLS.COLLECT, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
@@ -425,7 +412,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                 LogUtil.showLog("收藏 response："+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     int errorCode = response.getErrorCode();
-                    binding.ivCollect.setImageResource(errorCode == 6?R.drawable.icon_collect:R.drawable.icon_zan_yellow);
+                    binding.ivCollect.setImageResource(errorCode == 6?R.drawable.icon_collect:R.drawable.icon_collect_c);
                 }else MyTools.showToast(NewsDetailActivity.this, response.getMsg());
             }
         },header,map);

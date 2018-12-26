@@ -26,6 +26,23 @@ public class URLS {
     public static final String UPLOAD = FILE_UPLOAD + "/file";
 
 
+
+    //获取评论
+    public static final String COMMENT_GET =  HOST + "/comment/getChildren";
+
+    //提交评论
+    public static final String COMMENT_SUBMIT =  HOST + "/comment/release";
+
+    //删除评论
+    public static final String COMMENT_DEL =  HOST + "/comment/delete";
+
+    //点赞
+    public static final String ZAN =  HOST + "/give/giveUp";
+
+    //收藏
+    public static final String COLLECT =  HOST + "/collection/insert";
+
+
     /**
      * 首页
      */
@@ -41,20 +58,6 @@ public class URLS {
     //获取新闻详情
     public static final String HOST_DETAILS =  HOST + "/home/news/info";
 
-    //获取新闻评论
-    public static final String HOST_COMMENT =  HOST + "/home/news/comment/getChildren";
-
-    //提交新闻评论
-    public static final String HOST_COMMENT_SUBMIT =  HOST + "/home/news/comment/release";
-
-    //删除新闻评论
-    public static final String HOST_COMMENT_DELETE =  HOST + "/home/news/comment/delete";
-
-    //点赞
-    public static final String HOST_COMMENT_ZAN =  HOST + "/home/news/giveUp";
-
-    //收藏
-    public static final String HOST_COMMENT_COLLECT =  HOST + "/home/news/collection";
 
 
 
@@ -81,20 +84,6 @@ public class URLS {
     //获取新闻详情
     public static final String SPECIAL_EDU_DETAILS =  HOST + "/thematiceducation/news/info";
 
-    //获取新闻评论
-    public static final String SPECIAL_EDU_COMMENT =  HOST + "/thematiceducation/news/comment/getChildren";
-
-    //提交新闻评论
-    public static final String SPECIAL_EDU_COMMENT_SUBMIT =  HOST + "/thematiceducation/news/comment/release";
-
-    //删除新闻评论
-    public static final String SPECIAL_EDU_COMMENT_DELETE =  HOST + "/thematiceducation/news/comment/delete";
-
-    //点赞
-    public static final String SPECIAL_EDU_COMMENT_ZAN =  HOST + "/thematiceducation/news/giveUp";
-
-    //收藏
-    public static final String SPECIAL_EDU_COMMENT_COLLECT =  HOST + "/thematiceducation/news/collection";
 
     /**
      * 党内公示
@@ -108,20 +97,6 @@ public class URLS {
     //党内公示详情
     public static final String PUBLIC_SHOW_DETAILS =  HOST + "/within/news/info";
 
-    //获取党内公示评论
-    public static final String PUBLIC_SHOW_COMMENT =  HOST + "/within/news/comment/getChildren";
-
-    //提交党内公示评论
-    public static final String PUBLIC_SHOW_COMMENT_SUBMIT =  HOST + "/within/news/comment/release";
-
-    //删除党内公示评论
-    public static final String PUBLIC_SHOW_COMMENT_DELETE =  HOST + "/within/news/comment/delete";
-
-    //点赞
-    public static final String PUBLIC_SHOW_COMMENT_ZAN =  HOST + "/within/news/giveUp";
-
-    //收藏
-    public static final String PUBLIC_SHOW_COMMENT_COLLECT =  HOST + "/within/news/collection";
 
 
 
@@ -132,11 +107,17 @@ public class URLS {
     //待考列表
     public static final String EXAM_LIST = HOST + "/itembank/tested_data";
 
+    //已考列表
+    public static final String EXAMED_LIST = HOST + "/itembank/have_data";
+
     //考试详情
     public static final String EXAM_DETAILS = HOST + "/itembank/info";
 
     //获取题目信息
     public static final String EXAM_TESTING = HOST + "/itembank/startAnswer";
+
+    //验证答案
+    public static final String EXAM_CHECK_ANSWER = HOST + "/itembank/verifytheanswer";
 
     /**
      * 三会一课
@@ -172,12 +153,4 @@ public class URLS {
     //发布
     public static final String DISCOVER_RELEASE = HOST + "/crcle/friends/release";
 
-    //获取评论
-    public static final String DISCOVER_COMMENT_GET = HOST + "/crclefriends/comment/getChildren";
-
-    //删除评论
-    public static final String DISCOVER_COMMENT_DELETE = HOST + "/crclefriends/comment/delete";
-
-    //提交评论
-    public static final String DISCOVER_COMMENT_SUBMIT = HOST + "/crclefriends/comment/release";
 }
