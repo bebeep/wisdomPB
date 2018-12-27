@@ -1,6 +1,8 @@
 package com.bebeep.wisdompb.bean;
 
-public class CommonTypeEntity {
+import java.io.Serializable;
+
+public class CommonTypeEntity implements Serializable{
 
     private String id;
     private String title;

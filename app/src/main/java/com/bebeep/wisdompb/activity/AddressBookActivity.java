@@ -12,15 +12,29 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseEditActivity;
+import com.bebeep.wisdompb.base.BaseSlideActivity;
+import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.TestingEntity;
+import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityAddressBookBinding;
+import com.bebeep.wisdompb.util.LogUtil;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
@@ -30,11 +44,11 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 /**
  * 党员通讯录
  */
-public class AddressBookActivity extends SlideBackActivity implements View.OnClickListener,OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class AddressBookActivity extends BaseEditActivity implements View.OnClickListener,OnPullListener,SwipeRefreshLayout.OnRefreshListener{
     private ActivityAddressBookBinding binding;
 
     private CommonAdapter adapter;
-    private List<String> list = new ArrayList<>();
+    private List<UserInfo> list = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,26 +59,25 @@ public class AddressBookActivity extends SlideBackActivity implements View.OnCli
 
     private void init(){
         initAdapter();
+        getData();
         binding.setOnClickListener(this);
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText("党员通讯录");
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
+        binding.nrl.setPullLoadEnable(false);
         binding.nrl.setOnLoadingListener(this);
     }
 
 
     private void initAdapter(){
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        adapter = new CommonAdapter<String>(this,R.layout.item_address_book,list){
+        adapter = new CommonAdapter<UserInfo>(this,R.layout.item_address_book,list){
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-
-
+            protected void convert(ViewHolder holder, UserInfo userInfo, int position) {
+                holder.setImageUrl((ImageView)holder.getView(R.id.img_head),URLS.IMAGE_PRE + userInfo.getPhoto(),R.drawable.icon_head,40,40);
+                holder.setText(R.id.tv_name, userInfo.getName());
+                holder.setText(R.id.tv_position, userInfo.getPartyPosts());
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -74,9 +87,8 @@ public class AddressBookActivity extends SlideBackActivity implements View.OnCli
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(AddressBookActivity.this,MemberInfoActivity.class));
+                startActivity(new Intent(AddressBookActivity.this,MemberInfoActivity.class).putExtra("id",list.get(position).getId()));
             }
-
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
@@ -97,12 +109,42 @@ public class AddressBookActivity extends SlideBackActivity implements View.OnCli
     }
 
 
+
+    private void getData(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("","");
+        OkHttpClientManager.postAsyn(URLS.ADDRESSBOOK_LIST, new OkHttpClientManager.ResultCallback<BaseList<UserInfo>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.srl.setRefreshing(false);
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseList<UserInfo> response) {
+                binding.srl.setRefreshing(false);
+                LogUtil.showLog("通讯录列表："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    list = response.getData();
+                    adapter.refresh(list);
+                }else{
+                    MyTools.showToast(AddressBookActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+            }
+        },header,map);
+    }
+
+
+
     @Override
     public void onRefresh() {
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                getData();
             }
         },500);
     }
@@ -116,10 +158,6 @@ public class AddressBookActivity extends SlideBackActivity implements View.OnCli
         binding.nrl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.add("");
-                list.add("");
-                adapter.refresh(list);
-                binding.nrl.onLoadFinished();
             }
         },500);
     }
@@ -127,46 +165,5 @@ public class AddressBookActivity extends SlideBackActivity implements View.OnCli
 
 
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-
-                return false;
-            } else {
-                //使EditText触发一次失去焦点事件
-                v.setFocusable(false);
-                v.setFocusableInTouchMode(true);
-                return true;
-            }
-        }
-        return false;
-    }
 
 }

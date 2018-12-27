@@ -13,7 +13,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:paddingTop="10dp"
-        android:text="永远的长征-党建知识竞赛活动"
         android:textColor="@color/c_sblack"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -25,15 +24,109 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="2018-11-11"
         android:textColor="@color/c_gray"
         android:textSize="14sp" />
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cv_1"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_margin="10dp"
         app:cardCornerRadius="8dp"
+        android:visibility="gone"
+        app:cardElevation="5dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <com.bebeep.commontools.views.CustomRoundAngleImageView
+                android:id="@+id/iv11"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:radius="8dp" />
+
+            <TextView
+                android:id="@+id/tv_num1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="18+"
+                android:textColor="@color/c_white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.bebeep.commontools.views.CustomRoundAngleImageView
+                android:id="@+id/iv21"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                app:left_bottom_radius="8dp"
+                app:left_top_radius="8dp"
+                app:right_bottom_radius="0dp"
+                app:right_top_radius="0dp" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent">
+
+                <com.bebeep.commontools.views.CustomRoundAngleImageView
+                    android:id="@+id/iv22"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:left_bottom_radius="0dp"
+                    app:left_top_radius="0dp"
+                    app:right_bottom_radius="8dp"
+                    app:right_top_radius="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_num2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="18+"
+                    android:textColor="@color/c_white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_3"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="8dp"
+        android:visibility="gone"
         app:cardElevation="5dp">
 
 
@@ -43,12 +136,11 @@
             android:orientation="horizontal">
 
             <com.bebeep.commontools.views.CustomRoundAngleImageView
-                android:id="@+id/iv1"
+                android:id="@+id/iv31"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.3"
                 android:scaleType="centerCrop"
-                android:src="@drawable/bg_book"
                 app:left_bottom_radius="8dp"
                 app:left_top_radius="8dp"
                 app:right_bottom_radius="0dp"
@@ -62,12 +154,11 @@
                 android:orientation="vertical">
 
                 <com.bebeep.commontools.views.CustomRoundAngleImageView
-                    android:id="@+id/iv2"
+                    android:id="@+id/iv32"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bg_book"
                     app:left_bottom_radius="0dp"
                     app:left_top_radius="0dp"
                     app:right_bottom_radius="0dp"
@@ -82,11 +173,10 @@
                     android:background="@android:color/transparent">
 
                     <com.bebeep.commontools.views.CustomRoundAngleImageView
-                        android:id="@+id/iv3"
+                        android:id="@+id/iv33"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/bg_book"
                         app:left_bottom_radius="0dp"
                         app:left_top_radius="0dp"
                         app:right_bottom_radius="8dp"
@@ -94,7 +184,7 @@
 
 
                     <TextView
-                        android:id="@+id/tv_num"
+                        android:id="@+id/tv_num3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

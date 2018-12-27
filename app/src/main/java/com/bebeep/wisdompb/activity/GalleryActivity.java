@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
@@ -13,11 +14,24 @@ import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.showbigimage.DeviceConfig;
 import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.showbigimage.ShowSingleBigImageDialog;
+import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
 import com.bebeep.commontools.views.CustomRoundAngleImageView;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseSlideActivity;
+import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.GalleryEntity;
+import com.bebeep.wisdompb.bean.TestingEntity;
 import com.bebeep.wisdompb.databinding.ActivityGalleryDetailBinding;
+import com.bebeep.wisdompb.util.LogUtil;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
@@ -25,10 +39,12 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 /**
  * 党建相册
  */
-public class GalleryActivity extends SlideBackActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class GalleryActivity extends BaseSlideActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
     private ActivityGalleryDetailBinding binding;
-    private List<String> list = new ArrayList<>();
+    private List<GalleryEntity> list = new ArrayList<>();
     private CommonAdapter adapter;
+
+    private String id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,11 +54,14 @@ public class GalleryActivity extends SlideBackActivity implements OnPullListener
     }
 
     private void init(){
+        id = getIntent().getStringExtra("id");
         initDeviceDensity();
         initAdapter();
+        getData();
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
+        binding.nrl.setPullLoadEnable(false);
         binding.nrl.setOnLoadingListener(this);
         binding.title.tvTitle.setText("党建相册");
         binding.title.ivBack.setVisibility(View.VISIBLE);
@@ -56,21 +75,20 @@ public class GalleryActivity extends SlideBackActivity implements OnPullListener
 
 
     private void initAdapter(){
-        list.add("http://b.hiphotos.baidu.com/image/h%3D300/sign=87021db3be1c8701c9b6b4e6177e9e6e/0d338744ebf81a4cf87e4f9eda2a6059252da61d.jpg");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542698304325&di=93085e2f3efb8f0b5a47b3eb8c1bde63&imgtype=0&src=http%3A%2F%2Fpic31.nipic.com%2F20130731%2F13345615_081322573195_2.jpg");
-        list.add("6");
-        list.add("7");
-        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542698317839&di=bece7e5f8897859c4793ee723053216b&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201507%2F02%2F20150702160115_VFR2u.jpeg");
-        list.add("");
-        list.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542698327640&di=be7b898f853940fd1adc09658c86d0fd&imgtype=0&src=http%3A%2F%2Fpic36.nipic.com%2F20131202%2F445991_145804524184_2.jpg");
-        adapter = new CommonAdapter<String>(this,R.layout.item_gallery_detail,list){
+        adapter = new CommonAdapter<GalleryEntity>(this,R.layout.item_gallery_detail,list){
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
+            protected void convert(ViewHolder holder, GalleryEntity entity, int position) {
                 CustomRoundAngleImageView iv = holder.getView(R.id.iv);
-                holder.setImageUrl(iv,s,R.drawable.bg_book);
+                holder.setImageUrl(iv, URLS.IMAGE_PRE + entity.getImgsrc(),R.drawable.bg_book);
+                holder.setText(R.id.tv_zan, entity.getReadingQuantity());
+                holder.setImageResource(R.id.iv_zan, TextUtils.equals(entity.getIsDz(),"1")?R.drawable.icon_zan_yellow:R.drawable.icon_zan_gallery);
+
+                holder.setOnClickListener(R.id.fl_zan, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
             }
         };
         binding.recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
@@ -79,7 +97,7 @@ public class GalleryActivity extends SlideBackActivity implements OnPullListener
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                new ShowSingleBigImageDialog(GalleryActivity.this).show(list.get(position),R.drawable.bg_book); //单张图片
+                new ShowSingleBigImageDialog(GalleryActivity.this).show(URLS.IMAGE_PRE + list.get(position).getImgsrc(),R.drawable.bg_book); //单张图片
 //                new ShowMultiBigImageDialog(GalleryActivity.this, list).show();
             }
             @Override
@@ -89,7 +107,61 @@ public class GalleryActivity extends SlideBackActivity implements OnPullListener
         });
     }
 
+    private void getData(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("id",id);
+        LogUtil.showLog("header:"+header);
+        LogUtil.showLog("map:"+map);
+        OkHttpClientManager.postAsyn(URLS.PHOTO_DETAILS, new OkHttpClientManager.ResultCallback<BaseList<GalleryEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+                binding.nrl.onLoadFinished();
+                binding.srl.setRefreshing(false);
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseList<GalleryEntity> response) {
+                binding.nrl.onLoadFinished();
+                binding.srl.setRefreshing(false);
+                LogUtil.showLog("相册详情："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    list = response.getData();
+                    adapter.refresh(list);
+                }else{
+                    MyTools.showToast(GalleryActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+            }
+        },header,map);
+    }
 
+
+    /**
+     * 点赞
+     */
+    private void zan(){
+        HashMap header = new HashMap(),map =new HashMap();
+        header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
+        map.put("themeId",id);
+        map.put("type","");
+        OkHttpClientManager.postAsyn(URLS.ZAN, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("点赞 response："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    getData();
+                }else MyTools.showToast(GalleryActivity.this, response.getMsg());
+            }
+        },header,map);
+
+    }
 
 
     @Override
@@ -97,9 +169,9 @@ public class GalleryActivity extends SlideBackActivity implements OnPullListener
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                getData();
             }
-        },500);
+        },300);
     }
 
     @Override
@@ -112,12 +184,8 @@ public class GalleryActivity extends SlideBackActivity implements OnPullListener
         binding.nrl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.add("");
-                list.add("");
-                adapter.refresh(list);
-                binding.nrl.onLoadFinished();
             }
-        },500);
+        },300);
     }
 
     private void initDeviceDensity(){

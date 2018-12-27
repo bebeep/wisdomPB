@@ -85,6 +85,7 @@ public class MyMeetingActivity extends BaseSlideActivity implements OnPullListen
             @Override
             public void onError(Request request, Exception e, int code) {
                 binding.srl.setRefreshing(false);
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
                 statusMsg(e,code);
             }
             @Override

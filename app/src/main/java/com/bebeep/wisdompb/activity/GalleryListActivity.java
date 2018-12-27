@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,13 +16,23 @@ import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.BitmapUtils;
+import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
 import com.bebeep.commontools.views.CustomRoundAngleImageView;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseSlideActivity;
+import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.GalleryEntity;
 import com.bebeep.wisdompb.databinding.ActivityGalleryBinding;
+import com.bebeep.wisdompb.util.LogUtil;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
 import com.zhouwei.blurlibrary.EasyBlur;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
@@ -31,12 +42,12 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 /**
  * 党建相册列表
  */
-public class GalleryListActivity extends SlideBackActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class GalleryListActivity extends BaseSlideActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
     private ActivityGalleryBinding binding;
-    private List<String> list = new ArrayList<>();
+    private List<GalleryEntity> list = new ArrayList<>();
     private CommonAdapter adapter;
-
+    private int pageNo = 1;
 
 
     @Override
@@ -47,8 +58,8 @@ public class GalleryListActivity extends SlideBackActivity implements OnPullList
     }
 
     private void init(){
-
         initAdapter();
+        getData();
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
@@ -66,15 +77,36 @@ public class GalleryListActivity extends SlideBackActivity implements OnPullList
 
 
     private void initAdapter(){
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        adapter = new CommonAdapter<String>(this,R.layout.item_gallery,list){
+        adapter = new CommonAdapter<GalleryEntity>(this,R.layout.item_gallery,list){
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                CustomRoundAngleImageView iv = holder.getView(R.id.iv3);
-                initBlurImage("http://b.hiphotos.baidu.com/image/h%3D300/sign=87021db3be1c8701c9b6b4e6177e9e6e/0d338744ebf81a4cf87e4f9eda2a6059252da61d.jpg",iv);
+            protected void convert(ViewHolder holder, GalleryEntity entity, int position) {
+                holder.setText(R.id.tv_title, entity.getTitle());
+                holder.setText(R.id.tv_time, entity.getCreateDate());
+                CustomRoundAngleImageView iv11 = holder.getView(R.id.iv11);
+                CustomRoundAngleImageView iv22 = holder.getView(R.id.iv22);
+                CustomRoundAngleImageView iv33 = holder.getView(R.id.iv33);
+                String[] imgs = entity.getImgsrc().split(",");
+                if(imgs !=null && imgs.length>0){
+                    if(imgs.length==1){
+                        holder.setVisible(R.id.cv_1,true);
+                        holder.setVisible(R.id.cv_2,false);
+                        holder.setVisible(R.id.cv_3,false);
+                        initBlurImage(URLS.IMAGE_PRE+ imgs[0], iv11);
+                    }
+                    if(imgs.length==2){
+                        holder.setVisible(R.id.cv_1,false);
+                        holder.setVisible(R.id.cv_2,true);
+                        holder.setVisible(R.id.cv_3,false);
+                        initBlurImage(URLS.IMAGE_PRE+ imgs[1], iv22);
+                    }
+                    if(imgs.length==3){
+                        holder.setVisible(R.id.cv_1,false);
+                        holder.setVisible(R.id.cv_2,false);
+                        holder.setVisible(R.id.cv_3,true);
+                        initBlurImage(URLS.IMAGE_PRE+ imgs[2], iv33);
+                    }
+                }
+
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -83,7 +115,7 @@ public class GalleryListActivity extends SlideBackActivity implements OnPullList
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(GalleryListActivity.this,GalleryActivity.class));
+                startActivity(new Intent(GalleryListActivity.this,GalleryActivity.class).putExtra("id",list.get(position).getId()));
             }
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -91,6 +123,46 @@ public class GalleryListActivity extends SlideBackActivity implements OnPullList
             }
         });
     }
+
+
+
+
+    private void getData(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("pageNo",String.valueOf(pageNo));
+        map.put("pageSize", MyApplication.pageSize);
+        LogUtil.showLog("header:"+header);
+        LogUtil.showLog("map:"+map);
+        OkHttpClientManager.postAsyn(URLS.PHOTO_LIST, new OkHttpClientManager.ResultCallback<BaseList<GalleryEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+                binding.nrl.onLoadFinished();
+                binding.srl.setRefreshing(false);
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseList<GalleryEntity> response) {
+                binding.nrl.onLoadFinished();
+                binding.srl.setRefreshing(false);
+                LogUtil.showLog("相册："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    if(pageNo == 1)list = response.getData();else{
+                        if(response.getData()==null||response.getData().size()==0)  MyTools.showToast(GalleryListActivity.this,"没有更多内容了");
+                        else list.addAll(response.getData());
+                    }
+                    adapter.refresh(list);
+                }else{
+                    MyTools.showToast(GalleryListActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+            }
+        },header,map);
+    }
+
+
 
 
     /**
@@ -130,7 +202,8 @@ public class GalleryListActivity extends SlideBackActivity implements OnPullList
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                pageNo=1;
+                getData();
             }
         },500);
     }
@@ -145,10 +218,8 @@ public class GalleryListActivity extends SlideBackActivity implements OnPullList
         binding.nrl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.add("");
-                list.add("");
-                adapter.refresh(list);
-                binding.nrl.onLoadFinished();
+                pageNo++;
+                getData();
             }
         },500);
     }

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="140dp"
+    android:id="@+id/fl_parent"
     android:background="@drawable/bg_fl_click">
 
 
@@ -11,8 +12,7 @@
         android:layout_height="120dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_book" />
+        android:scaleType="centerCrop" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="书名：1368个单词就够了"
             android:textColor="@color/c_sblack"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -41,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
-            android:text="作者：xxx"
             android:textColor="@color/c_gray"
             android:textSize="14sp" />
 
@@ -51,7 +49,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:ellipsize="end"
-            android:text="1"
             android:textColor="@color/c_gray"
             android:textSize="14sp" />
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class TestingItemEntity implements Serializable{
     private String id; //主题ID
+    private int index;//序号
     private String itemBankId;  //题目id
     private String title; //题目名称
     private String fractionNum; //题目分数
@@ -14,6 +15,14 @@ public class TestingItemEntity implements Serializable{
     private boolean right;//用户答案是否正确；
     private List<CommonTypeEntity> itemBankAnswerList; //答案
 
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     public boolean isRight() {
         return right;

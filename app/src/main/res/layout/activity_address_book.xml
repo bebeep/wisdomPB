@@ -24,6 +24,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="53dp"
             android:focusable="true"
+            android:visibility="gone"
             android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -60,7 +61,7 @@
             android:id="@+id/nrl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="101dp">
+            android:layout_marginTop="45dp">
 
 
             <android.support.v4.widget.SwipeRefreshLayout
@@ -80,8 +81,8 @@
 
                     <TextView
                         android:id="@+id/tv_empty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
                         android:gravity="center"
                         android:text="暂无内容"
                         android:textColor="@color/c_gray"

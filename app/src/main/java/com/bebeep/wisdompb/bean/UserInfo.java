@@ -10,7 +10,25 @@ public class UserInfo {
     private String joiningPartyOrganizationDate;// 入党日期
     private String becomingFullMemberDate;// 转为正式党员日期
     private boolean checked;
+    private String partyPosts;//职务
+    private String phone;//电话号码
 
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPartyPosts() {
+        return partyPosts;
+    }
+
+    public void setPartyPosts(String partyPosts) {
+        this.partyPosts = partyPosts;
+    }
 
     public String getId() {
         return id;

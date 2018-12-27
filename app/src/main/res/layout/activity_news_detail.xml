@@ -53,6 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginTop="25dp"
+                    android:visibility="gone"
                     android:background="@drawable/bg_click_ring_5dp_gray"
                     android:onClick="@{onClickListener}"
                     android:padding="7.5dp">
@@ -69,7 +70,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
-                        android:text="文件名称.pdf"
                         android:textColor="@color/c_sblack"
                         android:textSize="12sp" />
 
@@ -79,7 +79,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="40dp"
-                        android:text="0.8M"
                         android:textColor="@color/c_gray"
                         android:textSize="10sp" />
 

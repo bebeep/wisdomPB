@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/ll_parent"
         android:orientation="vertical">
 
         <include
@@ -122,8 +123,8 @@
             <FrameLayout
                 android:id="@+id/fl_num"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
                 android:onClick="@{onClickListener}"
                 android:paddingRight="10dp">
 
@@ -140,7 +141,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="30dp"
-                    android:text="0/100"
                     android:textColor="@color/c_dblack"
                     android:textSize="13sp" />
 

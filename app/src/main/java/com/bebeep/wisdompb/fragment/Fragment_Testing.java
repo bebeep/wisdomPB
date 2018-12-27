@@ -61,7 +61,6 @@ public class Fragment_Testing extends CommonFragment {
         super.onCreate(savedInstanceState);
         activity = (TestingActivity) getActivity();
         entity = (TestingItemEntity) getArguments().getSerializable("entity");
-        LogUtil.showLog("传进来的entity:"+ MyApplication.gson.toJson(entity));
     }
 
     @Nullable
@@ -81,7 +80,7 @@ public class Fragment_Testing extends CommonFragment {
         binding.tvTitle.setText(entity.getTitle());
         binding.tvSure.setVisibility(entity.getType() == 1?View.VISIBLE:View.GONE);
         binding.tvType.setText(getType());
-        String pre = (activity.getIndex()+1)+"."+entity.getTitle();
+        String pre = (entity.getIndex()+1)+"."+entity.getTitle();
         splitTextColor(binding.tvTitle,pre+"("+getType()+","+entity.getFractionNum()+"分)", pre.length());
         initAdapter();
 
@@ -114,9 +113,12 @@ public class Fragment_Testing extends CommonFragment {
                     holder.setEnable(R.id.ll_parent,false);
                     holder.setVisible(R.id.tv_index, false);
                     holder.setVisible(R.id.iv_result,true);
+                    binding.tvSure.setVisibility(View.GONE);
                     if(commonTypeEntity.isChecked()){//用户选择了该选项-判断正误
                         holder.setImageResource(R.id.iv_result, commonTypeEntity.getIsCorrect()==1?R.drawable.icon_testing_right:R.drawable.icon_testing_wrong);
                         holder.setTextColor(R.id.tv_content, getResources().getColor(commonTypeEntity.getIsCorrect()==1?R.color.green:R.color.theme));
+                        holder.setBackgroundColor(R.id.ll_parent, getResources().getColor(entity.getType() == 1 && commonTypeEntity.isChecked() ?R.color.c_line:R.color.c_white));
+
                     }else { //显示正确答案
                         if(commonTypeEntity.getIsCorrect()==1){
                             holder.setImageResource(R.id.iv_result, R.drawable.icon_testing_right);
@@ -138,7 +140,11 @@ public class Fragment_Testing extends CommonFragment {
                 holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(entity.getType() == 0){//单选
+                        if(entity.getType() == 1){//多选
+                            commonTypeEntity.setChecked(!commonTypeEntity.isChecked());
+                            adapter.refresh(list);
+                            setCheckable();
+                        }else{ //单选
                             commonTypeEntity.setChecked(true);
                             entity.setHasChecked(true);
                             entity.setShowAnwsers(true);
@@ -146,10 +152,6 @@ public class Fragment_Testing extends CommonFragment {
                             activity.setResult(commonTypeEntity.getIsCorrect()==1);
                             checkAnswer(commonTypeEntity.getId());
                             entity.setItemBankAnswerList(list);
-                        }else{ //多选
-                            commonTypeEntity.setChecked(!commonTypeEntity.isChecked());
-                            adapter.refresh(list);
-                            setCheckable();
                         }
                     }
                 });
@@ -195,7 +197,7 @@ public class Fragment_Testing extends CommonFragment {
         map.put("templateId", activity.getTestingEntity().getTemplateId());
         map.put("itemBankId", entity.getItemBankId());
         map.put("choiceIds", ids); //选择的选项的id
-        map.put("currNum", String.valueOf(activity.getIndex() + 1));
+        map.put("currNum", String.valueOf(entity.getIndex() + 1));
         LogUtil.showLog("验证答案："+map.toString());
         OkHttpClientManager.postAsyn(URLS.EXAM_CHECK_ANSWER, new OkHttpClientManager.ResultCallback<String>() {
             @Override

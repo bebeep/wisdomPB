@@ -11,6 +11,7 @@
     <color name="yellow_d">#e2b70a</color>
     <color name="yellow_l">#7cf2d664</color>
     <color name="green">#5bba46</color>
+    <color name="green_d">#d2a2ea93</color>
     <color name="c_blue_d">#2FA2E4</color>
     <color name="c_dblack">#585756</color>
 </resources>

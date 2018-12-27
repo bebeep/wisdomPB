@@ -31,7 +31,7 @@ public class ExamActivity extends BaseSlideActivity implements View.OnClickListe
 
     private ActivityExamBinding binding;
     private String id;
-
+    private ExamEntity entity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +49,7 @@ public class ExamActivity extends BaseSlideActivity implements View.OnClickListe
     }
 
 
-    private void initUI(ExamEntity entity){
+    private void initUI(){
         if(entity == null) return;
         binding.tvTitle.setText(entity.getTitle());
         binding.tvTotalScore.setText(entity.getTotalScore()+"分");
@@ -69,7 +69,7 @@ public class ExamActivity extends BaseSlideActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.tv_start:
-                startActivityForResult(new Intent(this,TestingActivity.class).putExtra("id",id), MyApplication.ACTIVITY_BACK_CODE);
+                if(entity!=null)startActivityForResult(new Intent(this,TestingActivity.class).putExtra("id",id).putExtra("title",entity.getTitle()), MyApplication.ACTIVITY_BACK_CODE);
                 break;
         }
     }
@@ -88,7 +88,8 @@ public class ExamActivity extends BaseSlideActivity implements View.OnClickListe
             public void onResponse(BaseObject<ExamEntity> response) {
                 LogUtil.showLog("考试详情 ："+MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
-                    initUI(response.getData());
+                    entity = response.getData();
+                    initUI();
                 }else{
                     MyTools.showToast(ExamActivity.this, response.getMsg());
                     if(response.getErrorCode() == 1)refreshToken();
@@ -101,6 +102,7 @@ public class ExamActivity extends BaseSlideActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.showLog("examActivity resultCode:"+resultCode+"|requestCode"+requestCode);
         if(resultCode == RESULT_OK){
             if(requestCode == MyApplication.ACTIVITY_BACK_CODE){
                 setResult(RESULT_OK);

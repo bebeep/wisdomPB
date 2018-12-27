@@ -59,6 +59,14 @@ public class URLS {
     public static final String HOST_DETAILS =  HOST + "/home/news/info";
 
 
+    /**
+     * 个人中心
+     */
+    //我的笔记
+    public static final String MY_NOTE_LIST =  HOST + "/books/chapters/note/my/note";
+
+    //我的笔记-子列表
+    public static final String MY_NOTE_DETAILLIST =  HOST + "/books/chapters/note/my/note/list";
 
 
 
@@ -69,6 +77,23 @@ public class URLS {
     public static final String LIBRARY_TYPE = HOST + "/books/categorydata";
     //图书列表
     public static final String LIBRARY_LIST = HOST + "/books/data";
+
+    /**
+     * 党组织活动
+     */
+    //党组织详情
+    public static final String ORG_DETAILS = HOST + "/office/info";
+
+    //党组织活动列表
+    public static final String ORG_ACT_LIST = HOST + "/office/activity/data";
+
+    //党组织活动详情
+    public static final String ORG_ACT_DETAILS = HOST + "/office/activity/info";
+
+    //参加活动
+    public static final String ORG_ACT_JOIN = HOST + "/office/activity/participate";
+
+
 
 
     /**
@@ -98,7 +123,23 @@ public class URLS {
     public static final String PUBLIC_SHOW_DETAILS =  HOST + "/within/news/info";
 
 
+    /**
+     * 党建通讯录
+     */
+    //列表
+    public static final String ADDRESSBOOK_LIST = HOST + "/user/party/construction/address/book";
 
+    //详情
+    public static final String ADDRESSBOOK_DETAILS = HOST + "/user/party/construction/address/book/info";
+
+    /**
+     * 党建相册
+     */
+    //列表
+    public static final String PHOTO_LIST = HOST + "/album/data";
+
+    //详情
+    public static final String PHOTO_DETAILS = HOST + "/album/info";
 
 
     /**
@@ -118,6 +159,9 @@ public class URLS {
 
     //验证答案
     public static final String EXAM_CHECK_ANSWER = HOST + "/itembank/verifytheanswer";
+
+    //获取考试结果
+    public static final String EXAM_RESULT = HOST + "/itembank/calculation";
 
     /**
      * 三会一课

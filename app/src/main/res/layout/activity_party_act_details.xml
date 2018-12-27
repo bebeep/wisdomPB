@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/c_white"
         android:orientation="vertical">
 
 
@@ -36,6 +37,7 @@
                 <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:overScrollMode="never"
                     android:scrollbars="none">
 
                     <LinearLayout
@@ -52,9 +54,8 @@
                             android:layout_marginTop="10dp"
                             android:gravity="center_vertical"
                             android:minHeight="25dp"
-                            android:text="大学生志愿者暑期关爱农民工子女"
                             android:textColor="@color/c_sblack"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
 
@@ -77,33 +78,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="23.5dp"
-                                android:text="2018-11-11 —— 2018-12-11"
-                                android:textColor="@color/c_gray"
-                                android:textSize="12sp" />
-                        </FrameLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="15dp"
-                            android:orientation="horizontal">
-
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:padding="2.5dp"
-                                android:src="@drawable/icon_location" />
-
-                            <TextView
-                                android:id="@+id/tv_addr"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="3dp"
-                                android:layout_weight="1"
-                                android:text="四川省成都市青羊区小南街101号 "
                                 android:textColor="@color/c_gray"
                                 android:textSize="12sp" />
 
@@ -111,8 +85,10 @@
                             <LinearLayout
                                 android:id="@+id/ll_scan"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
+                                android:layout_height="25dp"
                                 android:layout_marginLeft="5dp"
+                                android:layout_gravity="right"
+                                android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
                                 <ImageView
@@ -129,7 +105,8 @@
                                     android:textColor="@color/c_gray"
                                     android:textSize="11sp" />
                             </LinearLayout>
-                        </LinearLayout>
+                        </FrameLayout>
+
 
                         <View
                             android:layout_width="match_parent"
@@ -189,6 +166,7 @@
                                 android:gravity="center"
                                 android:onClick="@{onClickListener}"
                                 android:paddingLeft="15dp"
+                                android:visibility="gone"
                                 android:paddingRight="15dp">
 
                                 <TextView
@@ -252,6 +230,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
+                        <TextView
+                            android:id="@+id/tv_empty"
+                            android:textColor="@color/c_gray"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp" />
 
                     </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>
@@ -318,7 +304,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:text="999"
                     android:textColor="@color/c_gray"
                     android:textSize="12sp" />
             </LinearLayout>

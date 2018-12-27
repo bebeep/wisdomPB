@@ -10,8 +10,7 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@drawable/bg_rec_3dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_menu_top" />
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/tv_name"
@@ -22,7 +21,6 @@
         android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:text="吴彦祖"
         android:textColor="@color/c_sblack"
         android:textSize="14sp" />
 
@@ -35,7 +33,6 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="45dp"
         android:gravity="center_vertical"
-        android:text="宣传委员"
         android:textColor="@color/c_gray"
         android:textSize="12sp" />
 

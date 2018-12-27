@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -21,15 +22,16 @@
             android:layout_height="90dp"
             android:layout_marginTop="50dp">
 
-            <ImageView
+            <com.bebeep.commontools.views.CustomRoundAngleImageView
                 android:id="@+id/img_head"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:background="@drawable/bg_rec_3dp_line"
-                android:padding="5dp"
-                android:src="@drawable/icon_logo" />
+                android:padding="1dp"
+                app:radius="3dp"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/tv_org_name"
@@ -41,7 +43,6 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="2"
-                android:text="党组织名称 "
                 android:textColor="@color/c_sblack"
                 android:textSize="13sp" />
 
@@ -58,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="党员  999"
+                    android:text="党员  "
                     android:textColor="@color/c_gray"
                     android:textSize="12sp" />
 
@@ -67,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
-                    android:text="活动  999"
+                    android:text="活动  "
                     android:textColor="@color/c_gray"
                     android:textSize="12sp" />
             </FrameLayout>
@@ -130,6 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
+            android:overScrollMode="never"
             android:layout_marginTop="200dp">
 
 
@@ -150,8 +152,8 @@
 
                     <TextView
                         android:id="@+id/tv_empty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
                         android:gravity="center"
                         android:text="暂无内容"
                         android:textColor="@color/c_gray"

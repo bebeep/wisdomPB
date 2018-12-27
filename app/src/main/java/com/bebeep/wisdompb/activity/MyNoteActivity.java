@@ -16,12 +16,21 @@ import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
 import com.bebeep.wisdompb.BR;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseSlideActivity;
+import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.NoteEntity;
 import com.bebeep.wisdompb.databinding.ActivityMynoteBinding;
+import com.bebeep.wisdompb.util.LogUtil;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
@@ -29,7 +38,7 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 /**
  * 笔记
  */
-public class MyNoteActivity extends SlideBackActivity implements View.OnClickListener,OnPullListener,
+public class MyNoteActivity extends BaseSlideActivity implements View.OnClickListener,OnPullListener,
         SwipeRefreshLayout.OnRefreshListener{
 
     private ActivityMynoteBinding binding;
@@ -37,6 +46,7 @@ public class MyNoteActivity extends SlideBackActivity implements View.OnClickLis
     private List<NoteEntity> list = new ArrayList<>();
 
     private boolean showDelLayout = false,hasChooseAll = false;
+    private String id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +56,9 @@ public class MyNoteActivity extends SlideBackActivity implements View.OnClickLis
     }
 
     private void init(){
+        id = getIntent().getStringExtra("id");
         initAdapter();
+        getData();
         binding.setVariable(BR.onClickListener,this);
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText("我的笔记");
@@ -55,6 +67,7 @@ public class MyNoteActivity extends SlideBackActivity implements View.OnClickLis
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
+        binding.nrl.setPullLoadEnable(false);
         binding.nrl.setOnLoadingListener(this);
     }
 
@@ -66,6 +79,10 @@ public class MyNoteActivity extends SlideBackActivity implements View.OnClickLis
         adapter = new CommonAdapter<NoteEntity>(this, R.layout.item_mynote,list){
             @Override
             protected void convert(ViewHolder holder, final NoteEntity entity, int position) {
+                holder.setText(R.id.tv_title, (position+1) + entity.getBookChaptersName());
+                holder.setText(R.id.tv_content,entity.getChoiceContent());
+                holder.setText(R.id.tv_note,entity.getContent());
+
                 holder.getConvertView().setClickable(showDelLayout);
                 holder.setVisible(R.id.iv_choose, showDelLayout);
                 holder.setImageResource(R.id.iv_choose, entity.isChoosed()?R.drawable.icon_choose_c:R.drawable.icon_choose_u);
@@ -140,6 +157,30 @@ public class MyNoteActivity extends SlideBackActivity implements View.OnClickLis
                 adapter.refresh(list);
                 break;
         }
+    }
+
+
+    private void getData(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("books.id", id);
+        OkHttpClientManager.postAsyn(URLS.MY_NOTE_DETAILLIST, new OkHttpClientManager.ResultCallback<BaseList<NoteEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseList<NoteEntity> response) {
+                LogUtil.showLog("我的笔记 ："+MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    list = response.getData();
+                    adapter.refresh(list);
+                }else{
+                    MyTools.showToast(MyNoteActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+            }
+        },header,map);
     }
 
 

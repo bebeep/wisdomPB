@@ -66,6 +66,7 @@
                         android:layout_marginTop="25dp"
                         android:background="@drawable/bg_rec_5dp_whiteline"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:onClick="@{onClickListener}"
                         android:orientation="horizontal">
 
@@ -105,6 +106,7 @@
                             android:textSize="16sp" />
 
                         <ImageView
+                            android:id="@+id/iv_sex"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_marginLeft="5dp"
@@ -119,6 +121,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:text="在岗状态"
+                    android:visibility="gone"
                     android:textColor="@color/c_gray"
                     android:textSize="13sp" />
 
@@ -129,6 +132,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
                     android:text="在岗"
+                    android:visibility="gone"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
@@ -137,6 +141,7 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     android:background="@color/c_qing" />
 
                 <TextView
@@ -194,6 +199,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:text="人员类型"
+                    android:visibility="gone"
                     android:textColor="@color/c_gray"
                     android:textSize="13sp" />
 
@@ -204,6 +210,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
                     android:text="正式党员"
+                    android:visibility="gone"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
@@ -212,6 +219,7 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     android:background="@color/c_qing" />
                 <TextView
                     android:layout_width="wrap_content"
