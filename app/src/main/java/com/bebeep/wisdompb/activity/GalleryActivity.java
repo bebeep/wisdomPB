@@ -77,16 +77,16 @@ public class GalleryActivity extends BaseSlideActivity implements OnPullListener
     private void initAdapter(){
         adapter = new CommonAdapter<GalleryEntity>(this,R.layout.item_gallery_detail,list){
             @Override
-            protected void convert(ViewHolder holder, GalleryEntity entity, int position) {
+            protected void convert(ViewHolder holder, final GalleryEntity entity, int position) {
                 CustomRoundAngleImageView iv = holder.getView(R.id.iv);
                 holder.setImageUrl(iv, URLS.IMAGE_PRE + entity.getImgsrc(),R.drawable.bg_book);
-                holder.setText(R.id.tv_zan, entity.getReadingQuantity());
+                holder.setText(R.id.tv_zan, entity.getDzQuantity());
                 holder.setImageResource(R.id.iv_zan, TextUtils.equals(entity.getIsDz(),"1")?R.drawable.icon_zan_yellow:R.drawable.icon_zan_gallery);
 
                 holder.setOnClickListener(R.id.fl_zan, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        zan(entity.getId());
                     }
                 });
             }
@@ -142,11 +142,12 @@ public class GalleryActivity extends BaseSlideActivity implements OnPullListener
     /**
      * 点赞
      */
-    private void zan(){
+    private void zan(String id){
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);
-        map.put("type","");
+        map.put("type","4");
+        LogUtil.showLog("点赞："+map.toString());
         OkHttpClientManager.postAsyn(URLS.ZAN, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
@@ -162,6 +163,7 @@ public class GalleryActivity extends BaseSlideActivity implements OnPullListener
         },header,map);
 
     }
+
 
 
     @Override

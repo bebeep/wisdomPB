@@ -124,6 +124,8 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
         binding.tvJoin.setText(TextUtils.equals("1",entity.getIsParticipate())?"已参与":"我要参与");
         binding.tvJoin.setBackgroundResource(TextUtils.equals("1",entity.getIsParticipate())?R.drawable.bg_tv_send_gray:R.drawable.bg_btn_join);
         binding.tvJoin.setClickable(!TextUtils.equals("1",entity.getIsParticipate()));
+        binding.ivZan.setImageResource(TextUtils.equals(entity.getIsDz(),"1")?R.drawable.icon_zan_c:R.drawable.icon_zan);
+        binding.ivCollect.setImageResource(TextUtils.equals(entity.getIsCollection(),"1")?R.drawable.icon_collect_c:R.drawable.icon_collect);
     }
 
 
@@ -176,6 +178,12 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
         switch (v.getId()){
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.iv_zan://点赞
+                zan();
+                break;
+            case R.id.iv_collect://收藏
+                collect();
                 break;
             case R.id.tv_join://我要参与
                 join();
@@ -362,6 +370,53 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
 
     }
 
+    /**
+     * 点赞
+     */
+    private void zan(){
+        HashMap header = new HashMap(),map =new HashMap();
+        header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
+        map.put("themeId",id);
+        map.put("type","3");
+        OkHttpClientManager.postAsyn(URLS.ZAN, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("点赞 response："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    int errorCode = response.getErrorCode();
+                    binding.ivZan.setImageResource(errorCode == 6?R.drawable.icon_zan:R.drawable.icon_zan_c);
+                }else MyTools.showToast(PartyActDetailsActivity.this, response.getMsg());
+            }
+        },header,map);
+
+    }
+    /**
+     * 收藏
+     */
+    private void collect(){
+        HashMap header = new HashMap(),map =new HashMap();
+        header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
+        map.put("themeId",id);
+        map.put("type", "3");
+        OkHttpClientManager.postAsyn(URLS.COLLECT, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("收藏 response："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    int errorCode = response.getErrorCode();
+                    binding.ivCollect.setImageResource(errorCode == 6?R.drawable.icon_collect:R.drawable.icon_collect_c);
+                }else MyTools.showToast(PartyActDetailsActivity.this, response.getMsg());
+            }
+        },header,map);
+    }
 
     //加载webview
     private void initWeb(String url) {

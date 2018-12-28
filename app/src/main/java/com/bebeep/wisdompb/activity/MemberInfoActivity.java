@@ -58,7 +58,7 @@ public class MemberInfoActivity extends BaseSlideActivity implements View.OnClic
         PicassoUtil.setImageUrl(this,binding.rimgHead, URLS.IMAGE_PRE+userInfo.getPhoto(),R.drawable.icon_head,60,60);
         binding.tvName.setText(userInfo.getName());
         binding.tvPhoneNum.setText(userInfo.getPhone());
-        binding.ivSex.setImageResource(userInfo.getSex() == 1?R.drawable.icon_sex_man:R.drawable.icon_sex_man);
+        binding.ivSex.setImageResource(userInfo.getSex() == 1?R.drawable.icon_sex_man:R.drawable.icon_sex_woman);
         binding.tvBranch.setText(userInfo.getOffice());
         binding.tvPosition.setText(userInfo.getPartyPosts());
         binding.tvTime1.setText(userInfo.getJoiningPartyOrganizationDate());

@@ -1,6 +1,5 @@
 package com.bebeep.wisdompb.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -21,7 +20,7 @@ import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.commontools.views.CustomProgressDialog;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
-import com.bebeep.wisdompb.base.BaseActivity;
+import com.bebeep.wisdompb.base.BaseAppCompatActivity;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.LoginEntity;
 import com.bebeep.wisdompb.bean.UserInfo;
@@ -35,7 +34,7 @@ import java.util.HashMap;
 /**
  * 登录
  */
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseAppCompatActivity implements View.OnClickListener{
 
 
     private ActivityLoginBinding binding;

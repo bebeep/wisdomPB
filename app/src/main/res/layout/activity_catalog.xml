@@ -4,6 +4,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:background="@color/c_white"
         android:layout_height="match_parent">
 
 
@@ -12,13 +13,24 @@
             layout="@layout/layout_title" />
 
 
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             android:layout_marginTop="45dp" />
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="45dp"
+            android:gravity="center"
+            android:text="暂无内容"
+            android:textColor="@color/c_gray"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
 
         <TextView
             android:id="@+id/tv_top"
@@ -26,17 +38,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
             android:background="@color/c_line"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="5dp"
+            android:minHeight="40dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:minHeight="40dp"
-            android:lineSpacingExtra="5dp"
-            android:textColor="@color/c_gray"
             android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:visibility="gone"
             android:text="目录-章回"
-            android:gravity="center_vertical"
-            android:textSize="15sp" />
+            android:textColor="@color/c_gray"
+            android:textSize="15sp"
+            android:visibility="gone" />
     </FrameLayout>
 
 </layout>

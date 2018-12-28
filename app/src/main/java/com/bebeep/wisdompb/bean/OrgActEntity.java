@@ -17,6 +17,7 @@ public class OrgActEntity {
     private String endTime;// 结束时间
     private String imgsrcs;// 图片地址
     private String readingQuantity;// 阅读数量
+    private String dzQuantity;//点赞数量
     private String isDz;// 是否点赞 0否1是
     private String isParticipate;// 是否参加 0否1是
     private String isCollection;// 是否收藏 0否1是
@@ -30,6 +31,15 @@ public class OrgActEntity {
 
     public void setActivityFoUserBizList(List<UserInfo> activityFoUserBizList) {
         this.activityFoUserBizList = activityFoUserBizList;
+    }
+
+
+    public String getDzQuantity() {
+        return dzQuantity;
+    }
+
+    public void setDzQuantity(String dzQuantity) {
+        this.dzQuantity = dzQuantity;
     }
 
     public String getStartTime() {

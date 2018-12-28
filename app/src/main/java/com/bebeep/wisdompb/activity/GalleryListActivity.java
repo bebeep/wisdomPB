@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -85,28 +86,41 @@ public class GalleryListActivity extends BaseSlideActivity implements OnPullList
                 CustomRoundAngleImageView iv11 = holder.getView(R.id.iv11);
                 CustomRoundAngleImageView iv22 = holder.getView(R.id.iv22);
                 CustomRoundAngleImageView iv33 = holder.getView(R.id.iv33);
-                String[] imgs = entity.getImgsrc().split(",");
-                if(imgs !=null && imgs.length>0){
-                    if(imgs.length==1){
-                        holder.setVisible(R.id.cv_1,true);
-                        holder.setVisible(R.id.cv_2,false);
-                        holder.setVisible(R.id.cv_3,false);
-                        initBlurImage(URLS.IMAGE_PRE+ imgs[0], iv11);
-                    }
-                    if(imgs.length==2){
-                        holder.setVisible(R.id.cv_1,false);
-                        holder.setVisible(R.id.cv_2,true);
-                        holder.setVisible(R.id.cv_3,false);
-                        initBlurImage(URLS.IMAGE_PRE+ imgs[1], iv22);
-                    }
-                    if(imgs.length==3){
-                        holder.setVisible(R.id.cv_1,false);
-                        holder.setVisible(R.id.cv_2,false);
-                        holder.setVisible(R.id.cv_3,true);
-                        initBlurImage(URLS.IMAGE_PRE+ imgs[2], iv33);
+                if(TextUtils.isEmpty(entity.getImgsrcs())){
+                    holder.setVisible(R.id.cv_1,false);
+                    holder.setVisible(R.id.cv_2,false);
+                    holder.setVisible(R.id.cv_3,false);
+                    holder.setVisible(R.id.tv_empty, true);
+                }else{
+                    holder.setVisible(R.id.tv_empty, false);
+                    String[] imgs = entity.getImgsrcs().split(",");
+                    if(imgs !=null && imgs.length>0){
+                        if(imgs.length==1){
+                            holder.setVisible(R.id.cv_1,true);
+                            holder.setVisible(R.id.cv_2,false);
+                            holder.setVisible(R.id.cv_3,false);
+                            initBlurImage(URLS.IMAGE_PRE+ imgs[0], iv11);
+                            holder.setText(R.id.tv_num1, entity.getImgSize()+"+");
+                        }
+                        if(imgs.length==2){
+                            holder.setVisible(R.id.cv_1,false);
+                            holder.setVisible(R.id.cv_2,true);
+                            holder.setVisible(R.id.cv_3,false);
+                            holder.setImageUrl((ImageView)holder.getView(R.id.iv21),URLS.IMAGE_PRE+imgs[0],R.drawable.default_error,100,75);
+                            initBlurImage(URLS.IMAGE_PRE+ imgs[1], iv22);
+                            holder.setText(R.id.tv_num2, entity.getImgSize()+"+");
+                        }
+                        if(imgs.length>=3){
+                            holder.setVisible(R.id.cv_1,false);
+                            holder.setVisible(R.id.cv_2,false);
+                            holder.setVisible(R.id.cv_3,true);
+                            holder.setImageUrl((ImageView)holder.getView(R.id.iv31),URLS.IMAGE_PRE+imgs[0],R.drawable.default_error,100,75);
+                            holder.setImageUrl((ImageView)holder.getView(R.id.iv32),URLS.IMAGE_PRE+imgs[1],R.drawable.default_error,100,75);
+                            initBlurImage(URLS.IMAGE_PRE+ imgs[2], iv33);
+                            holder.setText(R.id.tv_num3, entity.getImgSize()+"+");
+                        }
                     }
                 }
-
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -148,7 +162,8 @@ public class GalleryListActivity extends BaseSlideActivity implements OnPullList
                 binding.srl.setRefreshing(false);
                 LogUtil.showLog("相册："+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
-                    if(pageNo == 1)list = response.getData();else{
+                    if(pageNo == 1)list = response.getData();
+                    else{
                         if(response.getData()==null||response.getData().size()==0)  MyTools.showToast(GalleryListActivity.this,"没有更多内容了");
                         else list.addAll(response.getData());
                     }

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
@@ -97,7 +98,7 @@ public class Fragment_LibraryList extends CommonFragment implements OnPullListen
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(getActivity(), BookDetailsActivity.class));
+                startActivity(new Intent(getActivity(), BookDetailsActivity.class).putExtra("id",list.get(position).getId()));
             }
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -109,24 +110,27 @@ public class Fragment_LibraryList extends CommonFragment implements OnPullListen
 
     private void getData() {
         HashMap header = new HashMap(), map = new HashMap();
-        header.put("Authorization", MyApplication.getInstance().getAccessToken());
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         map.put("booksCategory.id", id);
         OkHttpClientManager.postAsyn(URLS.LIBRARY_LIST, new OkHttpClientManager.ResultCallback<BaseList<LibraryListEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+                binding.srl.setRefreshing(false);
                 statusMsg(e, code);
             }
             @Override
             public void onResponse(BaseList<LibraryListEntity> response) {
+                binding.srl.setRefreshing(false);
                 Log.e("TAG", "图书列表 response: " + MyApplication.gson.toJson(response));
                 if (response.isSuccess()) {
                     list = response.getData();
                     adapter.refresh(list);
                 } else {
-                    if (response.getErrorCode() == 1) {
-                        refreshToken();
-                    }
+                    MyTools.showToast(getActivity(),response.getMsg());
+                    if (response.getErrorCode() == 1) refreshToken();
                 }
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
             }
         }, header, map);
     }
@@ -137,7 +141,7 @@ public class Fragment_LibraryList extends CommonFragment implements OnPullListen
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                getData();
             }
         },500);
     }

@@ -187,11 +187,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="none" />
+                        android:layout_height="match_parent">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none" />
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none" />
+                        <TextView
+                            android:id="@+id/tv_empty"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:textSize="14sp"
+                            android:text="没有更多内容"
+                            android:gravity="center"
+                            android:textColor="@color/c_gray"/>
+                    </FrameLayout>
+
                 </cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout>
 
             </LinearLayout>

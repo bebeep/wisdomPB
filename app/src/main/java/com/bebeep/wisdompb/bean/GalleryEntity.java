@@ -5,10 +5,37 @@ public class GalleryEntity {
     private String id;// 1,
     private String isDz;// 1,
     private String isCollection;// 1,
+    private String imgsrcs;// 20181205/3123.png,
     private String imgsrc;// 20181205/3123.png,
+    private String imgSize;
     private String readingQuantity;// 0,
     private String createDate;// 2017-01-01
+    private String dzQuantity;//点赞数量
 
+
+    public String getDzQuantity() {
+        return dzQuantity;
+    }
+
+    public void setDzQuantity(String dzQuantity) {
+        this.dzQuantity = dzQuantity;
+    }
+
+    public String getImgsrcs() {
+        return imgsrcs;
+    }
+
+    public void setImgsrcs(String imgsrcs) {
+        this.imgsrcs = imgsrcs;
+    }
+
+    public String getImgSize() {
+        return imgSize;
+    }
+
+    public void setImgSize(String imgSize) {
+        this.imgSize = imgSize;
+    }
 
     public String getTitle() {
         return title;

@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:id="@+id/ll_parent"
     android:background="@drawable/bg_fl_click"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
+        android:layout_height="35dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
-        android:layout_height="35dp">
+        android:gravity="center_vertical">
 
         <com.bebeep.commontools.views.RoundImage
+            android:id="@+id/rimg_head"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:id="@+id/rimg_head"
-            android:src="@drawable/icon_head"/>
+            android:src="@drawable/icon_head" />
 
         <TextView
             android:id="@+id/tv_name"
-            android:text="吴彦祖"
-            android:textSize="14sp"
-            android:textColor="@color/c_sblack"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/c_sblack"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_content"
-        android:textColor="@color/c_gray"
-        android:textSize="13sp"
-        android:layout_marginLeft="45dp"
-        android:text="这是评论内容..."
-        android:layout_marginRight="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="15dp"
+        android:text="这是评论内容..."
+        android:textColor="@color/c_gray"
+        android:textSize="13sp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginTop="10dp"
-        android:background="@color/c_line"/>
+        android:background="@color/c_line" />
 </LinearLayout>

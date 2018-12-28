@@ -152,7 +152,7 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
             protected void convert(ViewHolder holder, final OrgActEntity entity, int position) {
                 holder.setText(R.id.tv_title, entity.getTitle());
                 holder.setText(R.id.tv_time, entity.getStartTime() + " —— "+entity.getEndTime());
-                holder.setText(R.id.tv_zan_num, "99");
+                holder.setText(R.id.tv_zan_num, entity.getDzQuantity());
                 holder.setText(R.id.tv_scan_num, entity.getReadingQuantity());
                 holder.setBackgroundRes(R.id.tv_join,TextUtils.equals("1",entity.getIsParticipate())?R.drawable.bg_tv_send_gray:R.drawable.bg_btn_join);
                 holder.setText(R.id.tv_join,TextUtils.equals("1",entity.getIsParticipate())?"已参与":"我要参与");

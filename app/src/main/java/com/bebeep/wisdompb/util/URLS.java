@@ -5,6 +5,7 @@ public class URLS {
 
     //数据地址
     public static final String  HOST = "http://203.6.227.248:400/api";
+//    public static final String  HOST = "http://192.168.153.1/api";
 
     //图片上传地址
     public static final String FILE_UPLOAD = "http://203.6.227.248:7070/upload";
@@ -62,11 +63,26 @@ public class URLS {
     /**
      * 个人中心
      */
+    //我的书架
+    public static final String MY_BOOK =  HOST + "/books/my/booksdata";
+
     //我的笔记
     public static final String MY_NOTE_LIST =  HOST + "/books/chapters/note/my/note";
 
     //我的笔记-子列表
     public static final String MY_NOTE_DETAILLIST =  HOST + "/books/chapters/note/my/note/list";
+
+    //我的积分-获取我的个人积分和排名
+    public static final String MY_JIFEN_DETAIL_PERSON =  HOST + "/user/ranking/rownum";
+
+    //我的积分-获取我的支部积分和排名
+    public static final String MY_JIFEN_DETAIL_BRANCH =  HOST + "/office/ranking/rownum";
+
+    //我的积分-个人积分排行榜
+    public static final String MY_JIFEN_PERSONAL =  HOST + "/user/ranking/list";
+
+    //我的积分-支部积分排行榜
+    public static final String MY_JIFEN_BRANCH =  HOST + "/office/ranking/list";
 
 
 
@@ -75,8 +91,21 @@ public class URLS {
      */
     //图书类型
     public static final String LIBRARY_TYPE = HOST + "/books/categorydata";
+
     //图书列表
     public static final String LIBRARY_LIST = HOST + "/books/data";
+
+    //图书详情
+    public static final String LIBRARY_BOOK_DETAILS = HOST + "/books/info";
+
+    //加入书架
+    public static final String LIBRARY_BOOK_ADD = HOST + "/books/bookshelf/insert";
+
+    //目录列表
+    public static final String LIBRARY_CATALOG_LIST = HOST + "/books/getBookChaptersData";
+
+    //章节内容
+    public static final String LIBRARY_CATALOG_CONTENT = HOST + "/books/getBookChaptersInfo";
 
     /**
      * 党组织活动

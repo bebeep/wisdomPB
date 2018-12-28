@@ -1,6 +1,5 @@
 package com.bebeep.wisdompb.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
@@ -8,14 +7,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
@@ -24,7 +18,7 @@ import com.bebeep.commontools.utils.PicassoUtil;
 import com.bebeep.slidemenu.DoubleSlideMenu;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
-import com.bebeep.wisdompb.base.BaseActivity;
+import com.bebeep.wisdompb.base.BaseAppCompatActivity;
 import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityMainBinding;
 import com.bebeep.wisdompb.fragment.Fragment1;
@@ -38,7 +32,7 @@ import com.bebeep.wisdompb.util.URLS;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
+public class MainActivity extends BaseAppCompatActivity implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
     private ActivityMainBinding binding;
 
     private FrameLayout[] fls;
@@ -99,7 +93,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         UserInfo info = MyApplication.getInstance().getUserInfo();
         PicassoUtil.setImageUrl(this, binding.rimgHead, URLS.IMAGE_PRE + info.getPhoto(),R.drawable.icon_head,60,60);
         binding.tvName.setText(info.getName());
-        binding.ivSex.setImageResource(info.getSex() == 1?R.drawable.icon_sex_man:R.drawable.icon_sex_man);
+        binding.ivSex.setImageResource(info.getSex() == 1?R.drawable.icon_sex_man:R.drawable.icon_sex_woman);
         binding.tvGroup.setText(info.getOffice());
 
     }

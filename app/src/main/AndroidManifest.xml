@@ -74,7 +74,7 @@
         <activity android:name=".activity.LibraryListActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.BookDetailsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.CatalogActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.BookContentActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.BookContentActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"/>
         <activity android:name=".activity.MyNoteListActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.MyNoteActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.MyJifenActivity" android:screenOrientation="portrait"/>

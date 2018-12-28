@@ -1,21 +1,24 @@
 package com.bebeep.wisdompb.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.wisdompb.MyApplication;
+import com.bebeep.wisdompb.activity.LoginActivity;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.LoginEntity;
 import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
 
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 
-public class BaseActivity extends Activity {
+public class BaseAppCompatActivity extends AppCompatActivity {
 
     private OnRefreshTokenListener onRefreshTokenListener;
 
