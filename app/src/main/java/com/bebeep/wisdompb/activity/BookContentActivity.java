@@ -7,13 +7,19 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 
+//import com.bebeep.bookpage.bean.BookList;
+//import com.bebeep.bookpage.tool.Config;
+//import com.bebeep.bookpage.tool.PageFactory;
+//import com.bebeep.bookpage.view.PageWidget;
+import com.bebeep.bookpage.factory.PicturesPageFactory;
+import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseActivity;
-import com.bebeep.wisdompb.base.BaseAppCompatActivity;
 import com.bebeep.wisdompb.databinding.ActivityBookContentBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
@@ -25,11 +31,28 @@ import java.util.HashMap;
 /**
  * 文章内容
  *
+ * 1、点右边-下一页
+ * 2、点左边-上一页
+ * 3、点中间-呼出菜单
+ * 4、向右滑-上一页
+ * 5、向左滑-下一页
+ *
+ * 记录阅读的位置
+ * 记录设置的主题
+ * 记录字体
+ * 记录背景
+ * 记录标记
+ * 记录笔记
+ * 记录书签
+ *
  */
 public class BookContentActivity extends BaseActivity implements View.OnClickListener{
     private ActivityBookContentBinding binding;
 
     private String id;
+
+    private PicturesPageFactory factory;
+    private int[] drawableIds = {R.drawable.bg_book,R.drawable.bg_start};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +66,14 @@ public class BookContentActivity extends BaseActivity implements View.OnClickLis
         id = getIntent().getStringExtra("id");
         getData();
         binding.setVariable(BR.onClickListener,this);
+
+        factory = new PicturesPageFactory(this,drawableIds);
+
+//        binding.bookpage.setPageFactory(factory);
     }
+
+
+
 
     @Override
     public void onClick(View v) {

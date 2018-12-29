@@ -1,45 +1,16 @@
-package com.bebeep.commontools.utils;
+package com.bebeep.bookpage.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+/**
+ * Created by anlia on 2017/12/11.
+ */
 
 public class BitmapUtils {
-
-    public static Bitmap returnBitMap(final String url) {
-        URL fileUrl = null;
-        Bitmap bitmap = null;
-
-        try {
-            fileUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            HttpURLConnection conn = (HttpURLConnection) fileUrl
-                    .openConnection();
-            conn.setDoInput(true);
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
-
-
     /**
      * drawable图片资源转bitmap
      * @param drawable
@@ -96,5 +67,4 @@ public class BitmapUtils {
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, oldW, oldH, matrix, true);
         return bitmap;
     }
-
 }
