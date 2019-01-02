@@ -298,7 +298,7 @@ public class BookPageView extends View {
                 setTouchPoint(event.getX(),event.getY(),style);
                 break;
             case MotionEvent.ACTION_UP:
-                startCancelAnim();
+//                startCancelAnim();
                 break;
         }
         return true;
@@ -319,6 +319,52 @@ public class BookPageView extends View {
         }
         mScroller.startScroll((int) a.x, (int) a.y, dx, dy, 400);
     }
+
+//    /**
+//     * 自动完成滑动操作
+//     */
+//    private void autoScroll(){
+//        switch (touchStyle){
+//            case TOUCH_LEFT:
+//                if(pageNum>1){
+//                    autoScrollToPreviousPage();
+//                }
+//                break;
+//            case TOUCH_RIGHT:
+//                if(pageNum<pageFactory.pageTotal){
+//                    autoScrollToNextPage();
+//                }
+//                break;
+//        }
+//    }
+//
+//    /**
+//     * 自动完成翻到下一页操作
+//     */
+//    private void autoScrollToNextPage(){
+//        pageState = PAGE_NEXT;
+//
+//        int dx,dy;
+//        dx = (int) -(viewWidth+scrollPageLeft);
+//        dy = (int) (touchPoint.y);
+//
+//        int time =(int) ((1+scrollPageLeft/viewWidth) * scrollTime);
+//        mScroller.startScroll((int) (viewWidth+scrollPageLeft), (int) touchPoint.y, dx, dy, time);
+//    }
+//
+//    /**
+//     * 自动完成返回上一页操作
+//     */
+//    private void autoScrollToPreviousPage(){
+//        pageState = PAGE_PREVIOUS;
+//
+//        int dx,dy;
+//        dx = (int) -scrollPageLeft;
+//        dy = (int) (touchPoint.y);
+//
+//        int time =(int) (-scrollPageLeft/viewWidth * scrollTime);
+//        mScroller.startScroll((int) (viewWidth+scrollPageLeft), (int) touchPoint.y, dx, dy, time);
+//    }
 
     /**
      * 设置触摸点

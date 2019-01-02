@@ -3,6 +3,7 @@ package com.bebeep.wisdompb.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bebeep.commontools.file.FileUtil;
 import com.bebeep.commontools.listener.SoftKeyBoardListener;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
@@ -26,6 +28,7 @@ import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.PicassoUtil;
 import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.commontools.views.CustomProgressDialog;
+import com.bebeep.readpage.bean.BookList;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
@@ -40,6 +43,9 @@ import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +68,8 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
     private CustomDialog customDialog;
 
     private BookEntity entity;
+    private File file;
+    private BookList bookList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,7 +156,28 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
                 addBookList();
                 break;
             case R.id.tv_read_now://立即阅读
-                startActivity(new Intent(this,BookContentActivity.class).putExtra("id",bookChaptersId));
+                //TODO 如果小说已下载，直接打开；如果没有下载，先下载小说
+                if(TextUtils.isEmpty(entity.getContentUrl())){
+                    MyTools.showToast(BookDetailsActivity.this,"该书籍内容缺失");
+                    return;
+                }
+
+                String fileName = entity.getTitle()+".txt";
+                file = new File(MyApplication.FILE_PATH + fileName);
+                if(file.exists()){
+                    List<BookList> bookLists = DataSupport.where("bookpath=?",MyApplication.FILE_PATH + fileName).find(BookList.class);
+                    LogUtil.showLog("DataSupport 查询到的："+MyApplication.gson.toJson(bookLists));//[{"begin":0,"bookname":"三体","bookpath":"/storage/emulated/0/wisdomPB/%E4%B8%89%E4%BD%93.txt","charset":"UTF-8","id":1,"baseObjId":1}]
+                    bookList = bookLists.get(0);
+                    if(bookList == null){
+                        MyTools.showToast(BookDetailsActivity.this,"该书籍内容缺失");
+                        return;
+                    }else {
+                        startActivity(new Intent(this,BookContentActivity.class).putExtra("bookList",bookList));
+                    }
+                }else {
+                    progressDialog.show();
+                    downloadTxt(URLS.IMAGE_PRE + entity.getContentUrl());
+                }
                 break;
         }
     }
@@ -417,4 +446,93 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
         tv.setText(spannableString);
     }
 
+
+    /**************/
+    //下载小说
+    private void downloadTxt(final String url){
+        OkHttpClientManager.downloadAsyn(url, MyApplication.FILE_TEMP_PATH, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                progressDialog.cancel();
+                MyTools.showToast(BookDetailsActivity.this,"书籍读取失败");
+            }
+            @Override
+            public void onResponse(String response) {
+                LogUtil.showLog("下载文件："+ MyApplication.gson.toJson(response));
+                if(!TextUtils.isEmpty(response)){
+                    String oldPath = MyApplication.FILE_TEMP_PATH+FileUtil.getFileName(response);
+                    String newPath = MyApplication.FILE_PATH + entity.getTitle()+".txt";
+                    FileUtil.renameFile( oldPath,newPath);
+                    save(newPath);
+                }else  {
+                    progressDialog.cancel();
+                    MyTools.showToast(BookDetailsActivity.this,"书籍读取失败");
+                }
+            }
+        });
+
+
+    }
+
+
+    //保存到本地数据库
+    private void save(String path){
+        bookList = new BookList();
+        List<BookList> bookLists = new ArrayList();
+        bookList.setBookname(FileUtil.getFileName(path));
+        bookList.setBookpath(path);
+        bookLists.add(bookList);
+
+        SaveBookToSqlLiteTask mSaveBookToSqlLiteTask = new SaveBookToSqlLiteTask();
+        mSaveBookToSqlLiteTask.execute(bookLists);
+    }
+
+
+    private class SaveBookToSqlLiteTask extends AsyncTask<List<BookList>,Void,Integer> {
+        private static final int FAIL = 0;
+        private static final int SUCCESS = 1;
+        private static final int REPEAT = 2;
+        private BookList repeatBookList;
+
+        @Override
+        protected Integer doInBackground(List<BookList>... params) {
+            List<BookList> bookLists = params[0];
+            for (BookList bookList : bookLists){
+                List<BookList> books = DataSupport.where("bookpath = ?", bookList.getBookpath()).find(BookList.class);
+                if (books.size() > 0){
+                    repeatBookList = bookList;
+                    startActivity(new Intent(BookDetailsActivity.this,BookContentActivity.class).putExtra("bookList",bookList));
+                    return REPEAT;
+                }
+            }
+            try {
+                DataSupport.saveAll(bookLists);
+            } catch (Exception e){
+                e.printStackTrace();
+                return FAIL;
+            }
+            return SUCCESS;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            String msg = "";
+            progressDialog.cancel();
+            switch (result){
+                case FAIL:
+                    msg = "由于一些原因添加书本失败";
+                    MyTools.showToast(BookDetailsActivity.this,"加载书籍内容失败");
+                    break;
+                case SUCCESS:
+                    msg = "添加书本成功";
+                    startActivity(new Intent(BookDetailsActivity.this,BookContentActivity.class).putExtra("bookList",bookList));
+                    break;
+                case REPEAT:
+                    msg = "书本" + repeatBookList.getBookname() + "重复了";
+                    break;
+            }
+
+        }
+    }
 }

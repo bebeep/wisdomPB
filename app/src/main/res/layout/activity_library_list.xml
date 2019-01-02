@@ -4,6 +4,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:background="@color/c_white"
         android:layout_height="match_parent">
 
         <include
@@ -16,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="45dp"
-            android:background="@color/c_white"
             app:tabIndicatorColor="@color/theme_d"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/theme_d"

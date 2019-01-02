@@ -1,1 +1,1 @@
-include ':app', ':bookpage','Baselib','slidemenu',"StickyItemDecoration",'photopicker'
+include ':app', ':bookpage', ':readpage','Baselib','slidemenu',"StickyItemDecoration",'photopicker'

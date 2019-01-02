@@ -13,10 +13,12 @@
         android:layout_height="match_parent">
 
 
-        <com.bebeep.bookpage.view.BookPageView
+
+        <com.bebeep.readpage.view.PageWidget
             android:id="@+id/bookpage"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </FrameLayout>
 </layout>
 

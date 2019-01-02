@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="book" ></dbname>
+
+    <version value="1" ></version>
+
+    <list>
+        <mapping class="com.bebeep.readpage.bean.BookCatalogue"></mapping>
+        <mapping class="com.bebeep.readpage.bean.BookList"></mapping>
+        <mapping class="com.bebeep.readpage.bean.BookMarks"></mapping>
+    </list>
+</litepal>

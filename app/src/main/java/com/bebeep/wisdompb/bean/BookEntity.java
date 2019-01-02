@@ -16,6 +16,16 @@ public class BookEntity {
     private int state;//状态 是否加入书架（0否；1是）
     private String imgsrc;//封面图
     private String bookChaptersId;//第一章id
+    private String contentUrl;//书籍下载地址
+
+
+    public String getContentUrl() {
+        return contentUrl;
+    }
+
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
+    }
 
     public String getBookChaptersId() {
         return bookChaptersId;

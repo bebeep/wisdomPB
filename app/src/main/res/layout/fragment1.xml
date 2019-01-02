@@ -220,7 +220,7 @@
                                     <ImageView
                                         android:layout_width="40dp"
                                         android:layout_height="40dp"
-                                        android:src="@drawable/icon_f1_t7" />
+                                        android:src="@drawable/icon_f1_t8" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
