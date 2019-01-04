@@ -43,6 +43,15 @@ public class URLS {
     //收藏
     public static final String COLLECT =  HOST + "/collection/insert";
 
+    //关于我们
+    public static final String ABOUT =  HOST + "/about/preview?id=1";
+
+    //免责声明
+    public static final String NOTICE =  HOST + "/about/preview?id=2";
+
+    //版本更新
+    public static final String VERSION =  HOST + "/version?type=0";
+
 
     /**
      * 首页
@@ -84,6 +93,26 @@ public class URLS {
     //我的积分-支部积分排行榜
     public static final String MY_JIFEN_BRANCH =  HOST + "/office/ranking/list";
 
+    //意见反馈
+    public static final String MY_TICKING =  HOST + "/feedback/save";
+
+    //政治生日卡
+    public static final String MY_BIRTHDAY_CARD = HOST + "/politics/birthday/card/my/data";
+
+    //我提交的
+    public static final String MY_SUBMIT = HOST + "/feedback/data";
+
+    //我的活动
+    public static final String MY_ACT = HOST + "/office/activity/my/data";
+
+    //我的评论
+    public static final String MY_COMMENT = HOST + "/comment/my/comment";
+
+    //我的收藏
+    public static final String MY_COLLECT = HOST + "/collection/my/coll/list";
+
+    //通知公告
+    public static final String MY_NOTICE = HOST + "/notice/announcement/my/data";
 
 
     /**
@@ -174,6 +203,9 @@ public class URLS {
     /**
      * 在线考试
      */
+    //我的考试
+    public static final String EXAM_MY_LIST = HOST + "/itembank/my/data";
+
     //待考列表
     public static final String EXAM_LIST = HOST + "/itembank/tested_data";
 
@@ -191,6 +223,7 @@ public class URLS {
 
     //获取考试结果
     public static final String EXAM_RESULT = HOST + "/itembank/calculation";
+
 
     /**
      * 三会一课
@@ -215,6 +248,24 @@ public class URLS {
 
     //参加
     public static final String MEETING_JOIN = HOST + "/meeting/participate";
+
+    //会议纪要
+    public static final String MEETING_MINUTES = HOST + "/meeting/data";
+
+    //会议纪要详情
+    public static final String MEETING_MINUTES_DETAILS = HOST + "/meeting/summary/info";
+
+    //获取二维码
+    public static final String MEETING_GET_QRCODE = HOST + "/sign/get/news/qr";
+
+    //签到列表-会议
+    public static final String MEETING_SIGN_LIST = HOST + "/meeting/sign/list";
+
+    //签到列表-活动
+    public static final String ACT_SIGN_LIST = HOST + "/office/activity/sign/list";
+
+    //签到
+    public static final String ACT_SIGN = HOST + "/sign/scan";
 
 
     /**

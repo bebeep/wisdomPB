@@ -3,6 +3,7 @@ package com.bebeep.wisdompb.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +17,7 @@ import android.widget.RadioGroup;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.PicassoUtil;
 import com.bebeep.slidemenu.DoubleSlideMenu;
+import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseAppCompatActivity;
@@ -57,7 +59,7 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
 
     private void init(){
         initUserInfo();
-        binding.setOnClickListener(this);
+        binding.setVariable(BR.onClickListener,this);
         initRadioButtonSize();
         initFrgament();
         initArrowIcons();
@@ -87,6 +89,7 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
         if(deltaMillis >= 2 * 3600 * 1000){ //如果两次刷新token的间隔超过2个小时，就自动刷新
             refreshToken();
         }
+
     }
 
     private void initUserInfo(){
@@ -101,50 +104,55 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
 
     @Override
     public void onClick(View v) {
-        if(binding.mDoubleSlideMenu.getDragState() == DoubleSlideMenu.DragState.STATE_CLOSE) return;
-        binding.mDoubleSlideMenu.close();
+        if(v.getId() != R.id.fl_msg){
+            if(binding.mDoubleSlideMenu.getDragState() == DoubleSlideMenu.DragState.STATE_CLOSE) return;
+            binding.mDoubleSlideMenu.close();
+        }
         switch (v.getId()){
             case R.id.rimg_head://
-                startActivity(new Intent(this, UserInfoActivity.class));
+                startActivityForResult(new Intent(this, UserInfoActivity.class),88);
                 break;
-            case R.id.fl_menu1://我的考试
+            case R.id.fl_menu1://我的考试-
                 startActivity(new Intent(this,MyExamActivity.class));
                 break;
-            case R.id.fl_menu2://我的书架
+            case R.id.fl_menu2://我的书架-
                 startActivity(new Intent(this,MyBookrackActivity.class));
                 break;
-            case R.id.fl_menu3://我的笔记
+            case R.id.fl_menu3://我的笔记-
                 startActivity(new Intent(this,MyNoteListActivity.class));
                 break;
-            case R.id.fl_menu4://我的积分
+            case R.id.fl_menu4://我的积分-
                 startActivity(new Intent(this,MyJifenActivity.class));
                 break;
-            case R.id.fl_menu5://我的会议
+            case R.id.fl_menu5://我的会议-
                 startActivity(new Intent(this,MyMeetingActivity.class));
                 break;
-            case R.id.fl_menu6://我的活动
+            case R.id.fl_menu6://我的活动-
                 startActivity(new Intent(this,MyActActivity.class));
                 break;
-            case R.id.fl_menu7://我的收藏
+            case R.id.fl_menu7://我的收藏-
                 startActivity(new Intent(this,MyCollectionActivity.class));
                 break;
-            case R.id.fl_menu8://我的评论
-                startActivity(new Intent(this,MyCommentActivity.class));
+            case R.id.fl_menu8://我的评论-
+                startActivityForResult(new Intent(this,MyCommentActivity.class),99);
                 break;
-            case R.id.fl_menu9://我提起的
+            case R.id.fl_menu9://我提起的-
                 startActivity(new Intent(this,MySubmitActivity.class));
                 break;
-            case R.id.fl_menu10://意见反馈
+            case R.id.fl_menu10://意见反馈-
                 startActivity(new Intent(this,TicklingActivity.class));
                 break;
             case R.id.fl_menu11://设置
                 startActivity(new Intent(this, ConfigActivity.class));
                 break;
             case R.id.fl_menu12://关于
-
+                startActivity(new Intent(this, WebViewActivity.class).putExtra("title","关于我们").putExtra("url",URLS.ABOUT));
                 break;
-            case R.id.fl_menu13://政治生日卡
+            case R.id.fl_menu13://政治生日卡-
                 startActivity(new Intent(this, BirthdayCardActivity.class));
+                break;
+            case R.id.fl_msg://我的消息
+                startActivityForResult(new Intent(MainActivity.this, NoticeActivity.class),77);
                 break;
         }
     }
@@ -295,8 +303,24 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
     }
 
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == 99){
+                binding.rb4.setChecked(true);
+            }else if(requestCode == 88){
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                finish();
+            }else if(requestCode == 77) {
+                if(resultCode == 1){//三会一课
+                    showFragment(2);
+                }else if(resultCode == 2){//在线考试
+                    showFragment(1);
+                }
+            }
+        }
+    }
 
     @Override
     public void onBackPressed() {

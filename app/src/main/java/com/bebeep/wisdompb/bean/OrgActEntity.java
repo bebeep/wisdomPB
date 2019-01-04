@@ -22,6 +22,10 @@ public class OrgActEntity {
     private String isParticipate;// 是否参加 0否1是
     private String isCollection;// 是否收藏 0否1是
 
+    private String activityId;//活动id
+
+
+
     private List<UserInfo> activityFoUserBizList;
 
 
@@ -33,6 +37,13 @@ public class OrgActEntity {
         this.activityFoUserBizList = activityFoUserBizList;
     }
 
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
 
     public String getDzQuantity() {
         return dzQuantity;

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/c_white"
+    android:id="@+id/ll_parent"
+    android:background="@drawable/bg_fl_click"
     android:orientation="vertical">
 
 
@@ -17,8 +18,7 @@
             android:id="@+id/rimg_head"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/icon_head" />
+            android:layout_marginTop="10dp" />
 
 
         <LinearLayout
@@ -37,7 +37,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="nickname"
                     android:textColor="@color/theme_d"
                     android:textSize="14sp" />
 
@@ -46,7 +45,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
-                    android:text="2018-11-12"
                     android:textColor="@color/c_gray"
                     android:textSize="13sp" />
 
@@ -56,9 +54,9 @@
                 android:id="@+id/tv_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
                 android:lineSpacingExtra="3dp"
-                android:text="评论内容。。。。。。。。。。。。。。。"
                 android:textColor="@color/c_gray"
                 android:textSize="14sp" />
 
@@ -66,47 +64,38 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:visibility="gone" />
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/fl_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_fl_click_qing"
+                android:orientation="horizontal"
                 android:padding="5dp">
 
 
-                <com.bebeep.commontools.views.RoundImage
-                    android:id="@+id/rimg_head_source"
+                <ImageView
+                    android:id="@+id/iv_source"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:src="@drawable/icon_head" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_source_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="50dp"
+                    android:layout_margin="5dp"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="3dp"
                     android:minHeight="25dp"
-                    android:text="新闻标题拉斯卡掉了卡手机端快捷了撒打卡机安苏的撒大口径斯卡迪静安寺"
                     android:textColor="@color/c_sblack"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/tv_source_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_gravity="right|bottom"
-                    android:gravity="center_vertical"
-                    android:text="2018-11-15"
-                    android:textColor="@color/c_gray"
-                    android:textSize="13sp" />
 
-            </FrameLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_comment_num"
@@ -119,7 +108,8 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="5dp">
+                android:paddingTop="5dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -142,20 +132,22 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:background="@color/c_qing" />
+        android:layout_marginTop="5dp"
+        android:background="@color/c_qing"
+        android:visibility="gone" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:paddingBottom="5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginTop="5dp"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="20dp"
@@ -176,10 +168,10 @@
             android:id="@+id/tv_reply_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lineSpacingExtra="3dp"
-            android:text="回复的内容。。。"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/tv_reply_name"
+            android:lineSpacingExtra="3dp"
+            android:text="回复的内容。。。"
             android:textColor="@color/c_dblack"
             android:textSize="14sp" />
     </RelativeLayout>

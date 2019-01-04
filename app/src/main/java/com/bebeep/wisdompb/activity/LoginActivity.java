@@ -115,7 +115,6 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
     private void getUserInfo(String token){
         HashMap header = new HashMap();
         header.put("Authorization",token);
-
         HashMap map = new HashMap();
         map.put("","");
         OkHttpClientManager.postAsyn(URLS.USERINFO, new OkHttpClientManager.ResultCallback<BaseObject<UserInfo>>() {

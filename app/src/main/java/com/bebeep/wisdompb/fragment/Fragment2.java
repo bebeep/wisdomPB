@@ -158,14 +158,14 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 ExamEntity entity = list.get(position);
-//                if(TextUtils.equals(entity.getState(),"0")){
-//                    MyTools.showToast(getActivity(),"考试还未开始");
-//                }else if(TextUtils.equals(entity.getState(),"1")){
-//                    startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
-//                }else if(TextUtils.equals(entity.getState(),"2")){
-//                    MyTools.showToast(getActivity(),"考试已过期");
-//                }
-                startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
+                if(TextUtils.equals(entity.getState(),"0")){
+                    MyTools.showToast(getActivity(),"考试还未开始");
+                }else if(TextUtils.equals(entity.getState(),"1")){
+                    startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
+                }else if(TextUtils.equals(entity.getState(),"2")){
+                    MyTools.showToast(getActivity(),"考试已过期");
+                }
+//                startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
             }
 
             @Override

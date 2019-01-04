@@ -1,5 +1,8 @@
 package com.bebeep.commontools.file;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -116,5 +119,20 @@ public class FileUtil {
      */
     public static String getFileName(String path){
         return path.substring(path.lastIndexOf("/")+1);
+    }
+
+
+    /**
+     * 打开文件
+     * @param context
+     * @param f
+     */
+    public static void openFile(Context context, File f) {
+        Intent myIntent = new Intent(android.content.Intent.ACTION_VIEW);
+        String extension = android.webkit.MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(f).toString());
+        String mimetype = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        myIntent.setDataAndType(Uri.fromFile(f),mimetype);
+        context.startActivity(myIntent);
+
     }
 }

@@ -42,6 +42,7 @@
                     android:onClick="@{onClickListener}"
                     android:orientation="horizontal"
                     android:paddingLeft="15dp"
+                    android:visibility="gone"
                     android:paddingRight="10dp">
 
                     <TextView
@@ -84,6 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
+                    android:visibility="gone"
                     android:background="@color/c_line" />
 
 
@@ -198,7 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
-                    android:paddingRight="10dp" />
+                    android:paddingRight="5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -227,6 +229,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_fl_click"
+                        android:onClick="@{onClickListener}"
                         android:paddingRight="5dp">
 
                         <ImageView
@@ -238,13 +241,13 @@
 
                         <TextView
                             android:id="@+id/tv_pic_num"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_marginLeft="32dp"
                             android:layout_marginTop="5dp"
                             android:background="@drawable/bg_round_tv_red"
                             android:gravity="center"
-                            android:text="1"
+                            android:text="0"
                             android:textColor="@color/c_white"
                             android:textSize="8sp" />
                     </FrameLayout>
@@ -256,6 +259,8 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_fl_click"
                         android:paddingLeft="5dp"
+                        android:visibility="gone"
+                        android:onClick="@{onClickListener}"
                         android:paddingRight="10dp">
 
                         <ImageView

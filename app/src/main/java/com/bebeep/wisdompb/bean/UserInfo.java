@@ -12,7 +12,55 @@ public class UserInfo {
     private boolean checked;
     private String partyPosts;//职务
     private String phone;//电话号码
+    private String userId;
+    private int mettingJurisdictionType; //预约会议权限；0否；1有
+    private int activitySignJurisdictionType;//活动签到权限；0否；1有
+    private int mettingSignJurisdictionType;//会议签到权限；0否；1有
+    private String signTime;//签到时间
+    private String birthday;//生日
+    private String education;//学历
+    private String nation;//民族
 
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public String getSignTime() {
+        return signTime;
+    }
+
+    public void setSignTime(String signTime) {
+        this.signTime = signTime;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getPhone() {
         return phone;
@@ -100,5 +148,29 @@ public class UserInfo {
 
     public void setBecomingFullMemberDate(String becomingFullMemberDate) {
         this.becomingFullMemberDate = becomingFullMemberDate;
+    }
+
+    public int getMettingJurisdictionType() {
+        return mettingJurisdictionType;
+    }
+
+    public void setMettingJurisdictionType(int mettingJurisdictionType) {
+        this.mettingJurisdictionType = mettingJurisdictionType;
+    }
+
+    public int getActivitySignJurisdictionType() {
+        return activitySignJurisdictionType;
+    }
+
+    public void setActivitySignJurisdictionType(int activitySignJurisdictionType) {
+        this.activitySignJurisdictionType = activitySignJurisdictionType;
+    }
+
+    public int getMettingSignJurisdictionType() {
+        return mettingSignJurisdictionType;
+    }
+
+    public void setMettingSignJurisdictionType(int mettingSignJurisdictionType) {
+        this.mettingSignJurisdictionType = mettingSignJurisdictionType;
     }
 }

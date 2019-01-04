@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="61dp"
+    android:id="@+id/fl_parent"
     android:background="@drawable/bg_fl_click"
     android:paddingLeft="15dp">
 
@@ -13,7 +14,6 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:gravity="bottom"
-        android:text="关于党员学习的通知"
         android:textColor="@color/c_sblack"
         android:textSize="15sp" />
 
@@ -31,7 +31,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="2018-11-25"
             android:textColor="@color/c_gray"
             android:textSize="12sp" />
 
@@ -45,6 +44,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingTop="2dp"
+            android:visibility="gone"
             android:text="置顶"
             android:textColor="@color/c_white"
             android:textSize="10sp" />
@@ -54,6 +54,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:padding="3dp"
+            android:visibility="gone"
             android:src="@drawable/icon_link" />
     </LinearLayout>
 

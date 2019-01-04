@@ -1,10 +1,17 @@
 package com.bebeep.wisdompb.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
@@ -24,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.acker.simplezxing.activity.CaptureActivity;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
@@ -60,6 +68,7 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 public class PartyActDetailsActivity extends BaseEditActivity implements View.OnClickListener,
         OnPullListener,SwipeRefreshLayout.OnRefreshListener,TextWatcher {
     private ActivityPartyActDetailsBinding binding;
+    private static final int REQ_CODE_PERMISSION = 0x1111;
     private WebSettings settings;
     private List<CommentEntity> list = new ArrayList<>();
     private CommonAdapter adapter;
@@ -70,6 +79,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
     private CustomDialog customDialog;
     private CustomProgressDialog progressDialog;
     private String  parentId="0",repliedUserId="0",delCommentId="";
+    private UserInfo userInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +91,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
 
     private void init(){
         id = getIntent().getStringExtra("id");
+        userInfo = MyApplication.getInstance().getUserInfo();
         initAdapter();
         initDialog();
         getOrgDetails();
@@ -121,9 +132,13 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
             binding.tvUserNames.setText(names);
         }
 
-        binding.tvJoin.setText(TextUtils.equals("1",entity.getIsParticipate())?"已参与":"我要参与");
-        binding.tvJoin.setBackgroundResource(TextUtils.equals("1",entity.getIsParticipate())?R.drawable.bg_tv_send_gray:R.drawable.bg_btn_join);
-        binding.tvJoin.setClickable(!TextUtils.equals("1",entity.getIsParticipate()));
+        if(userInfo.getActivitySignJurisdictionType() == 1){
+            binding.tvJoin.setText("统计活动签到");
+        }else{
+            binding.tvJoin.setText(TextUtils.equals("1",entity.getIsParticipate())?"已参与":"我要参与");
+            binding.tvJoin.setBackgroundResource(TextUtils.equals("1",entity.getIsParticipate())?R.drawable.bg_tv_send_gray:R.drawable.bg_btn_join);
+            binding.tvJoin.setClickable(!TextUtils.equals("1",entity.getIsParticipate()));
+        }
         binding.ivZan.setImageResource(TextUtils.equals(entity.getIsDz(),"1")?R.drawable.icon_zan_c:R.drawable.icon_zan);
         binding.ivCollect.setImageResource(TextUtils.equals(entity.getIsCollection(),"1")?R.drawable.icon_collect_c:R.drawable.icon_collect);
     }
@@ -186,7 +201,13 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
                 collect();
                 break;
             case R.id.tv_join://我要参与
-                join();
+                if(TextUtils.equals(binding.tvJoin.getText().toString(),"我要参与")) join();
+                else {
+                    LogUtil.showLog("签到");
+                    if (ContextCompat.checkSelfPermission(PartyActDetailsActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(PartyActDetailsActivity.this, new String[]{Manifest.permission.CAMERA}, REQ_CODE_PERMISSION);
+                    } else  startCaptureActivityForResult();
+                }
                 break;
             case R.id.ll_user_open://展开/关闭
                 open = !open;
@@ -418,6 +439,31 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
         },header,map);
     }
 
+
+    /**
+     * 签到
+     */
+    private void sign(String id){
+        HashMap header = new HashMap(),map =new HashMap();
+        header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
+        map.put("themeId",id);
+        OkHttpClientManager.postAsyn(URLS.ACT_SIGN, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("签到 response："+ MyApplication.gson.toJson(response));
+                MyTools.showToast(PartyActDetailsActivity.this,response.getMsg());
+                if(response.isSuccess()){
+                    getOrgDetails();
+                }else MyTools.showToast(PartyActDetailsActivity.this, response.getMsg());
+            }
+        },header,map);
+    }
+
+
     //加载webview
     private void initWeb(String url) {
         settings = binding.webview.getSettings();
@@ -502,6 +548,65 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
                     }
                 })
                 .createTwoButtonDialog();
+    }
+
+
+
+    private void startCaptureActivityForResult() {
+        Intent intent = new Intent(PartyActDetailsActivity.this, CaptureActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(CaptureActivity.KEY_NEED_BEEP, CaptureActivity.VALUE_BEEP);
+        bundle.putBoolean(CaptureActivity.KEY_NEED_VIBRATION, CaptureActivity.VALUE_VIBRATION);
+        bundle.putBoolean(CaptureActivity.KEY_NEED_EXPOSURE, CaptureActivity.VALUE_NO_EXPOSURE);
+        bundle.putByte(CaptureActivity.KEY_FLASHLIGHT_MODE, CaptureActivity.VALUE_FLASHLIGHT_OFF);
+        bundle.putByte(CaptureActivity.KEY_ORIENTATION_MODE, CaptureActivity.VALUE_ORIENTATION_AUTO);
+        bundle.putBoolean(CaptureActivity.KEY_SCAN_AREA_FULL_SCREEN, CaptureActivity.VALUE_SCAN_AREA_FULL_SCREEN);
+        bundle.putBoolean(CaptureActivity.KEY_NEED_SCAN_HINT_TEXT, CaptureActivity.VALUE_SCAN_HINT_TEXT);
+        intent.putExtra(CaptureActivity.EXTRA_SETTING_BUNDLE, bundle);
+        startActivityForResult(intent, CaptureActivity.REQ_CODE);
+    }
+
+    /**
+     * 请求权限
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQ_CODE_PERMISSION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // User agree the permission
+                    startCaptureActivityForResult();
+                } else {
+                    MyTools.showToast(PartyActDetailsActivity.this,"请在设置中对本应用授权");
+                }
+            }
+            break;
+        }
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CaptureActivity.REQ_CODE){
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    String key = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
+                    sign(key);
+                    LogUtil.showLog("扫描二维码："+key);
+                    break;
+                case Activity.RESULT_CANCELED:
+                    if (data != null) {
+                        MyTools.showToast(PartyActDetailsActivity.this,"请在设置中对本应用授权");
+                    }
+                    break;
+            }
+        }
     }
 
 }

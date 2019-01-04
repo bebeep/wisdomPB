@@ -13,7 +13,43 @@ public class CommentEntity {
     private String repliedUserId;//被回复的id；
     private String repliedUserName;//被回复的用户姓名
     private String createDate;//评论时间
+    private String themeId;//主题id
+    private String themeImgsrcs; //缩略图
+    private String themeTitle; //标题
+    private int type; //主题类；0首页新闻；1专题教育；2党内公示；3发现;4活动;5图书评论
 
+
+    public String getThemeId() {
+        return themeId;
+    }
+
+    public void setThemeId(String themeId) {
+        this.themeId = themeId;
+    }
+
+    public String getThemeImgsrcs() {
+        return themeImgsrcs;
+    }
+
+    public void setThemeImgsrcs(String themeImgsrcs) {
+        this.themeImgsrcs = themeImgsrcs;
+    }
+
+    public String getThemeTitle() {
+        return themeTitle;
+    }
+
+    public void setThemeTitle(String themeTitle) {
+        this.themeTitle = themeTitle;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getUserId() {
         return userId;

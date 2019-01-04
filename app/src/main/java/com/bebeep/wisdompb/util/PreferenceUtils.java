@@ -1,8 +1,11 @@
 package com.bebeep.wisdompb.util;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.wisdompb.MyApplication;
 
 
@@ -71,5 +74,12 @@ public class PreferenceUtils {
         final SharedPreferences.Editor editor = p.edit();
         editor.clear();
         editor.commit();
+    }
+
+
+    public static void clearPreferenceByName(Context context,String name) {
+        SharedPreferences mySharedPreferences = context.getSharedPreferences(name, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        editor.clear().commit();
     }
 }

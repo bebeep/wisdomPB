@@ -17,6 +17,7 @@
             android:layout_height="45dp"
             android:background="@color/c_qing"
             android:focusable="true"
+            android:visibility="gone"
             android:focusableInTouchMode="true">
 
             <ImageView
@@ -70,6 +71,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="@color/c_line" />
 
         <RadioGroup
@@ -79,6 +81,7 @@
             android:background="@color/c_white"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
+            android:visibility="gone"
             android:paddingRight="20dp">
 
 
@@ -140,6 +143,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="@color/c_line" />
 
         <cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout
@@ -165,8 +169,8 @@
 
                     <TextView
                         android:id="@+id/tv_empty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
                         android:gravity="center"
                         android:text="暂无内容"
                         android:textColor="@color/c_gray"

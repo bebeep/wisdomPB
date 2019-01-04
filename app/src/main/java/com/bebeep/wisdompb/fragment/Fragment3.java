@@ -107,10 +107,12 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_title_right:
-                MyTools.showToast(getActivity(),"search");
+
                 break;
             case R.id.ll_f3_1://预约会议
-                startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
+                if(MyApplication.getInstance().getUserInfo().getMettingJurisdictionType() == 1){
+                    startActivity(new Intent(getActivity(),OrderMeetingActivity.class));
+                }else  MyTools.showToast(getActivity(),"无权限");
                 break;
             case R.id.ll_f3_2://我的会议
                 startActivity(new Intent(getActivity(),MyMeetingActivity.class));

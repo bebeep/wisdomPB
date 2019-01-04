@@ -7,11 +7,19 @@ public class CommonTypeEntity implements Serializable{
     private String id;
     private String title;
 
+    private String imgUrl;
 
     private int isCorrect; //是否为正确答案  0否 1是
     private boolean isChecked;//用户是否已经选择了这个答案
 
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public boolean isChecked() {
         return isChecked;

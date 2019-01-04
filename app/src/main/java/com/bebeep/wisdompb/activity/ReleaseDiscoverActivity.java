@@ -12,9 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.PopupWindow;
-
-import com.bebeep.commontools.dokhttp.FileUtils;
-import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.showbigimage.ShowSingleBigImageDialog;
 import com.bebeep.commontools.utils.CompressImageUtils;
 import com.bebeep.commontools.utils.MyTools;

@@ -1,5 +1,6 @@
 package com.bebeep.wisdompb.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -68,9 +69,15 @@ public class MyMeetingActivity extends BaseSlideActivity implements OnPullListen
     private void initAdapter(){
         adapter = new CommonAdapter<MeetingEntity>(this,R.layout.item_my_collection,list){
             @Override
-            protected void convert(ViewHolder holder, MeetingEntity entity, int position) {
+            protected void convert(ViewHolder holder, final MeetingEntity entity, int position) {
                 holder.setText(R.id.tv_title,entity.getTheme());
                 holder.setText(R.id.tv_time,entity.getStartTime());
+                holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(MyMeetingActivity.this,MeetingDetailsActivity.class).putExtra("id",entity.getId()));
+                    }
+                });
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));

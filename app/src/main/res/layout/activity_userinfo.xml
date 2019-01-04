@@ -81,7 +81,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="吴彦祖"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -91,12 +90,14 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:visibility="gone"
                     android:background="@color/c_line" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingLeft="15dp"
+                    android:visibility="gone"
                     android:paddingRight="15dp">
 
 
@@ -113,7 +114,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="党组织名称"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -145,7 +145,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="党支部名称"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -183,7 +182,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="男"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -215,7 +213,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="1970-08-26"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -247,7 +244,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="汉"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -257,12 +253,14 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:visibility="gone"
                     android:background="@color/c_line" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingLeft="15dp"
+                    android:visibility="gone"
                     android:paddingRight="15dp">
 
 
@@ -279,7 +277,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="13666666666"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -311,7 +308,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="本科"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
 
@@ -343,7 +339,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
-                        android:text="2001-01-01"
                         android:textColor="@color/c_gray"
                         android:textSize="14sp" />
                 </FrameLayout>

@@ -420,14 +420,17 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
 
 
     private void downloadFile(){
-        OkHttpClientManager.downloadAsyn(URLS.IMAGE_PRE + entity.getEnclosureUrl(), MyApplication.FILE_PATH, new OkHttpClientManager.ResultCallback() {
+        OkHttpClientManager.downloadAsyn(URLS.IMAGE_PRE + entity.getEnclosureUrl(), MyApplication.FILE_PATH, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e, int code) {
-
+                MyTools.showToast(NewsDetailActivity.this,"下载出错，请重试");
             }
             @Override
-            public void onResponse(Object response) {
+            public void onResponse(String response) {
                 LogUtil.showLog("下载文件："+ MyApplication.gson.toJson(response));
+                if(!TextUtils.isEmpty(response)){
+                    MyTools.showToast(NewsDetailActivity.this,"下载文件成功，已保存到"+MyApplication.FILE_PATH+"文件夹下");
+                }else  MyTools.showToast(NewsDetailActivity.this,"下载失败，请重试");
             }
         });
     }

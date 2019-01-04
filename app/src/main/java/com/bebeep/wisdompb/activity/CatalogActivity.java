@@ -59,6 +59,7 @@ public class CatalogActivity extends BaseSlideActivity {
         if(TextUtils.isEmpty(id) || TextUtils.isEmpty(title)){
             MyTools.showToast(this,"该书籍不存在");
             finish();
+            return;
         }
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText(title);
