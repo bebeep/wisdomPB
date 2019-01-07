@@ -84,6 +84,15 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     private String selectTypeId = "",selectTypeName = "";//被选中的类型id
     private int pageNo = 1;
 
+    private List<AdsEntity> adsList;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter!=null)PicassoUtil.setImageUrl(getActivity(),binding.title.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,40,40);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -223,7 +232,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         adapter = new CommonAdapter<NewsEntity>(getActivity(),R.layout.item_f1,list){
             @Override
             protected void convert(ViewHolder holder, final NewsEntity entity, int position) {
-                holder.setImageUrl((ImageView)holder.getView(R.id.iv_head),URLS.IMAGE_PRE + entity.getPictureAddress(),R.drawable.default_error,60,80);
+                holder.setImageUrl((ImageView)holder.getView(R.id.iv_head),URLS.IMAGE_PRE + entity.getPictureAddress(),R.drawable.default_error,80,60);
                 holder.setText(R.id.tv_title,entity.getTitle());
                 holder.setText(R.id.tv_time,entity.getUpdateDate());
                 holder.setVisible(R.id.iv_link,TextUtils.equals(entity.getWhetherUrlAddress(),"1"));
@@ -244,15 +253,15 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
 
 
     private void firstBanner(){
-        List<AdsEntity> adsList = new ArrayList<>();
+        adsList = new ArrayList<>();
         adsList.add(new AdsEntity("123213213"));
-        initBanner(adsList);
+        initBanner();
     }
 
 
 
     //初始化轮播图
-    private void initBanner(final List<AdsEntity> adsList){
+    private void initBanner(){
         if(adsList == null || adsList.size()==0)return;
         imgList.clear();
         titleList.clear();
@@ -287,7 +296,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                     public void OnBannerClick(int position) {
                         String url = adsList.get(position).getUrl();
                         if(!TextUtils.isEmpty(url)){
-                            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",imgList.get(position)).putExtra("title",titleList.get(position)));
+                            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",url).putExtra("title",titleList.get(position)));
                         }
                     }
                 })
@@ -330,7 +339,8 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
             public void onResponse(BaseList<AdsEntity> response) {
                 Log.e("TAG","getads json="+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
-                    initBanner(response.getData());
+                    adsList = response.getData();
+                    initBanner();
                 }else{
                     MyTools.showToast(getActivity(), response.getMsg());
                 }

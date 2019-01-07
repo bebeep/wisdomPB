@@ -201,12 +201,13 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
                 collect();
                 break;
             case R.id.tv_join://我要参与
-                if(TextUtils.equals(binding.tvJoin.getText().toString(),"我要参与")) join();
-                else {
+                if(TextUtils.equals(binding.tvJoin.getText().toString(),"我要参与")) {
                     LogUtil.showLog("签到");
                     if (ContextCompat.checkSelfPermission(PartyActDetailsActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(PartyActDetailsActivity.this, new String[]{Manifest.permission.CAMERA}, REQ_CODE_PERMISSION);
                     } else  startCaptureActivityForResult();
+                }else {
+                    startActivity(new Intent(PartyActDetailsActivity.this, MeetingJoinActivity.class).putExtra("id",id).putExtra("type",1));
                 }
                 break;
             case R.id.ll_user_open://展开/关闭
@@ -447,6 +448,8 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);
+        map.put("type","1");
+        LogUtil.showLog("活动签到："+map.toString());
         OkHttpClientManager.postAsyn(URLS.ACT_SIGN, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
@@ -597,8 +600,18 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     String key = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
-                    sign(key);
-                    LogUtil.showLog("扫描二维码："+key);
+                    LogUtil.showLog("扫描得到的活动："+key);
+                    HashMap map = MyApplication.gson.fromJson(key,HashMap.class);
+                    if(map == null) {
+                        MyTools.showToast(PartyActDetailsActivity.this,"无效的二维码");
+                        return;
+                    }
+
+                    if(TextUtils.isEmpty(String.valueOf(map.get("content")))) {
+                        MyTools.showToast(PartyActDetailsActivity.this,"无效的二维码");
+                        return;
+                    }
+                    sign(String.valueOf(map.get("content")));
                     break;
                 case Activity.RESULT_CANCELED:
                     if (data != null) {

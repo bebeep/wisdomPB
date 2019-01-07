@@ -66,7 +66,7 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.nrl.setPullLoadEnable(false);
         binding.nrl.setOnLoadingListener(this);
         binding.title.tvTitle.setText("在线考试");
-        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
 
         binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {

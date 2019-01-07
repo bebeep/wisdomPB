@@ -16,8 +16,35 @@ public class MeetingEntity {
     private String enclosureNmae;//附件名称，有就显示；没有则隐藏，
     private String participateNum;//参加人数
     private String leaveNum;//请假人数
+    private int mettingJurisdictionType; //预约会议权限；0否；1有
+    private int activitySignJurisdictionType;//活动签到权限；0否；1有
+    private int mettingSignJurisdictionType;//会议签到权限；0否；1有
     private List<UserInfo> meetingInFoUserBizList;//参与用户列表
 
+
+    public int getMettingJurisdictionType() {
+        return mettingJurisdictionType;
+    }
+
+    public void setMettingJurisdictionType(int mettingJurisdictionType) {
+        this.mettingJurisdictionType = mettingJurisdictionType;
+    }
+
+    public int getActivitySignJurisdictionType() {
+        return activitySignJurisdictionType;
+    }
+
+    public void setActivitySignJurisdictionType(int activitySignJurisdictionType) {
+        this.activitySignJurisdictionType = activitySignJurisdictionType;
+    }
+
+    public int getMettingSignJurisdictionType() {
+        return mettingSignJurisdictionType;
+    }
+
+    public void setMettingSignJurisdictionType(int mettingSignJurisdictionType) {
+        this.mettingSignJurisdictionType = mettingSignJurisdictionType;
+    }
 
     public String getIssue() {
         return issue;

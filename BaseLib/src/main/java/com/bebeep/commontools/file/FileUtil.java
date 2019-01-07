@@ -135,4 +135,13 @@ public class FileUtil {
         context.startActivity(myIntent);
 
     }
+
+    /**
+     * 删除文件
+     * @param filePath
+     */
+    public static void deleteFile(String filePath){
+        File file = new File(filePath);
+        if(file.exists()) file.delete();
+    }
 }

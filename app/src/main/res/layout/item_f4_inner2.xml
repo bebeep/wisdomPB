@@ -17,14 +17,14 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="5dp" />
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="35dp"
             android:singleLine="true"
             android:textColor="@color/c_sblack"
             android:textSize="13sp" />

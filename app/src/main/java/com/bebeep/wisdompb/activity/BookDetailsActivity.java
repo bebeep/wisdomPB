@@ -167,11 +167,11 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
                 if(file.exists()){
                     List<BookList> bookLists = DataSupport.where("bookpath=?",MyApplication.FILE_PATH + fileName).find(BookList.class);
                     LogUtil.showLog("DataSupport 查询到的："+MyApplication.gson.toJson(bookLists));//[{"begin":0,"bookname":"三体","bookpath":"/storage/emulated/0/wisdomPB/%E4%B8%89%E4%BD%93.txt","charset":"UTF-8","id":1,"baseObjId":1}]
-                    bookList = bookLists.get(0);
-                    if(bookList == null){
-                        MyTools.showToast(BookDetailsActivity.this,"该书籍内容缺失");
+                    if(bookLists == null || bookLists.size() ==0){
+                        save(file.getAbsolutePath());
                         return;
                     }else {
+                        bookList = bookLists.get(0);
                         startActivity(new Intent(this,BookContentActivity.class).putExtra("bookList",bookList));
                     }
                 }else {

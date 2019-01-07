@@ -114,6 +114,7 @@ public class MyCollectionActivity extends BaseSlideActivity implements OnPullLis
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e, code);
                 binding.srl.setRefreshing(false);
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
             }
             @Override
             public void onResponse(BaseList<CollectEntity> response) {
@@ -126,6 +127,7 @@ public class MyCollectionActivity extends BaseSlideActivity implements OnPullLis
                     MyTools.showToast(MyCollectionActivity.this,response.getMsg());
                     if (response.getErrorCode() == 1) refreshToken();
                 }
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
             }
         }, header, map);
     }

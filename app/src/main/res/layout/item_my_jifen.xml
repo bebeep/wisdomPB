@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="71dp"
-    android:background="@drawable/bg_fl_click">
+    android:layout_height="71dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:gravity="center"
-            android:text="9"
             android:textColor="@color/c_sblack"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -34,8 +32,7 @@
             android:id="@+id/rimg_head"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/icon_head" />
+            android:layout_marginLeft="5dp" />
 
         <FrameLayout
             android:layout_width="0dp"
@@ -48,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:gravity="bottom"
-                android:text="吴彦祖"
                 android:textColor="@color/c_sblack"
                 android:textSize="15sp" />
 
@@ -58,7 +54,6 @@
                 android:layout_height="25dp"
                 android:layout_gravity="bottom"
                 android:gravity="center_vertical"
-                android:text="集团工会"
                 android:textColor="@color/c_gray"
                 android:textSize="14sp" />
 
@@ -73,7 +68,6 @@
                 android:id="@+id/tv_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="80"
                 android:textColor="@color/yellow_d"
                 android:textSize="16sp" />
 

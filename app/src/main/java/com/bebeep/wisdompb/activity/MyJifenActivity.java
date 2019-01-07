@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
@@ -63,7 +64,7 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
         binding.setVariable(BR.onClickListener,this);
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText("我的积分");
-        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_myjifen_top_right);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
@@ -87,7 +88,7 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
 
                 break;
             case R.id.ll_details:
-                startActivity(new Intent(MyJifenActivity.this, JifenDetailsActivity.class));
+                startActivity(new Intent(MyJifenActivity.this, JifenDetailsActivity.class).putExtra("flag",currentChecked));
                 break;
         }
     }
@@ -113,6 +114,10 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
                     holder.setVisible(R.id.iv_range,false);
                     holder.setText(R.id.tv_range,""+(position+1));
                 }
+                holder.setText(R.id.tv_name,entity.getName());
+                holder.setImageUrl((ImageView)holder.getView(R.id.rimg_head),URLS.IMAGE_PRE + entity.getPhoto(),R.drawable.icon_head,60,60);
+                holder.setText(R.id.tv_group,entity.getOfficeName());
+                holder.setText(R.id.tv_score,entity.getIntegral());
             }
         };
         binding.recyclerView1.setLayoutManager(new LinearLayoutManager(this));
@@ -154,6 +159,11 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
                     holder.setVisible(R.id.iv_range,false);
                     holder.setText(R.id.tv_range,""+(position+1));
                 }
+                holder.setText(R.id.tv_name,entity.getName());
+                holder.setImageUrl((ImageView)holder.getView(R.id.rimg_head),URLS.IMAGE_PRE + entity.getPhoto(),R.drawable.icon_head,60,60);
+                holder.setText(R.id.tv_group,entity.getOfficeName());
+                holder.setText(R.id.tv_score,entity.getIntegral());
+
             }
         };
         binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this));
@@ -186,7 +196,6 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
         HashMap header = new HashMap(),map = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         map.put("","");
-        LogUtil.showLog("header:"+header);
         LogUtil.showLog("map:"+map);
         OkHttpClientManager.postAsyn(JIFEN_DETAIL, new OkHttpClientManager.ResultCallback<BaseObject<JifenEntity>>() {
             @Override
@@ -197,12 +206,13 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
             @Override
             public void onResponse(BaseObject<JifenEntity> response) {
                 binding.srl.setRefreshing(false);
-                LogUtil.showLog("我的个人积分："+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     if(currentChecked == 0){
+                        LogUtil.showLog("我的个人积分："+ MyApplication.gson.toJson(response));
                         entity1 = response.getData();
                         initUI(entity1);
                     }else {
+                        LogUtil.showLog("党组织积分："+ MyApplication.gson.toJson(response));
                         entity2 = response.getData();
                         initUI(entity2);
                     }
@@ -270,6 +280,7 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
                 if(list1==null||list1.size()==0)getJifenList();
                 binding.recyclerView1.setVisibility(View.VISIBLE);
                 binding.recyclerView2.setVisibility(View.GONE);
+                binding.tvEmpty.setVisibility(list1==null||list1.size()==0?View.VISIBLE:View.GONE);
                 break;
             case R.id.rb2:
                 currentChecked = 1;
@@ -279,6 +290,7 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
                 if(list2==null||list2.size()==0)getJifenList();
                 binding.recyclerView1.setVisibility(View.GONE);
                 binding.recyclerView2.setVisibility(View.VISIBLE);
+                binding.tvEmpty.setVisibility(list2==null||list2.size()==0?View.VISIBLE:View.GONE);
                 break;
         }
     }

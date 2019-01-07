@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="45dp"
             android:layout_marginTop="45dp"
+            android:overScrollMode="never"
             android:scrollbars="none">
 
             <LinearLayout
@@ -293,6 +294,62 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/c_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="2dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="积分设置"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="*"
+                        android:textColor="@color/theme_d"
+                        android:textSize="14sp" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_min"
+                        android:src="@drawable/icon_min"
+                        android:layout_width="45dp"
+                        android:padding="12dp"
+                        android:onClick="@{onClickListener}"
+                        android:layout_height="45dp" />
+
+                    <TextView
+                        android:id="@+id/tv_jifen_num"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray"
+                        android:text="0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/iv_plus"
+                        android:src="@drawable/icon_plus"
+                        android:layout_width="45dp"
+                        android:padding="12dp"
+                        android:onClick="@{onClickListener}"
+                        android:layout_height="45dp" />
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
@@ -510,9 +567,9 @@
                         android:id="@+id/tv_file_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="70dp"
                         android:textColor="@color/c_gray"
-                        android:layout_gravity="center_vertical"
                         android:textSize="13sp" />
                 </FrameLayout>
 

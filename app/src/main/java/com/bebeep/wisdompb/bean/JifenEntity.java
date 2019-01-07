@@ -6,7 +6,62 @@ public class JifenEntity {
     private String photo;//2018312/423423/png,
     private String integral;//积分
     private int rownum;//排名
+    private String officeName;//支部名称
 
+    private String operator;// +,
+    private String fraction;// 积分
+    private String typeLabel;// 标签-前面标红的部分
+    private String content;// 内容,
+    private String createDate;// 2017-01-01 11;//11;//11
+
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getFraction() {
+        return fraction;
+    }
+
+    public void setFraction(String fraction) {
+        this.fraction = fraction;
+    }
+
+    public String getTypeLabel() {
+        return typeLabel;
+    }
+
+    public void setTypeLabel(String typeLabel) {
+        this.typeLabel = typeLabel;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getOfficeName() {
+        return officeName;
+    }
+
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
+    }
 
     public String getId() {
         return id;

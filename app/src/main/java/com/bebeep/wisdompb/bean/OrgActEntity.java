@@ -23,7 +23,9 @@ public class OrgActEntity {
     private String isCollection;// 是否收藏 0否1是
 
     private String activityId;//活动id
-
+    private int mettingJurisdictionType; //预约会议权限；0否；1有
+    private int activitySignJurisdictionType;//活动签到权限；0否；1有
+    private int mettingSignJurisdictionType;//会议签到权限；0否；1有
 
 
     private List<UserInfo> activityFoUserBizList;
@@ -35,6 +37,31 @@ public class OrgActEntity {
 
     public void setActivityFoUserBizList(List<UserInfo> activityFoUserBizList) {
         this.activityFoUserBizList = activityFoUserBizList;
+    }
+
+
+    public int getMettingJurisdictionType() {
+        return mettingJurisdictionType;
+    }
+
+    public void setMettingJurisdictionType(int mettingJurisdictionType) {
+        this.mettingJurisdictionType = mettingJurisdictionType;
+    }
+
+    public int getActivitySignJurisdictionType() {
+        return activitySignJurisdictionType;
+    }
+
+    public void setActivitySignJurisdictionType(int activitySignJurisdictionType) {
+        this.activitySignJurisdictionType = activitySignJurisdictionType;
+    }
+
+    public int getMettingSignJurisdictionType() {
+        return mettingSignJurisdictionType;
+    }
+
+    public void setMettingSignJurisdictionType(int mettingSignJurisdictionType) {
+        this.mettingSignJurisdictionType = mettingSignJurisdictionType;
     }
 
     public String getActivityId() {

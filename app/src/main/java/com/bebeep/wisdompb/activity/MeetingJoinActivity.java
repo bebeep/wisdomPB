@@ -1,7 +1,10 @@
 package com.bebeep.wisdompb.activity;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +32,7 @@ import com.bebeep.wisdompb.databinding.ActivityMeetingJoinBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +56,19 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
 
     private CommonTypeEntity entity;
     private ShowSingleBigImageDialog showSingleBigImageDialog;
+
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    getQrcode();
+                    break;
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +101,7 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
         binding.imgQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(entity!=null && TextUtils.isEmpty(entity.getImgUrl())){
+                if(entity!=null && !TextUtils.isEmpty(entity.getImgUrl())){
                     showSingleBigImageDialog.show(URLS.IMAGE_PRE+entity.getImgUrl(),R.drawable.default_error); //单张图片
                 }
             }
@@ -133,6 +150,7 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
                 statusMsg(e,code);
                 binding.srl.setRefreshing(false);
                 MyTools.showToast(MeetingJoinActivity.this,"获取二维码失败");
+                handler.sendEmptyMessageDelayed(1,2000);
             }
             @Override
             public void onResponse(BaseObject<CommonTypeEntity> response) {
@@ -140,11 +158,13 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
                 LogUtil.showLog("获取二维码："+MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     entity = response.getData();
-                    PicassoUtil.setImageUrl(MeetingJoinActivity.this,binding.imgQrcode,URLS.IMAGE_PRE+entity.getImgUrl());
+//                    PicassoUtil.setImageUrl(MeetingJoinActivity.this,binding.imgQrcode,URLS.IMAGE_PRE+entity.getImgUrl(),R.drawable.default_error,100,100);
+                    Picasso.with(MeetingJoinActivity.this).load(URLS.IMAGE_PRE+entity.getImgUrl()).noPlaceholder().into(binding.imgQrcode);
                 }else{
                     MyTools.showToast(MeetingJoinActivity.this, response.getMsg());
                     if(response.getErrorCode() == 1)refreshToken();
                 }
+                handler.sendEmptyMessageDelayed(1,2000);
             }
         },header,map);
     }
@@ -158,6 +178,7 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
                 binding.srl.setRefreshing(false);
+                binding.tvEmpty.setVisibility(list == null || list.size()==0?View.VISIBLE:View.GONE);
             }
             @Override
             public void onResponse(BaseList<UserInfo> response) {
@@ -170,6 +191,7 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
                     MyTools.showToast(MeetingJoinActivity.this, response.getMsg());
                     if(response.getErrorCode() == 1)refreshToken();
                 }
+                binding.tvEmpty.setVisibility(list == null || list.size()==0?View.VISIBLE:View.GONE);
             }
         },header,map);
     }
@@ -188,8 +210,6 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
 
     @Override
     public void onRefresh(AbsRefreshLayout listLoader) {
-
-
     }
 
     @Override
@@ -200,5 +220,18 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
 
             }
         },500);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacksAndMessages(null);
     }
 }

@@ -99,6 +99,7 @@
         <activity android:name=".activity.ChooseJoinerAcivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.MeetingMinutesDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".activity.PlayVideoActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:configChanges="orientation|screenSize" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

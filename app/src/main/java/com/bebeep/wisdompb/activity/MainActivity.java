@@ -48,6 +48,14 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
     private Fragment4 fragment4;
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragments!=null && fragments.size()>0){
+            initUserInfo();
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +77,23 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
             @Override
             public void onOpen() {
                 fragment1.stopPlay();
+                LogUtil.showLog("open");
             }
 
             @Override
             public void onClose() {
                 fragment1.startPlay();
+                binding.flMenu.setVisibility(View.GONE);
+                LogUtil.showLog("close");
             }
 
             @Override
             public void onDraging(float fraction) {
                 if(fraction==0)fragment1.startPlay();
-                else fragment1.stopPlay();
+                else {
+                    binding.flMenu.setVisibility(View.VISIBLE);
+                    fragment1.stopPlay();
+                }
             }
         });
 
@@ -103,57 +117,61 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         if(v.getId() != R.id.fl_msg){
             if(binding.mDoubleSlideMenu.getDragState() == DoubleSlideMenu.DragState.STATE_CLOSE) return;
             binding.mDoubleSlideMenu.close();
-        }
-        switch (v.getId()){
-            case R.id.rimg_head://
-                startActivityForResult(new Intent(this, UserInfoActivity.class),88);
-                break;
-            case R.id.fl_menu1://我的考试-
-                startActivity(new Intent(this,MyExamActivity.class));
-                break;
-            case R.id.fl_menu2://我的书架-
-                startActivity(new Intent(this,MyBookrackActivity.class));
-                break;
-            case R.id.fl_menu3://我的笔记-
-                startActivity(new Intent(this,MyNoteListActivity.class));
-                break;
-            case R.id.fl_menu4://我的积分-
-                startActivity(new Intent(this,MyJifenActivity.class));
-                break;
-            case R.id.fl_menu5://我的会议-
-                startActivity(new Intent(this,MyMeetingActivity.class));
-                break;
-            case R.id.fl_menu6://我的活动-
-                startActivity(new Intent(this,MyActActivity.class));
-                break;
-            case R.id.fl_menu7://我的收藏-
-                startActivity(new Intent(this,MyCollectionActivity.class));
-                break;
-            case R.id.fl_menu8://我的评论-
-                startActivityForResult(new Intent(this,MyCommentActivity.class),99);
-                break;
-            case R.id.fl_menu9://我提起的-
-                startActivity(new Intent(this,MySubmitActivity.class));
-                break;
-            case R.id.fl_menu10://意见反馈-
-                startActivity(new Intent(this,TicklingActivity.class));
-                break;
-            case R.id.fl_menu11://设置
-                startActivity(new Intent(this, ConfigActivity.class));
-                break;
-            case R.id.fl_menu12://关于
-                startActivity(new Intent(this, WebViewActivity.class).putExtra("title","关于我们").putExtra("url",URLS.ABOUT));
-                break;
-            case R.id.fl_menu13://政治生日卡-
-                startActivity(new Intent(this, BirthdayCardActivity.class));
-                break;
-            case R.id.fl_msg://我的消息
-                startActivityForResult(new Intent(MainActivity.this, NoticeActivity.class),77);
-                break;
+            binding.mDoubleSlideMenu.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    switch (v.getId()){
+                        case R.id.rimg_head://
+                            startActivityForResult(new Intent(MainActivity.this, UserInfoActivity.class),88);
+                            break;
+                        case R.id.fl_menu1://我的考试-
+                            startActivity(new Intent(MainActivity.this,MyExamActivity.class));
+                            break;
+                        case R.id.fl_menu2://我的书架-
+                            startActivity(new Intent(MainActivity.this,MyBookrackActivity.class));
+                            break;
+                        case R.id.fl_menu3://我的笔记-
+                            startActivity(new Intent(MainActivity.this,MyNoteListActivity.class));
+                            break;
+                        case R.id.fl_menu4://我的积分-
+                            startActivity(new Intent(MainActivity.this,MyJifenActivity.class));
+                            break;
+                        case R.id.fl_menu5://我的会议-
+                            startActivity(new Intent(MainActivity.this,MyMeetingActivity.class));
+                            break;
+                        case R.id.fl_menu6://我的活动-
+                            startActivity(new Intent(MainActivity.this,MyActActivity.class));
+                            break;
+                        case R.id.fl_menu7://我的收藏-
+                            startActivity(new Intent(MainActivity.this,MyCollectionActivity.class));
+                            break;
+                        case R.id.fl_menu8://我的评论-
+                            startActivityForResult(new Intent(MainActivity.this,MyCommentActivity.class),99);
+                            break;
+                        case R.id.fl_menu9://我提起的-
+                            startActivity(new Intent(MainActivity.this,MySubmitActivity.class));
+                            break;
+                        case R.id.fl_menu10://意见反馈-
+                            startActivity(new Intent(MainActivity.this,TicklingActivity.class));
+                            break;
+                        case R.id.fl_menu11://设置
+                            startActivity(new Intent(MainActivity.this, ConfigActivity.class));
+                            break;
+                        case R.id.fl_menu12://关于
+                            startActivity(new Intent(MainActivity.this, WebViewActivity.class).putExtra("title","关于我们").putExtra("url",URLS.ABOUT));
+                            break;
+                        case R.id.fl_menu13://政治生日卡-
+                            startActivity(new Intent(MainActivity.this, BirthdayCardActivity.class));
+                            break;
+                    }
+                }
+            },100);
+        }else if(v.getId() == R.id.fl_msg){
+            startActivityForResult(new Intent(MainActivity.this, NoticeActivity.class),77);
         }
     }
 
@@ -335,4 +353,9 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+
+
+
 }

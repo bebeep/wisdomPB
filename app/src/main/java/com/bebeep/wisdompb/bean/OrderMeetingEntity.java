@@ -14,6 +14,16 @@ public class OrderMeetingEntity {
     private String filePath;
     private String userIds;
     private String userName;
+    private int fraction;
+
+
+    public int getFraction() {
+        return fraction;
+    }
+
+    public void setFraction(int fraction) {
+        this.fraction = fraction;
+    }
 
     public String getUserName() {
         return userName;

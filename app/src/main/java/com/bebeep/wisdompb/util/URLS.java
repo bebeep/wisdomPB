@@ -93,6 +93,12 @@ public class URLS {
     //我的积分-支部积分排行榜
     public static final String MY_JIFEN_BRANCH =  HOST + "/office/ranking/list";
 
+    //我的积分-个人积分明细
+    public static final String MY_JIFEN_DETAILS1 =  HOST + "/integral/record/my/data";
+
+    //我的积分-党支部积分明细
+    public static final String MY_JIFEN_DETAILS2 =  HOST + "/integral/record/office/data";
+
     //意见反馈
     public static final String MY_TICKING =  HOST + "/feedback/save";
 
@@ -276,5 +282,8 @@ public class URLS {
 
     //发布
     public static final String DISCOVER_RELEASE = HOST + "/crcle/friends/release";
+
+    //删除
+    public static final String DISCOVER_DELETE = HOST + "/crcle/friends/delete";
 
 }

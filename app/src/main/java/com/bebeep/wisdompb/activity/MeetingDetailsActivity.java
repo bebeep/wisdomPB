@@ -38,6 +38,7 @@ import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseSlideActivity;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.CommentEntity;
 import com.bebeep.wisdompb.bean.MeetingEntity;
 import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityMeetingDetailsBinding;
@@ -194,6 +195,8 @@ public class MeetingDetailsActivity extends BaseSlideActivity implements View.On
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);
+        map.put("type","0");
+        LogUtil.showLog("会议签到："+map.toString());
         OkHttpClientManager.postAsyn(URLS.ACT_SIGN, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
@@ -252,15 +255,14 @@ public class MeetingDetailsActivity extends BaseSlideActivity implements View.On
                 startActivityForResult(new Intent(this, MeetingLeaveActivity.class).putExtra("id",id),88);
                 break;
             case R.id.tv_join://参加
-                if(TextUtils.equals(binding.tvJoin.getText().toString(),"参加")) join();
-                else {
+                if(TextUtils.equals(binding.tvJoin.getText().toString(),"参加")) {
                     LogUtil.showLog("参会");
                     if (ContextCompat.checkSelfPermission(MeetingDetailsActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(MeetingDetailsActivity.this, new String[]{Manifest.permission.CAMERA}, REQ_CODE_PERMISSION);
                     } else  startCaptureActivityForResult();
+                }else {
+                    startActivity(new Intent(MeetingDetailsActivity.this, MeetingJoinActivity.class).putExtra("id",id).putExtra("type",0));
                 }
-                customProgressDialog.show();
-                join();
                 break;
         }
     }
@@ -323,8 +325,18 @@ public class MeetingDetailsActivity extends BaseSlideActivity implements View.On
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     String key = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
-                    LogUtil.showLog("扫描二维码："+key);
-                    sign(key);
+                    LogUtil.showLog("扫描得到的活动："+key);
+                    HashMap map = MyApplication.gson.fromJson(key,HashMap.class);
+                    if(map == null) {
+                        MyTools.showToast(MeetingDetailsActivity.this,"无效的二维码");
+                        return;
+                    }
+
+                    if(TextUtils.isEmpty(String.valueOf(map.get("content")))) {
+                        MyTools.showToast(MeetingDetailsActivity.this,"无效的二维码");
+                        return;
+                    }
+                    sign(String.valueOf(map.get("content")));
                     break;
                 case Activity.RESULT_CANCELED:
                     if (data != null) {

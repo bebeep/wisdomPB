@@ -68,7 +68,7 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
         PicassoUtil.setImageUrl(getActivity(),binding.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,60,60);
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("三会一课");
-        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
 
     }

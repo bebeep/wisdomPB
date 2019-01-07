@@ -71,9 +71,9 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     private Fragment4Binding binding;
     private CommonAdapter adapter;
     private List<DiscoverEntity> list = new ArrayList<>();
-    private int pageNo = 1;
+    private int pageNo = 1,delType = 0;
     private ShowSingleBigImageDialog showSingleBigImageDialog;
-    private CustomDialog customDialog;
+    private CustomDialog customDialog1,customDialog2;
     private boolean showKeyBoard = false;
 
 
@@ -82,7 +82,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         return showKeyBoard;
     }
 
-    private String crcleFriendsId = "",parentId="0",repliedUserId="0",delCommentId="";
+    private String crcleFriendsId = "",parentId="0",repliedUserId="0",delCommentId="",delDiscoverId="";
 
     @Nullable
     @Override
@@ -148,21 +148,38 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     }
 
     private void initDialog(){
-        customDialog = new CustomDialog.Builder(getActivity())
+        customDialog1 = new CustomDialog.Builder(getActivity())
                 .setMessage("您确定要删除该条评论吗")
                 .setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        customDialog.cancel();
+                        customDialog1.cancel();
                     }
                 }).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        customDialog.cancel();
-                        delComment(delCommentId);
+                        customDialog1.cancel();
+                       if(delType==0) delComment(delCommentId);
+                       else if(delType == 1) delDiscover(delCommentId);
                     }
                 })
                 .createTwoButtonDialog();
+        customDialog2 = new CustomDialog.Builder(getActivity())
+                .setMessage("您确定要删除该条发现吗")
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog2.cancel();
+                    }
+                }).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog2.cancel();
+                        delDiscover(delDiscoverId);
+                    }
+                })
+                .createTwoButtonDialog();
+
     }
 
     @Override
@@ -307,6 +324,33 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         },header,map);
 
     }
+    /**
+     * 删除发现
+     */
+    private void delDiscover(String id){
+        progressDialog.show();
+        HashMap header = new HashMap(),map =new HashMap();
+        header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
+        map.put("id", id);
+        LogUtil.showLog("删除发现："+ map.toString());
+        OkHttpClientManager.postAsyn(URLS.DISCOVER_DELETE, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                progressDialog.cancel();
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("删除发现 response："+ MyApplication.gson.toJson(response));
+                progressDialog.cancel();
+                MyTools.showToast(getActivity(), response.getMsg());
+                if(response.isSuccess()){
+                    getData();
+                }
+            }
+        },header,map);
+
+    }
 
     //软键盘显示与隐藏
     public void setEditEnable(boolean enable, View v){
@@ -332,7 +376,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         adapter = new CommonAdapter<DiscoverEntity>(getActivity(),R.layout.item_f4,list){
             @Override
             protected void convert(final ViewHolder holder, final DiscoverEntity entity, int position) {
-                holder.setOnClickListener(R.id.tv_comment, new View.OnClickListener() {
+                holder.setOnClickListener(R.id.iv_comment, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         crcleFriendsId = entity.getId();
@@ -354,6 +398,8 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                 holder.setText(R.id.tv_name, entity.getName());
                 holder.setText(R.id.tv_time, entity.getCreateDate());
                 holder.setText(R.id.tv_content,entity.getTitle());
+                holder.setVisible(R.id.tv_del, true);
+                holder.setVisible(R.id.tv_del, TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getUserId()));
                 if(TextUtils.equals(entity.getType(),"0")){//视频
                     holder.setVisible(R.id.fl_video,true);
                     holder.setVisible(R.id.recyclerView1,false);
@@ -367,6 +413,17 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                     holder.setVisible(R.id.recyclerView1,false);
                 }
                 setInnerAdapter2((RecyclerView)holder.getView(R.id.recyclerView),position);
+
+
+                holder.setOnClickListener(R.id.tv_del, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        delDiscoverId = entity.getId();
+                        if(customDialog2!=null){
+                            customDialog2.show();
+                        }
+                    }
+                });
             }
         };
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -433,7 +490,9 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                     public boolean onLongClick(View v) {
                         if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getId())) {//表示是用户自己发布的评论
                             delCommentId = entity.getId();
-                            if(customDialog!=null)customDialog.show();
+                            if(customDialog1!=null){
+                                customDialog1.show();
+                            }
                             return true;
                         }return false;
                     }

@@ -143,7 +143,7 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
             }
             @Override
             public void convert(ViewHolder holder, final SpecialEduEntity entity, int position) {
-                holder.setImageUrl((ImageView) holder.getView(R.id.iv_head), URLS.IMAGE_PRE + entity.getPictureAddress(),R.drawable.default_error,60,90);
+                holder.setImageUrl((ImageView) holder.getView(R.id.iv_head), URLS.IMAGE_PRE + entity.getPictureAddress(),R.drawable.default_error,80,60);
                 holder.setText(R.id.tv_title, entity.getTitle());
                 holder.setText(R.id.tv_time,entity.getUpdateDate());
                 holder.setVisible(R.id.iv_link, TextUtils.equals(entity.getWhetherUrlAddress(),"1"));
@@ -204,7 +204,8 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
         header.put("Authorization", MyApplication.getInstance().getAccessToken());
         map.put("pageNo", String.valueOf(pageNo));
         map.put("pageSize", MyApplication.pageSize);
-        map.put("homeNewsTypeIds", uId);
+        map.put("thematiceducationNewsTypeIds", uId);
+        LogUtil.showLog("专题教育-"+map.toString());
         OkHttpClientManager.postAsyn(URLS.SPECIAL_EDU_LIST, new OkHttpClientManager.ResultCallback<BaseList<SpecialEduEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {

@@ -32,14 +32,12 @@
                     <FrameLayout
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@drawable/bg_rec_5dp"
-                        android:padding="3dp">
+                        android:background="@drawable/bg_rec_5dp">
 
                         <ImageView
                             android:id="@+id/img_qrcode"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/icon_qrcode" />
+                            android:layout_height="match_parent" />
                     </FrameLayout>
 
 
@@ -105,6 +103,16 @@
                         android:scrollbars="none" />
                 </cn.appsdream.nestrefresh.normalstyle.NestRefreshLayout>
 
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:text="暂无人签到，刷新试试"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="191dp"
+                    android:visibility="gone"
+                    android:layout_height="150dp" />
 
             </FrameLayout>
 

@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
@@ -25,6 +27,7 @@ import com.bebeep.wisdompb.base.BaseSlideActivity;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.NewsEntity;
 import com.bebeep.wisdompb.databinding.ActivityPublicShowBinding;
+import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
 
@@ -89,7 +92,8 @@ public class PublicShowActivity extends BaseSlideActivity implements OnPullListe
         adapter = new CommonAdapter<NewsEntity>(this,R.layout.item_public_show,list){
             @Override
             protected void convert(ViewHolder holder, NewsEntity entity, int position) {
-                holder.setImageUrl((ImageView)holder.getView(R.id.iv_head),URLS.IMAGE_PRE+entity.getPictureAddress(),R.drawable.default_error,100,80);
+                ImageView iv = holder.getView(R.id.iv_head);
+                holder.setImageUrl(iv,URLS.IMAGE_PRE+entity.getPictureAddress(),R.drawable.default_error,80,60);
                 holder.setText(R.id.tv_title,entity.getTitle());
                 holder.setText(R.id.tv_time,entity.getUpdateDate());
                 holder.setText(R.id.tv_time,entity.getUpdateDate());

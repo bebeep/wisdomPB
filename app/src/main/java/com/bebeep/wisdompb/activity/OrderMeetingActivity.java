@@ -58,7 +58,7 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
     private CustomProgressDialog customProgressDialog;
 
     private CustomDatePicker customDatePicker;
-    private int chooseText = 0;
+    private int chooseText = 0,fraction = 0;
     private String filePath = "",fileName = "", uploadFilePath = "",userIds = "",userName = "";
     private File uploadFile;
 
@@ -114,6 +114,14 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
                 fileName = "";
                 filePath = "";
                 setFileIcon(fileName);
+                break;
+            case R.id.iv_min://减少积分
+                fraction = fraction==0?0:fraction-1;
+                binding.tvJifenNum.setText(String.valueOf(fraction));
+                break;
+            case R.id.iv_plus://增加积分
+                fraction ++;
+                binding.tvJifenNum.setText(String.valueOf(fraction));
                 break;
             case R.id.tv_save://保存草稿
                 saveLocal();
@@ -248,6 +256,8 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
         map.put("enclosureNmae", fileName);
         map.put("enclosureUrl", uploadFilePath);
         map.put("userIds",userIds);
+        map.put("whFb","1");
+        map.put("fraction",String.valueOf(fraction));//积分
         return map;
     }
 
@@ -263,6 +273,7 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
         entity.setFileName(fileName);
         entity.setUserIds(userIds);
         entity.setUserName(userName);
+        entity.setFraction(fraction);
         PreferenceUtils.setPrefString("OrderMeetingEntity", MyApplication.gson.toJson(entity));
         MyTools.showToast(this,"保存成功");
     }
@@ -288,12 +299,16 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
         binding.etTitle.setText(entity.getTheme());
         binding.etContent.setText(entity.getContent());
         binding.etRequest.setText(entity.getRequires());
-        binding.tvJoiner.setText(TextUtils.isEmpty(entity.getUserName())?"请选择参会人员": entity.getUserName());
+
 
         userIds = entity.getUserIds();
         filePath = entity.getFilePath();
         fileName = entity.getFileName();
-        uploadFile = new File(filePath.toString());
+        userName = entity.getUserName();
+        fraction = entity.getFraction();
+        binding.tvJifenNum.setText(String.valueOf(fraction));
+        binding.tvJoiner.setText(TextUtils.isEmpty(userName)?"请选择参会人员": userName);
+        if(!TextUtils.isEmpty(filePath))uploadFile = new File(filePath.toString());
         setFileIcon(fileName);
 
     }

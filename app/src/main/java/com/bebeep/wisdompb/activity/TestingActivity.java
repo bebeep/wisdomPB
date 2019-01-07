@@ -383,4 +383,9 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
 }

@@ -58,8 +58,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("登录");
 
-        binding.etUsername.setText("51332119750823002X");
-        binding.etPassword.setText("23002X");
+        binding.etUsername.setText("513321197311070085");
+        binding.etPassword.setText("070085");
     }
 
     @Override

@@ -12,6 +12,7 @@ public class DiscoverEntity {
     private String videoUrl;// 视频地址，type==0时有效
     private String createDate;// 发布日期
     private boolean showComment; //是否显示评论
+    private String userId;
 
     private List<CommentEntity> commentList;//评论列表
 
@@ -34,6 +35,14 @@ public class DiscoverEntity {
 
     public String getName() {
         return name;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setName(String name) {

@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="50dp"
-        android:paddingLeft="15dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="15dp">
 
 
         <TextView
@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:text="奥斯卡第六届阿萨德"
             android:textSize="14sp" />
 
         <TextView
@@ -27,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="2018-11-11"
             android:textColor="@color/c_gray"
             android:textSize="12sp" />
 
@@ -35,6 +33,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_score"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
@@ -47,7 +46,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/c_line"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="15dp"/>
+        android:layout_marginLeft="15dp"
+        android:background="@color/c_line" />
 </FrameLayout>

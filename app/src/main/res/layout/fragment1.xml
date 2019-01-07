@@ -38,6 +38,7 @@
                     android:id="@+id/nestedScrollView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:overScrollMode="never"
                     android:scrollbars="none">
 
                     <LinearLayout
@@ -265,7 +266,8 @@
                             android:layout_height="40dp"
                             android:background="@color/c_white"
                             app:tabIndicatorColor="@color/theme_d"
-                            app:tabMode="scrollable"
+                            app:tabMode="fixed"
+                            app:tabGravity="center"
                             android:layout_marginTop="5dp"
                             app:tabSelectedTextColor="@color/theme_d"
                             app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
