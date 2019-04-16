@@ -69,7 +69,8 @@ public class ExamActivity extends BaseSlideActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.tv_start:
-                if(entity!=null)startActivityForResult(new Intent(this,TestingActivity.class).putExtra("id",id).putExtra("title",entity.getTitle()), MyApplication.ACTIVITY_BACK_CODE);
+                if(entity!=null)startActivityForResult(new Intent(this,TestingActivity.class).putExtra("id",id)
+                        .putExtra("title",entity.getTitle()).putExtra("totalScore",entity.getTotalScore()), MyApplication.ACTIVITY_BACK_CODE);
                 break;
         }
     }

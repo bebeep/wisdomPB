@@ -1,16 +1,9 @@
 package com.bebeep.wisdompb.base;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
@@ -23,7 +16,6 @@ import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
 
-import java.net.SocketTimeoutException;
 import java.util.HashMap;
 
 public class BaseFragment extends Fragment {

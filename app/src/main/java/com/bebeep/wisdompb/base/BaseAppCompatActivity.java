@@ -2,6 +2,8 @@ package com.bebeep.wisdompb.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -14,6 +16,7 @@ import com.bebeep.wisdompb.bean.LoginEntity;
 import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
+import com.umeng.message.PushAgent;
 
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
@@ -29,6 +32,12 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     public void setOnRefreshTokenListener(OnRefreshTokenListener onRefreshTokenListener) {
         this.onRefreshTokenListener = onRefreshTokenListener;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
     }
 
     public  String statusMsg(Exception e, int code){

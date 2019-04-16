@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="45dp"
             android:background="@color/c_white"
+            android:overScrollMode="never"
             android:scrollbars="none">
 
             <LinearLayout
@@ -51,8 +52,7 @@
                         <com.bebeep.commontools.views.RoundImage
                             android:id="@+id/rimg_head"
                             android:layout_width="68dp"
-                            android:layout_height="68dp"
-                            android:src="@drawable/icon_head" />
+                            android:layout_height="68dp"/>
 
                     </FrameLayout>
 
@@ -101,7 +101,6 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLength="8"
-                            android:text="吴彦祖"
                             android:textColor="@color/c_white"
                             android:textSize="16sp" />
 
@@ -165,7 +164,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:text="13888888888"
                         android:textColor="@color/c_sblack"
                         android:textSize="15sp" />
 
@@ -198,8 +196,54 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
-                    android:text="人员类型"
-                    android:visibility="gone"
+                    android:text="学历"
+                    android:textColor="@color/c_gray"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_edu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/c_sblack"
+                    android:textSize="15sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/c_qing" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="民族"
+                    android:textColor="@color/c_gray"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_nation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/c_sblack"
+                    android:textSize="15sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/c_qing" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="党员类型"
                     android:textColor="@color/c_gray"
                     android:textSize="13sp" />
 
@@ -209,8 +253,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
-                    android:text="正式党员"
-                    android:visibility="gone"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
@@ -219,7 +261,6 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
-                    android:visibility="gone"
                     android:background="@color/c_qing" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,7 +277,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
-                    android:text="第一支部"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
@@ -261,7 +301,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
-                    android:text="支部书记"
+                    android:textColor="@color/c_sblack"
+                    android:textSize="15sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/c_qing" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="民主评议"
+                    android:textColor="@color/c_gray"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="2dp"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
@@ -286,7 +348,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
-                    android:text="2011年11月11日"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 
@@ -311,7 +372,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="2dp"
-                    android:text="2018年11月11日"
                     android:textColor="@color/c_sblack"
                     android:textSize="15sp" />
 

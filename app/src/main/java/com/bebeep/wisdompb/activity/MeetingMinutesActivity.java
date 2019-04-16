@@ -18,6 +18,7 @@ import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseSlideActivity;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.MeetingEntity;
+import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityMeetingMinutesBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
@@ -43,6 +44,13 @@ public class MeetingMinutesActivity extends BaseSlideActivity implements View.On
 
     private List<MeetingEntity> list = new ArrayList<>();
     private CommonAdapter adapter;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(adapter!=null) getData();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,10 +90,32 @@ public class MeetingMinutesActivity extends BaseSlideActivity implements View.On
                 holder.setText(R.id.tv_title,entity.getTheme());
                 holder.setText(R.id.tv_content,entity.getStartTime().substring(5,entity.getStartTime().length()) +"~"+entity.getEndTime().substring(5,entity.getEndTime().length())+"  "+entity.getAddress());
 
+                if(entity.getIfRecord() == 0) {
+                    holder.setText(R.id.tv_state,"未记录");
+                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_red);
+                }else if(entity.getIfRecord() == 1) {
+                    holder.setText(R.id.tv_state,"已记录");
+                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
+                }
+
                 holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(MeetingMinutesActivity.this,MeetingMinutesDetailActivity.class).putExtra("id",entity.getId()).putExtra("title","会议纪要"));
+                        if(entity.getMinutesMeetingType() == 1){
+                            if(entity.getIfRecord() == 0){//未记录-跳转到发布会议纪要
+                                startActivity(new Intent(MeetingMinutesActivity.this,ReleaseMeetingMinitesActivity.class).putExtra("id",entity.getId()));
+                            }else if(entity.getIfRecord() == 1){//已记录-跳转到会议纪要详情
+                                startActivity(new Intent(MeetingMinutesActivity.this,MeetingMinutesDetailActivity.class).putExtra("id",entity.getId()).putExtra("title","会议纪要"));
+                            }
+                        }else {
+//                            startActivity(new Intent(MeetingMinutesActivity.this,MeetingMinutesDetailActivity.class).putExtra("id",entity.getId()).putExtra("title","会议纪要"));
+
+                            if(entity.getIfRecord() == 0){//未记录-提示
+                                MyTools.showToast(MeetingMinutesActivity.this,"该会议还未记录会议纪要，请稍后查看");
+                            }else if(entity.getIfRecord() == 1){//已记录-跳转到会议纪要详情
+                                startActivity(new Intent(MeetingMinutesActivity.this,MeetingMinutesDetailActivity.class).putExtra("id",entity.getId()).putExtra("title","会议纪要"));
+                            }
+                        }
                     }
                 });
 

@@ -56,9 +56,9 @@
                             android:id="@+id/hs"
                             android:layout_width="wrap_content"
                             android:layout_height="90dp"
-                            android:scrollbars="none"
+                            android:layout_marginTop="2dp"
                             android:overScrollMode="never"
-                            android:layout_marginTop="2dp">
+                            android:scrollbars="none">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -232,6 +232,7 @@
                                         android:textSize="14sp" />
 
                                 </LinearLayout>
+
                                 <LinearLayout
                                     android:id="@+id/ll_f1_t8"
                                     android:layout_width="wrap_content"
@@ -259,20 +260,34 @@
                         </HorizontalScrollView>
 
 
-
-                        <android.support.design.widget.TabLayout
-                            android:id="@+id/tab_f1_title"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:background="@color/c_white"
-                            app:tabIndicatorColor="@color/theme_d"
-                            app:tabMode="fixed"
-                            app:tabGravity="center"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            app:tabSelectedTextColor="@color/theme_d"
-                            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-                            app:tabTextColor="@color/c_sblack" />
+                            android:background="@color/c_white">
 
+                            <android.support.design.widget.TabLayout
+                                android:id="@+id/tab_f1_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:background="@color/c_white"
+                                app:tabIndicatorColor="@color/theme_d"
+                                app:tabMode="fixed"
+                                android:overScrollMode="never"
+                                app:tabSelectedTextColor="@color/theme_d"
+                                app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+                                app:tabTextColor="@color/c_sblack" />
+                        </FrameLayout>
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/vp_FindFragment_pager"
+                            android:overScrollMode="never"
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recyclerView"
@@ -284,12 +299,13 @@
 
                         <TextView
                             android:id="@+id/tv_empty"
-                            android:textSize="14sp"
-                            android:visibility="gone"
-                            android:text="暂无内容"
-                            android:textColor="@color/c_gray"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp" />
+                            android:layout_height="100dp"
+                            android:text="该分类下暂无内容"
+                            android:gravity="center"
+                            android:textColor="@color/c_gray"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
 
                     </LinearLayout>
                 </android.support.v4.widget.NestedScrollView>

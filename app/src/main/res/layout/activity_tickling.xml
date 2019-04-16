@@ -98,6 +98,7 @@
                     android:paddingRight="10dp">
 
                     <TextView
+                        android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="标题"
@@ -105,6 +106,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/tv_title_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="3dp"
@@ -208,6 +210,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
                     android:text="最多可再上传4张照片"
+                    android:visibility="gone"
                     android:textColor="@color/c_gray"
                     android:textSize="12sp" />
 
@@ -228,7 +231,6 @@
                         android:id="@+id/fl_pic_num"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_fl_click"
                         android:onClick="@{onClickListener}"
                         android:paddingRight="5dp">
 

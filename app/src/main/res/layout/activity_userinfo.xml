@@ -137,6 +137,34 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:text="党员类型"
+                        android:textColor="@color/c_dblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_org_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp" />
+                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_line" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="所属党支部"
                         android:textColor="@color/c_dblack"
                         android:textSize="14sp" />
@@ -150,6 +178,64 @@
                         android:textSize="14sp" />
 
 
+                </FrameLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_line" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="党内职务"
+                        android:textColor="@color/c_dblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_org_position"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp" />
+                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c_line" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="民主评议"
+                        android:textColor="@color/c_dblack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_org_comment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp" />
                 </FrameLayout>
 
                 <View

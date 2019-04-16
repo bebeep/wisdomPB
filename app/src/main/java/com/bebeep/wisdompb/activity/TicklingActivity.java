@@ -29,7 +29,6 @@ import android.widget.PopupWindow;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
-import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.utils.CompressImageUtils;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
@@ -270,7 +269,7 @@ public class TicklingActivity extends BaseEditActivity implements View.OnClickLi
         int columns = 3;
         Load load = PhotoPicker.load()
                 .showCamera(showCamera)
-                .filter(PhotoFilter.build().showGif(false).minSize(2 * 1024))
+                .filter(PhotoFilter.build().showGif(false).minWidth(300).minHeight(300))
                 .gridColumns(columns);
 //      传入最大选择的数量，和路径
         PhotoSelectBuilder builder = load.multi().maxPickSize(maxNum).selectedPaths(mSelectPath);
@@ -319,7 +318,6 @@ public class TicklingActivity extends BaseEditActivity implements View.OnClickLi
         popWindow.setOnClickListener(new ChoosePicPopWindow.OnClickListener() {
             @Override
             public void onAlbumClick(PopupWindow popupWindow) {
-                MyTools.showToast(TicklingActivity.this,"相册");
                 if (ContextCompat.checkSelfPermission(TicklingActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(TicklingActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 } else {

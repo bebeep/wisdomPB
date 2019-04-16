@@ -75,6 +75,7 @@ public class MyActActivity extends BaseSlideActivity implements OnPullListener,S
         adapter = new CommonAdapter<OrgActEntity>(this,R.layout.item_party_act,list){
             @Override
             protected void convert(ViewHolder holder, final OrgActEntity entity, int position) {
+                holder.setVisible(R.id.tv_join,false);
                 holder.setText(R.id.tv_title, entity.getTitle());
                 holder.setText(R.id.tv_time, entity.getStartTime() + " —— "+entity.getEndTime());
                 holder.setText(R.id.tv_zan_num, entity.getDzQuantity());

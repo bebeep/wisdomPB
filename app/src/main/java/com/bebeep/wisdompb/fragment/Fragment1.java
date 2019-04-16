@@ -1,10 +1,10 @@
 package com.bebeep.wisdompb.fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -12,12 +12,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,10 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.acker.simplezxing.activity.CaptureActivity;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
-import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
@@ -41,13 +39,15 @@ import com.bebeep.wisdompb.activity.ChargeActivity;
 import com.bebeep.wisdompb.activity.GalleryListActivity;
 import com.bebeep.wisdompb.activity.LibraryTypeActivity;
 import com.bebeep.wisdompb.activity.LoginActivity;
-import com.bebeep.wisdompb.activity.MainActivity;
 import com.bebeep.wisdompb.activity.NewsDetailActivity;
 import com.bebeep.wisdompb.activity.NoticeActivity;
 import com.bebeep.wisdompb.activity.PartyActActivity;
+import com.bebeep.wisdompb.activity.PayDetailsActivity;
 import com.bebeep.wisdompb.activity.PublicShowActivity;
+import com.bebeep.wisdompb.activity.SearchActivity;
 import com.bebeep.wisdompb.activity.SpecialEduActivity;
 import com.bebeep.wisdompb.activity.WebViewActivity;
+import com.bebeep.wisdompb.adapter.TitleFragmentAdapter;
 import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.bean.AdsEntity;
 import com.bebeep.wisdompb.bean.BaseList;
@@ -63,6 +63,7 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +86,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     private int pageNo = 1;
 
     private List<AdsEntity> adsList;
+
 
 
     @Override
@@ -112,7 +114,6 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         initMenus();
         getType();
 
-        mainActivity = (MainActivity) getActivity();
         mainActivity.addIgnoredView(binding.banner);
         mainActivity.addIgnoredView(binding.hs);
         mainActivity.addIgnoredView(binding.tabF1Title);
@@ -120,9 +121,9 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.setVariable(BR.onClickListener,this);
         binding.title.flHead.setOnClickListener(this);
         binding.title.flHead.setVisibility(View.VISIBLE);
-//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
-//        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
-        binding.title.tvTitle.setText("智慧党建");
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
+        binding.title.tvTitle.setText("甘孜机关党建");
         PicassoUtil.setImageUrl(getActivity(),binding.title.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,40,40);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
@@ -141,6 +142,12 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
             }
         });
 
+        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchActivity.class).putExtra("type",2));
+            }
+        });
 
     }
 
@@ -176,8 +183,38 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        setTabWidth();
+
     }
 
+
+    private void setTabWidth(){
+        binding.tabF1Title.setTabMode(typeList.size()>3?TabLayout.MODE_SCROLLABLE:TabLayout.MODE_FIXED);
+        binding.tabF1Title.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //拿到tabLayout的mTabStrip属性
+                    Field mTabStripField = binding.tabF1Title.getClass().getDeclaredField("mTabStrip");
+                    mTabStripField.setAccessible(true);
+                    LinearLayout mTabStrip = (LinearLayout) mTabStripField.get(binding.tabF1Title);
+                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+                        View tabView = mTabStrip.getChildAt(i);
+                        //设置tab左右间距为10dp  注意这里不能使用Padding 因为源码中线的宽度是根据 tabView的宽度来设置的
+                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
+                        params.width = (MyTools.getWidth(getContext()) - MyTools.dip2px(getContext(),30))/3;
+                        tabView.setLayoutParams(params);
+                        tabView.invalidate();
+                    }
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -188,7 +225,8 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 mainActivity.showMenu();
                 break;
             case R.id.iv_title_right://-
-//                MyTools.showToast(getActivity(),"search!");
+                MyTools.showToast(getActivity(),"search!");
+
                 break;
             case R.id.ll_f1_t1://图书馆-
                 startActivity(new Intent(getActivity(), LibraryTypeActivity.class));
@@ -200,8 +238,16 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 startActivity(new Intent(getActivity(), PublicShowActivity.class));
                 break;
             case R.id.ll_f1_t4://党费缴纳-
-//                startActivity(new Intent(getActivity(), ChargeActivity.class));
-                MyTools.showToast(getActivity(),"该功能正在研发中...");
+//                startActivity(new Intent(getActivity(), PayDetailsActivity.class));
+                boolean isInstall = checkAppInstalled(getActivity(),MyApplication.YPAY_PKG_NAME);
+                if(isInstall){
+                    Intent launchIntent = getActivity().getPackageManager().getLaunchIntentForPackage(MyApplication.YPAY_PKG_NAME);
+                    if (launchIntent != null) {
+                        startActivity(launchIntent);//null pointer check in case package name was not found
+                    }
+                }else {
+                    startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("title","党费缴纳").putExtra("url",URLS.PAY_URLS));
+                }
                 break;
             case R.id.ll_f1_t5://党建通讯录-
                 startActivity(new Intent(getActivity(), AddressBookActivity.class));
@@ -294,9 +340,16 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
+                        AdsEntity entity = adsList.get(position);
                         String url = adsList.get(position).getUrl();
-                        if(!TextUtils.isEmpty(url)){
-                            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",url).putExtra("title",titleList.get(position)));
+                        String type = adsList.get(position).getType();
+                        String title = titleList.get(position);
+                        if(TextUtils.equals(type,"0")){//外链接
+                            if(!TextUtils.isEmpty(url)){
+                                startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",url).putExtra("title",title));
+                            }
+                        }else if(TextUtils.equals(type,"1")){//详情
+                            startActivity(new Intent(getActivity(),NewsDetailActivity.class).putExtra("title",title).putExtra("id",entity.getId()).putExtra("tag",4));
                         }
                     }
                 })
@@ -415,18 +468,6 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
     }
 
 
-    public void startPlay(){
-        if(binding.banner!=null) {
-            binding.banner.startAutoPlay();
-        }
-    }
-
-    public void stopPlay(){
-        if(binding.banner!=null) {
-            binding.banner.stopAutoPlay();
-        }
-    }
-
 
 
 
@@ -520,6 +561,31 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
                     }
                     break;
             }
+        }
+    }
+
+
+    /**
+     * 判断翼支付是否安装
+     * @param context
+     * @param pkgName
+     * @return
+     */
+    private boolean checkAppInstalled(Context context,String pkgName) {
+        if (pkgName== null || pkgName.isEmpty()) {
+            return false;
+        }
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if(packageInfo == null) {
+            return false;
+        } else {
+            return true;//true为安装了，false为未安装
         }
     }
 }

@@ -62,6 +62,8 @@ public class PublicShowActivity extends BaseSlideActivity implements OnPullListe
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText("党内公示");
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
         binding.nrl.setOnLoadingListener(this);
@@ -84,6 +86,13 @@ public class PublicShowActivity extends BaseSlideActivity implements OnPullListe
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PublicShowActivity.this, SearchActivity.class).putExtra("type",5));
             }
         });
     }

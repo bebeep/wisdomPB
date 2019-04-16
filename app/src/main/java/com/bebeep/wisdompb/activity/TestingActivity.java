@@ -30,6 +30,7 @@ import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.adapter.TabFragmentPagerAdapter;
 import com.bebeep.wisdompb.base.BaseFragmentActivity;
 import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.CommonTypeEntity;
 import com.bebeep.wisdompb.bean.TestingEntity;
 import com.bebeep.wisdompb.bean.TestingItemEntity;
 import com.bebeep.wisdompb.databinding.ActivityTestingBinding;
@@ -53,7 +54,7 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
 
     private List<TestingItemEntity> list = new ArrayList<>();
 
-    private String id = "",title ="";
+    private String id = "",title ="",totalScore="";
     private TabFragmentPagerAdapter adapter;
     private TestingEntity entity;
     private int index = 0;
@@ -71,11 +72,24 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
                     setTime(msg);
                     break;
                 case 2:
-                    MyTools.showToast(TestingActivity.this,"考试时间到");
+                   testFinish();
                     break;
             }
         }
     };
+
+
+    //考试结束
+    private void testFinish(){
+        MyTools.showToast(TestingActivity.this,"考试时间到");
+        PreferenceUtils.setPrefString("testingItemList"+id,"");
+        PreferenceUtils.setPrefString("testingItemIndex"+id,"");
+        Intent intent = new Intent();
+        intent.setClass(TestingActivity.this, TestResultActivity.class);
+        intent.putExtra("templateId",entity.getTemplateId());
+        intent.putExtra("title",title);
+        startActivityForResult(intent,MyApplication.ACTIVITY_BACK_CODE);
+    }
 
 
     @Override
@@ -92,6 +106,7 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
         binding.title.tvTitle.setText("在线考试");
         id = getIntent().getStringExtra("id");
         title = getIntent().getStringExtra("title");
+        totalScore = getIntent().getStringExtra("totalScore");
         getData();
 
 
@@ -106,16 +121,8 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
         binding.tvNum.setText("1/"+entity.getBizList().size());
         if(tv_num!=null)tv_num.setText("1/"+entity.getBizList().size());
         list = entity.getBizList();
-        String listJson = PreferenceUtils.getPrefString("testingItemList"+id,"");
-        if(!TextUtils.isEmpty(listJson)){
-            List<TestingItemEntity> savedList = MyApplication.gson.fromJson(listJson,new TypeToken<List<TestingItemEntity>>(){}.getType());
-            LogUtil.showLog("savedList:"+MyApplication.gson.toJson(savedList));
-            if(savedList!=null){
-                index = PreferenceUtils.getPrefInt("testingItemIndex"+id,0);
-                list = savedList;
-                setNum();
-            }
-        }
+        setNum();
+
         initFrgament();
         initPopWindow();
     }
@@ -183,7 +190,7 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
         int wrongNum = 0;
         for (TestingItemEntity testingItemEntity:list){
             if(testingItemEntity.isHasChecked()){
-                if(testingItemEntity.isRight()) rightNum ++;
+                if(checkResult(testingItemEntity.getItemBankAnswerList())) rightNum ++;
                 else wrongNum ++;
             }
         }
@@ -192,6 +199,19 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
         if(tv_right!=null)tv_right.setText(String.valueOf(rightNum));
         if(tv_wrong!=null)tv_wrong.setText(String.valueOf(wrongNum));
     }
+
+
+    private boolean checkResult(List<CommonTypeEntity> list){
+        boolean result = true;
+        for (CommonTypeEntity commonTypeEntity:list){
+            if(commonTypeEntity.getIsCorrect()==1){
+                if(!commonTypeEntity.isHasChecked()) result = false;
+            }
+        }
+
+        return result;
+    }
+
 
     /**
      * 初始化fragment
@@ -236,6 +256,7 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
         HashMap header = new HashMap(),map = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         map.put("answersheetId",id);
+        map.put("totalScore",totalScore);
         LogUtil.showLog("header:"+header);
         LogUtil.showLog("map:"+map);
         OkHttpClientManager.postAsyn(URLS.EXAM_TESTING, new OkHttpClientManager.ResultCallback<BaseObject<TestingEntity>>() {
@@ -264,10 +285,18 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
 
     private void setTime(Message msg){
         if(entity == null) return;
+        long createTime = entity.getCreateDate();
         long endTime = entity.getEndTime();
         long currentTime = System.currentTimeMillis();
+
+        long deltaTimeExam = (endTime - currentTime)/1000; //考试剩余的总时间
+        long deltaTimepassed = entity.getExaminationTime()*60 -  (currentTime - createTime)/1000;//从第一次点击答题开始计算，所剩余的时间
+        if(deltaTimepassed<=0) {
+            testFinish();
+            return;
+        }
         String time ;
-        long deltaTime = (endTime - currentTime)/1000; //秒
+        long deltaTime = deltaTimeExam<deltaTimepassed?deltaTimeExam:deltaTimepassed; //秒
         int day = (int) (deltaTime / (3600 * 24));
         int hour = (int) ((deltaTime % (3600 * 24)) / 3600);
         int min = (int) (deltaTime%3600/ 60);
@@ -277,7 +306,8 @@ public class TestingActivity extends BaseFragmentActivity implements View.OnClic
             binding.tvTime.setText("考试结束");
         }else{
             msg.what = 1;
-            time = (day<10?"0"+day:String.valueOf(day)) + "天" +(hour<10?"0"+hour:String.valueOf(hour)) + "小时"+ (min<10?"0"+min:String.valueOf(min)) + "分" +(mill<10?"0"+mill:String.valueOf(mill))+"秒";
+//            time = (day<10?"0"+day:String.valueOf(day)) + "天" +(hour<10?"0"+hour:String.valueOf(hour)) + "小时"+ (min<10?"0"+min:String.valueOf(min)) + "分" +(mill<10?"0"+mill:String.valueOf(mill))+"秒";
+            time = (hour<10?"0"+hour:String.valueOf(hour)) + ":"+ (min<10?"0"+min:String.valueOf(min)) + ":" +(mill<10?"0"+mill:String.valueOf(mill));
             binding.tvTime.setText(time);
         }
         handler.sendEmptyMessageDelayed(msg.what,1000);

@@ -169,7 +169,7 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
         HashMap header = new HashMap();
         header.put("Authorization", MyApplication.getInstance().getAccessToken());
         HashMap map = new HashMap();
-        map.put("", "");
+        map.put("thematiceducationNewsTypeIds", uId);
         OkHttpClientManager.postAsyn(URLS.SPECIAL_EDU_ADS, new OkHttpClientManager.ResultCallback<BaseList<AdsEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
@@ -212,6 +212,7 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
                 binding.srl.setRefreshing(false);
                 binding.nrl.onLoadFinished();
                 statusMsg(e,code);
+                binding.tvEmpty.setVisibility(list==null||list.size()==1?View.VISIBLE:View.GONE);
             }
             @Override
             public void onResponse(BaseList<SpecialEduEntity> response) {
@@ -232,6 +233,7 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
                 }else{
                     if(response.getErrorCode() == 1) refreshToken();
                 }
+                binding.tvEmpty.setVisibility(list==null||list.size()==1?View.VISIBLE:View.GONE);
             }
         },header,map);
     }
@@ -265,9 +267,16 @@ public class Fragment_SpecialEdu extends CommonFragment implements OnPullListene
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
+                        AdsEntity entity = adsList.get(position);
                         String url = adsList.get(position).getUrl();
-                        if(!TextUtils.isEmpty(url)){
-                            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",imgList.get(position)).putExtra("title",titleList.get(position)));
+                        String type = adsList.get(position).getType();
+                        String title = titleList.get(position);
+                        if(TextUtils.equals(type,"0")){//外链接
+                            if(!TextUtils.isEmpty(url)){
+                                startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url",url).putExtra("title",title));
+                            }
+                        }else if(TextUtils.equals(type,"1")){//详情
+                            startActivity(new Intent(getActivity(),NewsDetailActivity.class).putExtra("title",title).putExtra("id",entity.getId()).putExtra("tag",5));
                         }
                     }
                 })

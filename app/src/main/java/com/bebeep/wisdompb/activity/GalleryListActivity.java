@@ -73,6 +73,14 @@ public class GalleryListActivity extends BaseSlideActivity implements OnPullList
                 finish();
             }
         });
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
+        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GalleryListActivity.this, SearchActivity.class).putExtra("type",7));
+            }
+        });
     }
 
 

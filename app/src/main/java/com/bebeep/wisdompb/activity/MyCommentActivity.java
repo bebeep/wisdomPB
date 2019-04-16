@@ -76,6 +76,7 @@ public class MyCommentActivity extends BaseSlideActivity implements OnPullListen
                 holder.setText(R.id.tv_name,entity.getName());
                 holder.setText(R.id.tv_time,entity.getCreateDate());
                 holder.setText(R.id.tv_comment,entity.getContent());
+                holder.setVisible(R.id.fl_source, !TextUtils.isEmpty(entity.getThemeId()) && !TextUtils.isEmpty(entity.getThemeTitle()));
 
                 if(!TextUtils.isEmpty(entity.getThemeImgsrcs())){
                     String[] imgs = entity.getThemeImgsrcs().split(",");
@@ -85,29 +86,33 @@ public class MyCommentActivity extends BaseSlideActivity implements OnPullListen
                     }else holder.setVisible(R.id.iv_source,false);
                 }else holder.setVisible(R.id.iv_source,false);
 
+
                 holder.setText(R.id.tv_source_title,entity.getThemeTitle());
 
                 holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(TextUtils.isEmpty(entity.getThemeId()) || TextUtils.isEmpty(entity.getThemeTitle())){
+                            return;
+                        }
                         switch (entity.getType()){
-                            case 0://首页新闻
+                            case "0"://首页新闻
                                 startActivity(new Intent(MyCommentActivity.this,NewsDetailActivity.class).putExtra("title",entity.getThemeTitle()).putExtra("id",entity.getThemeId()).putExtra("tag",1));
                                 break;
-                            case 1://专题教育
+                            case "1"://专题教育
                                 startActivity(new Intent(MyCommentActivity.this,NewsDetailActivity.class).putExtra("title",entity.getThemeTitle()).putExtra("id",entity.getThemeId()).putExtra("tag",2));
                                 break;
-                            case 2://党内公示
+                            case "2"://党内公示
                                 startActivity(new Intent(MyCommentActivity.this,NewsDetailActivity.class).putExtra("title",entity.getThemeTitle()).putExtra("id",entity.getThemeId()).putExtra("tag",3));
                                 break;
-                            case 3://发现
+                            case "3"://发现
                                 setResult(RESULT_OK);
                                 finish();
                                 break;
-                            case 4://活动
+                            case "4"://活动
                                 startActivity(new Intent(MyCommentActivity.this,PartyActDetailsActivity.class).putExtra("id",entity.getThemeId()));
                                 break;
-                            case 5://图书评论
+                            case "5"://图书评论
                                 startActivity(new Intent(MyCommentActivity.this, BookDetailsActivity.class).putExtra("id",entity.getThemeId()));
                                 break;
                         }

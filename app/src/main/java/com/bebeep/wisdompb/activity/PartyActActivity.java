@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -30,7 +31,9 @@ import com.bebeep.wisdompb.base.BaseSlideActivity;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.GalleryEntity;
+import com.bebeep.wisdompb.bean.LeaderUserEntity;
 import com.bebeep.wisdompb.bean.OrgActEntity;
+import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityPartyActBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
@@ -47,11 +50,12 @@ import cn.appsdream.nestrefresh.base.OnPullListener;
 /**
  * 党组织活动
  */
-public class PartyActActivity extends BaseSlideActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class PartyActActivity extends BaseSlideActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     private ActivityPartyActBinding binding;
-    private CommonAdapter adapter;
+    private CommonAdapter adapter,adapter1;
     private List<OrgActEntity> list = new ArrayList<>();
+    private List<LeaderUserEntity> userList = new ArrayList<>();
     private WebSettings settings;
     private OrgActEntity entity;
 
@@ -70,6 +74,7 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
 
     private void init(){
         initAdapter();
+        initAdapter1();
         getOrgDetails();
         binding.title.tvTitle.setText("党组织活动");
         binding.title.ivBack.setVisibility(View.VISIBLE);
@@ -77,9 +82,6 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
-        binding.nrl.setPullRefreshEnable(false);
-        binding.nrl.setPullLoadEnable(false);
-        binding.nrl.setOnLoadingListener(this);
 
 
         binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
@@ -103,13 +105,23 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.rb1://简介
-                        binding.nrl.setVisibility(View.GONE);
                         binding.webview.setVisibility(View.VISIBLE);
+                        binding.recyclerView.setVisibility(View.GONE);
+                        binding.recyclerView1.setVisibility(View.GONE);
                         break;
                     case R.id.rb2://活动
-                        binding.nrl.setVisibility(View.VISIBLE);
                         binding.webview.setVisibility(View.GONE);
+                        binding.recyclerView.setVisibility(View.VISIBLE);
+                        binding.recyclerView1.setVisibility(View.GONE);
+
                         if(list == null||list.size()==0) getActList();
+                        else binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+                        break;
+                    case R.id.rb3://领导班子
+                        binding.webview.setVisibility(View.GONE);
+                        binding.recyclerView.setVisibility(View.GONE);
+                        binding.recyclerView1.setVisibility(View.VISIBLE);
+                        binding.tvEmpty.setVisibility(userList==null||userList.size()==0?View.VISIBLE:View.GONE);
                         break;
                 }
             }
@@ -119,6 +131,9 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
 
     private void initUI(){
         if(entity == null) return;
+        userList = entity.getLeadershipRanksList();
+        adapter1.refresh(userList);
+
         binding.tvOrgName.setText(entity.getTitle());
         PicassoUtil.setImageUrl(this,binding.imgHead, URLS.IMAGE_PRE+entity.getImgsrc(),R.drawable.default_error,60,60);
         binding.tvMember.setText("党员  "+entity.getNumberPartyMembers());
@@ -205,6 +220,35 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
     }
 
 
+    private void initAdapter1(){
+        adapter1 = new CommonAdapter<LeaderUserEntity>(this,R.layout.item_partyact_user,userList){
+            @Override
+            protected void convert(ViewHolder holder, LeaderUserEntity leaderUserEntity, int position) {
+                holder.setText(R.id.tv_name,leaderUserEntity.getPartyPosts());
+                setInnerAdapter((RecyclerView)holder.getView(R.id.recyclerView),leaderUserEntity.getUserList());
+            }
+        };
+        binding.recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView1.setAdapter(adapter1);
+
+    }
+
+
+    private void setInnerAdapter(RecyclerView recyclerView, List<UserInfo> list){
+        if(list == null || list.size()==0)return;
+        CommonAdapter adapter = new CommonAdapter<UserInfo>(this,R.layout.item_partyact_user_inner,list){
+            @Override
+            protected void convert(ViewHolder holder, UserInfo userInfo, int position) {
+                holder.setImageUrl((ImageView)holder.getView(R.id.rimg_head),URLS.IMAGE_PRE + userInfo.getPhoto(),R.drawable.icon_head,40,40);
+                holder.setText(R.id.tv_name, userInfo.getName());
+            }
+        };
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setAdapter(adapter);
+    }
+
+
+
     private void getOrgDetails(){
         HashMap header = new HashMap(),map = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
@@ -218,7 +262,6 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
             }
             @Override
             public void onResponse(BaseObject<OrgActEntity> response) {
-                binding.nrl.onLoadFinished();
                 binding.srl.setRefreshing(false);
                 LogUtil.showLog("党组织详情："+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
@@ -242,13 +285,11 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
             @Override
             public void onError(Request request, Exception e, int code) {
                 binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
-                binding.nrl.onLoadFinished();
                 binding.srl.setRefreshing(false);
                 statusMsg(e,code);
             }
             @Override
             public void onResponse(BaseList<OrgActEntity> response) {
-                binding.nrl.onLoadFinished();
                 binding.srl.setRefreshing(false);
                 LogUtil.showLog("活动列表："+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
@@ -268,23 +309,10 @@ public class PartyActActivity extends BaseSlideActivity implements OnPullListene
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                if(binding.rb2.isChecked())getActList();
+                else getOrgDetails();
             }
         },500);
     }
 
-    @Override
-    public void onRefresh(AbsRefreshLayout listLoader) {
-
-    }
-
-    @Override
-    public void onLoading(AbsRefreshLayout listLoader) {
-        binding.nrl.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        },500);
-    }
 }

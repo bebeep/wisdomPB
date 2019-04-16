@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,28 +18,24 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bebeep.commontools.listener.SoftKeyBoardListener;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemDivider;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
-import com.bebeep.commontools.showbigimage.ShowSingleBigImageDialog;
+import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
-import com.bebeep.wisdompb.activity.NewsDetailActivity;
 import com.bebeep.wisdompb.activity.PlayVideoActivity;
 import com.bebeep.wisdompb.activity.ReleaseDiscoverActivity;
 import com.bebeep.wisdompb.base.BaseFragment;
@@ -53,13 +47,9 @@ import com.bebeep.wisdompb.databinding.Fragment4Binding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import cc.dagger.photopicker.bean.Image;
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
@@ -72,7 +62,6 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     private CommonAdapter adapter;
     private List<DiscoverEntity> list = new ArrayList<>();
     private int pageNo = 1,delType = 0;
-    private ShowSingleBigImageDialog showSingleBigImageDialog;
     private CustomDialog customDialog1,customDialog2;
     private boolean showKeyBoard = false;
 
@@ -83,6 +72,8 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
     }
 
     private String crcleFriendsId = "",parentId="0",repliedUserId="0",delCommentId="",delDiscoverId="";
+
+
 
     @Nullable
     @Override
@@ -105,7 +96,6 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
 
     @SuppressLint("NewApi")
     private void init(){
-        showSingleBigImageDialog = new ShowSingleBigImageDialog(getActivity());
         initAdapter();
         initDialog();
         getData();
@@ -203,9 +193,11 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                 binding.srl.setRefreshing(false);
                 binding.nrl.onLoadFinished();
                 statusMsg(e,code);
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
             }
             @Override
             public void onResponse(BaseList<DiscoverEntity> response) {
+                LogUtil.showLog("发现列表 = response： "+MyApplication.gson.toJson(response));
                 binding.srl.setRefreshing(false);
                 binding.nrl.onLoadFinished();
                 if(response.isSuccess()){
@@ -227,7 +219,8 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                     if(response.getErrorCode() ==1) refreshToken();
                     else MyTools.showToast(getActivity(),response.getMsg());
                 }
-                LogUtil.showLog("发现列表 = response： "+MyApplication.gson.toJson(response));
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+
             }
         },header,map);
     }
@@ -243,7 +236,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         map.put("parentId",parentId);
         map.put("repliedUserId",repliedUserId);
         map.put("content",binding.etComment.getText().toString());
-        map.put("type","4");
+        map.put("type","3");
         LogUtil.showLog("提交评论："+ map.toString());
         OkHttpClientManager.postAsyn(URLS.COMMENT_SUBMIT, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
@@ -275,7 +268,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",entity.getId());
-        map.put("type","4");
+        map.put("type","3");
         LogUtil.showLog("获取评论："+ map.toString());
         OkHttpClientManager.postAsyn(URLS.COMMENT_GET, new OkHttpClientManager.ResultCallback<BaseList<CommentEntity>>() {
             @Override
@@ -304,7 +297,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("id", commentId);
-        map.put("type","4");
+        map.put("type","3");
         LogUtil.showLog("提交评论："+ map.toString());
         OkHttpClientManager.postAsyn(URLS.COMMENT_DEL, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
@@ -406,8 +399,10 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                     holder.setImageUrl((ImageView) holder.getView(R.id.iv_video), URLS.IMAGE_PRE +entity.getImgsrcs(),R.drawable.default_error);
                 }else if(TextUtils.equals(entity.getType(),"1")){//图片
                     holder.setVisible(R.id.fl_video,false);
-                    holder.setVisible(R.id.recyclerView1,true);
-                    setInnerAdapter1((RecyclerView)holder.getView(R.id.recyclerView1),entity.getImgsrcs());
+                    if(!TextUtils.isEmpty(entity.getImgsrcs())){
+                        holder.setVisible(R.id.recyclerView1,true);
+                        setInnerAdapter1((RecyclerView)holder.getView(R.id.recyclerView1),entity.getImgsrcs());
+                    }else holder.setVisible(R.id.recyclerView1,false);
                 }else if(TextUtils.equals(entity.getType(),"2")){ //普通文本、
                     holder.setVisible(R.id.fl_video,false);
                     holder.setVisible(R.id.recyclerView1,false);
@@ -434,24 +429,25 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
 
     }
 
+
     //图
     private void setInnerAdapter1(RecyclerView recyclerView, String pics){
         if(TextUtils.isEmpty(pics) || TextUtils.equals(pics,",")) return;
-        List<String> picList = new ArrayList<>();
+        final List<String> picList = new ArrayList<>();
         String[] picsArr = pics.split(",");
         if(picsArr==null||picsArr.length==0)return;
         for (String s:picsArr){
-            if(!TextUtils.isEmpty(s))picList.add(s);
+            if(!TextUtils.isEmpty(s))picList.add(URLS.IMAGE_PRE + s);
         }
         CommonAdapter adapter = new CommonAdapter<String>(getActivity(), R.layout.item_f4_inner1,picList){
             @Override
             protected void convert(ViewHolder holder, final String s, final int position) {
-                holder.setImageUrl((ImageView)holder.getView(R.id.iv), URLS.IMAGE_PRE + s,R.drawable.default_error,60,90);
+                holder.setImageUrl((ImageView)holder.getView(R.id.iv), s,R.drawable.default_error,90,60);
                 holder.setOnClickListener(R.id.iv, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //查看大图
-                        showSingleBigImageDialog.show(URLS.IMAGE_PRE + s,R.drawable.default_error); //单张图片
+                        new ShowMultiBigImageDialog(getActivity(),picList).show(position);
                     }
                 });
             }
@@ -459,6 +455,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
         recyclerView.setAdapter(adapter);
     }
+
 
     //评论
     private void setInnerAdapter2(RecyclerView recyclerView,final int listPos){
@@ -488,7 +485,7 @@ public class Fragment4 extends BaseFragment implements OnPullListener,TextWatche
                 holder.setOnLongClickListener(R.id.ll_parent, new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getId())) {//表示是用户自己发布的评论
+                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getUserId())) {//表示是用户自己发布的评论
                             delCommentId = entity.getId();
                             if(customDialog1!=null){
                                 customDialog1.show();

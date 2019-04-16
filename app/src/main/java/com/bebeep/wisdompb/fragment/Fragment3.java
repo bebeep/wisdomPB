@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import com.bebeep.wisdompb.activity.MeetingDetailsActivity;
 import com.bebeep.wisdompb.activity.MeetingMinutesActivity;
 import com.bebeep.wisdompb.activity.MyMeetingActivity;
 import com.bebeep.wisdompb.activity.OrderMeetingActivity;
+import com.bebeep.wisdompb.activity.SearchActivity;
 import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.CommentEntity;
@@ -68,9 +70,22 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
         PicassoUtil.setImageUrl(getActivity(),binding.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,60,60);
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("三会一课");
-//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
+        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchActivity.class).putExtra("type",4));
+            }
+        });
 
+        binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
+        binding.srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
     }
 
     private void getData(){
@@ -80,11 +95,13 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
         OkHttpClientManager.postAsyn(URLS.MEETING_LIST, new OkHttpClientManager.ResultCallback<BaseList<MeetingEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
+                binding.srl.setRefreshing(false);
                 statusMsg(e,code);
                 binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
             }
             @Override
             public void onResponse(BaseList<MeetingEntity> response) {
+                binding.srl.setRefreshing(false);
                 LogUtil.showLog("三会一课列表："+MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     list = response.getData();
@@ -140,6 +157,17 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
                 holder.setText(R.id.tv_week,entity.getWeek());
                 holder.setText(R.id.tv_title,entity.getTheme());
                 holder.setText(R.id.tv_content,entity.getStartTime().substring(5,entity.getStartTime().length()) +"~"+entity.getEndTime().substring(5,entity.getEndTime().length())+"  "+entity.getAddress());
+
+                if(TextUtils.equals(entity.getState(),"0")) {
+                    holder.setText(R.id.tv_state,"待参加");
+                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_red);
+                }else if(TextUtils.equals(entity.getState(),"1")) {
+                    holder.setText(R.id.tv_state,"已参加");
+                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
+                }else if(TextUtils.equals(entity.getState(),"2")) {
+                    holder.setText(R.id.tv_state,"已结束");
+                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
+                }
             }
         };
 

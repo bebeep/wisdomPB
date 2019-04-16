@@ -13,8 +13,16 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="45dp"
-            android:background="@drawable/bg_birthday_card">
+
+            android:layout_marginTop="45dp">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_birthday_card"/>
+
 
             <TextView
                 android:id="@+id/tv_content"

@@ -45,17 +45,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:gravity="bottom"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@color/c_sblack"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_group"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:layout_gravity="bottom"
                 android:gravity="center_vertical"
                 android:textColor="@color/c_gray"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
         </FrameLayout>
 

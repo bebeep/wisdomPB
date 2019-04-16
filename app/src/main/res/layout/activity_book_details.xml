@@ -175,6 +175,7 @@
                             android:id="@+id/fl_catalog"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
+                            android:visibility="gone"
                             android:background="@drawable/bg_fl_click"
                             android:onClick="@{onClickListener}">
 

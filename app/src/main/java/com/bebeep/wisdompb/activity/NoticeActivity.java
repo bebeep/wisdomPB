@@ -11,12 +11,15 @@ import android.view.View;
 import com.android.databinding.library.baseAdapters.BR;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
+import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseEditActivity;
 import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.NoticeEntity;
 import com.bebeep.wisdompb.bean.OrgActEntity;
 import com.bebeep.wisdompb.databinding.ActivityNoticeBinding;
@@ -40,6 +43,8 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
     private CommonAdapter adapter;
 
     private int pageNo =1;
+    private String delId = "";
+    private CustomDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +63,20 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
         binding.nrl.setOnLoadingListener(this);
+        dialog = new CustomDialog.Builder(this)
+                .setMessage("确定要删除该条通知吗")
+                .setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        }).setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                del();
+            }
+        }).createTwoButtonDialog();
     }
 
 
@@ -78,12 +97,14 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
         adapter = new CommonAdapter<NoticeEntity>(this,R.layout.item_notice,list){
             @Override
             protected void convert(ViewHolder holder, final NoticeEntity entity, int position) {
+                holder.setTextColor(R.id.tv_title, getResources().getColor(entity.getIfRead()==0?R.color.c_sblack:R.color.c_gray));
                 holder.setText(R.id.tv_title, entity.getTypeTitle());
                 holder.setText(R.id.time,entity.getCreateDate());
                 holder.setVisible(R.id.iv_link, !TextUtils.isEmpty(entity.getUrl())&&entity.getType() == 0);
                 holder.setOnClickListener(R.id.fl_parent, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(entity.getIfRead()==0)read(entity.getId());
                         switch (entity.getType()){
                             case 0: //后台发布的
                                 if(!TextUtils.isEmpty(entity.getUrl())){
@@ -91,7 +112,7 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
                                 }
                                 break;
                             case 2://党费提醒
-
+                                startActivity(new Intent(NoticeActivity.this,PayDetailsActivity.class));
                                 break;
                             case 3://会议
                                 setResult(1);
@@ -111,6 +132,15 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
                                 finish();
                                 break;
                         }
+                    }
+                });
+
+                holder.setOnLongClickListener(R.id.fl_parent, new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        delId = entity.getId();
+                        dialog.show();
+                        return true;
                     }
                 });
             }
@@ -154,6 +184,44 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
             }
         },header,map);
     }
+
+    private void del(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("id",delId);
+        OkHttpClientManager.postAsyn(URLS.MY_NOTICE_DEL, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("删除通知公告："+MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    getData();
+                }else{
+                    MyTools.showToast(NoticeActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+            }
+        },header,map);
+    }
+
+    private void read(String id){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("id",id);
+        OkHttpClientManager.postAsyn(URLS.NEWS_READ, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+            }
+        },header,map);
+    }
+
 
     @Override
     public void onRefresh() {

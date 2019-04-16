@@ -78,11 +78,14 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_FindFragment_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/c_white"
             app:tabIndicatorColor="@color/theme_d"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:overScrollMode="never"
             app:tabSelectedTextColor="@color/theme_d"
             app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
             app:tabTextColor="@color/c_sblack" />
@@ -94,6 +97,7 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_FindFragment_pager"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

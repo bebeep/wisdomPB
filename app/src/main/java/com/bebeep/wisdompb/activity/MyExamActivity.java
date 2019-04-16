@@ -73,16 +73,8 @@ public class MyExamActivity extends BaseSlideActivity implements OnPullListener,
         adapter = new CommonAdapter<ExamEntity>(this,R.layout.item_f2,list){
             @Override
             protected void convert(ViewHolder holder, final ExamEntity entity, int position) {
-                if(TextUtils.equals(entity.getState(),"1")) {
-                    holder.setText(R.id.tv_state,"进行中");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_yellow);
-                }else if(TextUtils.equals(entity.getState(),"0")) {
-                    holder.setText(R.id.tv_state,"未开始");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
-                }else if(TextUtils.equals(entity.getState(),"2")) {
-                    holder.setText(R.id.tv_state,"已过期");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
-                }
+                holder.setText(R.id.tv_state,"已考试");
+                holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
                 holder.setText(R.id.tv_title,entity.getTitle());
                 if(!TextUtils.isEmpty(entity.getStartTime())&& entity.getStartTime().length()>=16
                         && !TextUtils.isEmpty(entity.getEndTime())&& entity.getEndTime().length()>=16){

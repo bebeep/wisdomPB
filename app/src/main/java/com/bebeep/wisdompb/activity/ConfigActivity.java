@@ -61,7 +61,7 @@ public class ConfigActivity extends BaseSlideActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.fl_edit_psw://修改密码
-
+                startActivity(new Intent(this,UpdatePasswordActivity.class));
                 break;
             case R.id.fl_notice://免责声明
                 startActivity(new Intent(this, WebViewActivity.class).putExtra("title","免责声明").putExtra("url", URLS.NOTICE));
@@ -121,7 +121,7 @@ public class ConfigActivity extends BaseSlideActivity implements View.OnClickLis
     }
 
     private void downloadFile(){
-        OkHttpClientManager.downloadAsyn(URLS.HOST + entity.getUrl(), MyApplication.FILE_PATH, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.downloadAsyn(URLS.IMAGE_PRE + entity.getUrl(), MyApplication.FILE_PATH, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 MyTools.showToast(ConfigActivity.this,"下载出错，请重试");

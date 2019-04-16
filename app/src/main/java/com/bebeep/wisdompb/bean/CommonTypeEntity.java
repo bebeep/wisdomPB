@@ -10,8 +10,13 @@ public class CommonTypeEntity implements Serializable{
     private String imgUrl;
 
     private int isCorrect; //是否为正确答案  0否 1是
-    private boolean isChecked;//用户是否已经选择了这个答案
+//    private boolean isChecked;//用户是否已经选择了这个答案
+    private boolean hasChecked;//用户是否已经选择了这个答案
 
+    private int count;//消息数量
+
+    private String imgSrc;
+    private String content;
 
     public String getImgUrl() {
         return imgUrl;
@@ -21,12 +26,45 @@ public class CommonTypeEntity implements Serializable{
         this.imgUrl = imgUrl;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+//    public boolean isChecked() {
+//        return isChecked;
+//    }
+//
+//    public void setChecked(boolean checked) {
+//        isChecked = checked;
+//    }
+
+
+    public String getImgSrc() {
+        return imgSrc;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isHasChecked() {
+        return hasChecked;
+    }
+
+    public void setHasChecked(boolean hasChecked) {
+        this.hasChecked = hasChecked;
     }
 
     public int getIsCorrect() {

@@ -1,6 +1,5 @@
 package com.bebeep.wisdompb.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -21,20 +20,24 @@ import com.bebeep.commontools.views.CustomProgressDialog;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseAppCompatActivity;
+import com.bebeep.wisdompb.base.BaseEditActivity;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.LoginEntity;
 import com.bebeep.wisdompb.bean.UserInfo;
 import com.bebeep.wisdompb.databinding.ActivityLoginBinding;
+import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import java.util.HashMap;
 
 /**
  * 登录
  */
-public class LoginActivity extends BaseAppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends BaseEditActivity implements View.OnClickListener{
 
 
     private ActivityLoginBinding binding;
@@ -58,8 +61,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("登录");
 
-        binding.etUsername.setText("513321197311070085");
-        binding.etPassword.setText("070085");
+//        binding.etUsername.setText(MyApplication.LOGIN_NAME);
+//        binding.etPassword.setText(MyApplication.LOGIN_PASSWORD);
     }
 
     @Override
@@ -71,7 +74,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             case R.id.ll_forget://忘记密码
 //                if(customDialog!=null) customDialog.show();
 //                else initDialog();
-                MyTools.showToast(this,"请联系后台管理人员恢复密码");
+//                MyTools.showToast(this,"请联系后台管理人员恢复密码");
+                startActivity(new Intent(this,ForgetPasswordActivity.class));
                 break;
         }
     }
@@ -79,7 +83,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
     private boolean checkInput(){
         if(TextUtils.isEmpty(binding.etUsername.getText())){
-            MyTools.showToast(this,"请输入用户名");
+            MyTools.showToast(this,"请输入准确的身份证号");
             return false;
         }else if(TextUtils.isEmpty(binding.etPassword.getText())){
             MyTools.showToast(this,"请输入密码");
@@ -97,16 +101,18 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
+                MyTools.showToast(LoginActivity.this, "无法连接服务器");
             }
             @Override
             public void onResponse(BaseObject<LoginEntity> response) {
+                LogUtil.showLog("登录："+response);
                 if(response.isSuccess()){
                     LoginEntity entity = response.getData();
                     PreferenceUtils.setPrefString("access_token",entity.getAccess_token());
                     PreferenceUtils.setPrefString("refresh_token",entity.getRefresh_token());
                     PreferenceUtils.setSettingLong("timestamp", System.currentTimeMillis());
                     getUserInfo(entity.getAccess_token());
-                }
+                }else  MyTools.showToast(LoginActivity.this, response.getMsg());
             }
         },null,map);
     }
@@ -128,6 +134,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                 if(response.isSuccess()){
                     UserInfo entity = response.getData();
                     PreferenceUtils.setPrefString("userInfo", MyApplication.gson.toJson(entity));
+                    setAlias(entity.getUserId());
                     if(tag == 0)startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     else if(tag == 1) setResult(RESULT_OK);
                     finish();
@@ -151,45 +158,13 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
     }
 
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
+    private void setAlias(String userId){
+        PushAgent.getInstance(this).addAlias(userId, MyApplication.ALIAS_NAME, new UTrack.ICallBack() {
+            @Override
+            public void onMessage(boolean isSuccess, String message) {
+                LogUtil.showLog("setAlias:"+message);
             }
-            return super.dispatchTouchEvent(ev);
-        }
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
+        });
     }
 
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-
-                return false;
-            } else {
-                //使EditText触发一次失去焦点事件
-                v.setFocusable(false);
-                v.setFocusableInTouchMode(true);
-                return true;
-            }
-        }
-        return false;
-    }
 }

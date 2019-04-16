@@ -57,10 +57,19 @@ public class LibraryListActivity extends BaseFragmentActivity {
 
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText(getIntent().getStringExtra("title"));
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
         binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LibraryListActivity.this, SearchActivity.class).putExtra("type",1));
             }
         });
 

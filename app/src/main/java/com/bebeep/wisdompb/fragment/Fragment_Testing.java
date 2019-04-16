@@ -114,10 +114,10 @@ public class Fragment_Testing extends CommonFragment {
                     holder.setVisible(R.id.tv_index, false);
                     holder.setVisible(R.id.iv_result,true);
                     binding.tvSure.setVisibility(View.GONE);
-                    if(commonTypeEntity.isChecked()){//用户选择了该选项-判断正误
+                    if(commonTypeEntity.isHasChecked()){//用户选择了该选项-判断正误
                         holder.setImageResource(R.id.iv_result, commonTypeEntity.getIsCorrect()==1?R.drawable.icon_testing_right:R.drawable.icon_testing_wrong);
                         holder.setTextColor(R.id.tv_content, getResources().getColor(commonTypeEntity.getIsCorrect()==1?R.color.green:R.color.theme));
-                        holder.setBackgroundColor(R.id.ll_parent, getResources().getColor(entity.getType() == 1 && commonTypeEntity.isChecked() ?R.color.c_line:R.color.c_white));
+                        holder.setBackgroundColor(R.id.ll_parent, getResources().getColor(entity.getType() == 1 && commonTypeEntity.isHasChecked() ?R.color.c_line:R.color.c_white));
 
                     }else { //显示正确答案
                         if(commonTypeEntity.getIsCorrect()==1){
@@ -134,18 +134,18 @@ public class Fragment_Testing extends CommonFragment {
                     holder.setEnable(R.id.ll_parent,true);
                     holder.setVisible(R.id.tv_index, true);
                     holder.setVisible(R.id.iv_result,false);
-                    holder.setBackgroundColor(R.id.ll_parent, getResources().getColor(entity.getType() == 1 && commonTypeEntity.isChecked() ?R.color.c_line:R.color.c_white));
+                    holder.setBackgroundColor(R.id.ll_parent, getResources().getColor(entity.getType() == 1 && commonTypeEntity.isHasChecked() ?R.color.c_line:R.color.c_white));
                 }
 
                 holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(entity.getType() == 1){//多选
-                            commonTypeEntity.setChecked(!commonTypeEntity.isChecked());
+                            commonTypeEntity.setHasChecked(!commonTypeEntity.isHasChecked());
                             adapter.refresh(list);
                             setCheckable();
                         }else{ //单选
-                            commonTypeEntity.setChecked(true);
+                            commonTypeEntity.setHasChecked(true);
                             entity.setHasChecked(true);
                             entity.setShowAnwsers(true);
                             adapter.refresh(list);
@@ -167,7 +167,7 @@ public class Fragment_Testing extends CommonFragment {
         boolean canCheck = false;
         multiAnswersId = "";
         for (CommonTypeEntity commonTypeEntity:list){
-            if(commonTypeEntity.isChecked()) {
+            if(commonTypeEntity.isHasChecked()) {
                 canCheck = true;
                 multiAnswersId += commonTypeEntity.getId()+",";
             }
@@ -182,7 +182,7 @@ public class Fragment_Testing extends CommonFragment {
         boolean result = true;
         for (CommonTypeEntity commonTypeEntity:list){
             if(commonTypeEntity.getIsCorrect()==1){
-                if(!commonTypeEntity.isChecked()) result = false;
+                if(!commonTypeEntity.isHasChecked()) result = false;
             }
         }
 

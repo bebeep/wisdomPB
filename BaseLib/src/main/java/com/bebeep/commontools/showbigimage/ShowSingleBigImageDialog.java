@@ -82,7 +82,7 @@ public class ShowSingleBigImageDialog extends Dialog{
             if(TextUtils.isEmpty(url))view.setImageResource(drawableId);
             else{
                 Picasso.with(context).load(url)
-                        .placeholder(drawableId)
+//                        .placeholder(drawableId)
                         .error(drawableId)
                         .into(view);
             }

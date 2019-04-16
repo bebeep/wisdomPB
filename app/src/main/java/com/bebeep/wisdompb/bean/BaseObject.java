@@ -1,5 +1,7 @@
 package com.bebeep.wisdompb.bean;
 
+import com.bebeep.wisdompb.MyApplication;
+
 public class BaseObject<T> {
     private boolean success;
     private int errorCode;
@@ -37,5 +39,11 @@ public class BaseObject<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+
+    @Override
+    public String toString() {
+        return MyApplication.gson.toJson(this);
     }
 }

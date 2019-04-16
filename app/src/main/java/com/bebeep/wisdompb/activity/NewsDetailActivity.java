@@ -39,6 +39,8 @@ import com.bebeep.wisdompb.databinding.ActivityNewsDetailBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
+import com.ufreedom.uikit.FloatingText;
+import com.ufreedom.uikit.effect.ScaleFloatingAnimator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +62,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
 
 
     private String URL_DETAILS,KEY_TYPE;
+    private FloatingText floatingText;//漂浮文字
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +76,11 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
         String title = getIntent().getStringExtra("title");
         id = getIntent().getStringExtra("id");
         int tag = getIntent().getIntExtra("tag",-1);
+        if(TextUtils.isEmpty(id)){
+            MyTools.showToast(this,"参数错误！");
+            finish();
+        }
+        initFloatingText();
         initURLS(tag);
         initDialog();
         initAdapter();
@@ -95,11 +103,22 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
             @Override
             public void keyBoardHide(int height) {
                 binding.etComment.setText("");
-                binding.llComment.setVisibility(View.GONE);
+                binding.etComment.clearFocus();
+                binding.tvSend.setClickable(false);
+//                binding.llComment.setVisibility(View.GONE);
             }
         });
     }
 
+    private void initFloatingText(){
+        floatingText = new FloatingText.FloatingTextBuilder(this)
+                .textColor(Color.RED) // 漂浮字体的颜色
+                .textSize(60)  // 浮字体的大小
+                .textContent(" +1 ") // 浮字体的内容
+                .offsetY(-50) // FloatingText 相对其所贴附View的垂直位移偏移量
+                .build();
+        floatingText.attach2Window(); //将FloatingText贴附在Window上
+    }
 
     private void initURLS(int tag){
         switch (tag){
@@ -115,12 +134,23 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                 URL_DETAILS = URLS.PUBLIC_SHOW_DETAILS;
                 KEY_TYPE = "2";
                 break;
+            case 4://首页广告详情
+                URL_DETAILS = URLS.ADS_DETAILS;
+                KEY_TYPE = "6";
+                break;
+            case 5://专题教育广告详情
+                URL_DETAILS = URLS.SPECIAL_EDU_ADS_DETAILS;
+                KEY_TYPE = "7";
+                break;
         }
     }
 
 
     private void initUI(){
         if(entity == null) return;
+        binding.tvTitle.setText(entity.getTitle());
+        binding.tvTime.setText(entity.getUpdateDate());
+        binding.tvScanNum.setText(entity.getReadingQuantity());
         initWeb(URLS.HOST+entity.getInfoUrl());
         if(TextUtils.isEmpty(entity.getEnclosureNmae()) || TextUtils.isEmpty(entity.getEnclosureUrl())) binding.flFile.setVisibility(View.GONE);
         else{
@@ -226,7 +256,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                         repliedUserId = entity.getUserId();
                         binding.etComment.setHint("回复"+entity.getName()+":");
                         binding.etComment.requestFocus();
-                        binding.llComment.setVisibility(View.VISIBLE);
+//                        binding.llComment.setVisibility(View.VISIBLE);
                         MyTools.showKeyboard(NewsDetailActivity.this);
                     }
                 });
@@ -235,7 +265,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                     @Override
                     public boolean onLongClick(View v) {
                         LogUtil.showLog("用户信息："+MyApplication.gson.toJson(MyApplication.getInstance().getUserInfo()));
-                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getId())) {//表示是用户自己发布的评论
+                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getUserId())) {//表示是用户自己发布的评论
                             delCommentId = entity.getId();
                             if(customDialog!=null)customDialog.show();
                             return true;
@@ -251,6 +281,9 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
     }
 
 
+    /**
+     * 获取详情
+     */
     private void getData(){
         HashMap header = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
@@ -269,6 +302,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                     initUI();
                 }else{
                     MyTools.showToast(NewsDetailActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
                 }
             }
         },header,map);
@@ -333,13 +367,15 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                     binding.etComment.setText("");
                     binding.etComment.clearFocus();
                     binding.tvSend.setClickable(false);
-                    binding.llComment.setVisibility(View.GONE);
+//                    binding.llComment.setVisibility(View.GONE);
                     getComment();
                 }
             }
         },header,map);
-
     }
+
+
+
     /**
      * 删除评论
      */
@@ -374,6 +410,8 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
      * 点赞
      */
     private void zan(){
+        if(TextUtils.equals(KEY_TYPE,"6")) KEY_TYPE = "5";
+        else if(TextUtils.equals(KEY_TYPE,"7")) KEY_TYPE = "6";
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);
@@ -389,6 +427,7 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
                 if(response.isSuccess()){
                     int errorCode = response.getErrorCode();
                     binding.ivZan.setImageResource(errorCode == 6?R.drawable.icon_zan:R.drawable.icon_zan_c);
+                    if(errorCode == 7) floatingText.startFloating(binding.ivZan);
                 }else MyTools.showToast(NewsDetailActivity.this, response.getMsg());
             }
         },header,map);
@@ -398,6 +437,8 @@ public class NewsDetailActivity extends BaseEditActivity implements View.OnClick
      * 收藏
      */
     private void collect(){
+        if(TextUtils.equals(KEY_TYPE,"6")) KEY_TYPE = "5";
+        else if(TextUtils.equals(KEY_TYPE,"7")) KEY_TYPE = "6";
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);

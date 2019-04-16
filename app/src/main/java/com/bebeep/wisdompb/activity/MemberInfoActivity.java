@@ -49,7 +49,7 @@ public class MemberInfoActivity extends BaseSlideActivity implements View.OnClic
         binding.setVariable(BR.onClickListener,this);
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText("党员档案");
-        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_menu7);
     }
 
@@ -63,6 +63,10 @@ public class MemberInfoActivity extends BaseSlideActivity implements View.OnClic
         binding.tvPosition.setText(userInfo.getPartyPosts());
         binding.tvTime1.setText(userInfo.getJoiningPartyOrganizationDate());
         binding.tvTime2.setText(userInfo.getBecomingFullMemberDate());
+        binding.tvType.setText(userInfo.getTypeName());
+        binding.tvEdu.setText(userInfo.getEducation());
+        binding.tvNation.setText(userInfo.getNation());
+        binding.tvComment.setText(userInfo.getDemocraticAppraisal());
     }
 
     @Override

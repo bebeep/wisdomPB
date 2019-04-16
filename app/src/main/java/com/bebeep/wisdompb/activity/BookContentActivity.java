@@ -26,6 +26,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.readpage.bean.BookCatalogue;
 import com.bebeep.readpage.bean.BookList;
 import com.bebeep.readpage.bean.BookMarks;
 import com.bebeep.readpage.dialog.PageModeDialog;
@@ -35,6 +36,7 @@ import com.bebeep.readpage.util.Config;
 import com.bebeep.readpage.util.PageFactory;
 import com.bebeep.readpage.view.PageWidget;
 import com.bebeep.wisdompb.BR;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseActivity;
 import com.bebeep.wisdompb.base.BaseAppCompatActivity;
@@ -47,6 +49,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +89,8 @@ public class BookContentActivity extends BaseAppCompatActivity implements View.O
     private SettingDialog mSettingDialog;
     private PageModeDialog mPageModeDialog;
     private Boolean mDayOrNight;
+
+    private ArrayList<BookCatalogue> catalogueList = new ArrayList<>();//目录
 
     // 接收电池信息更新的广播
     private BroadcastReceiver myReceiver = new BroadcastReceiver(){
@@ -128,11 +133,15 @@ public class BookContentActivity extends BaseAppCompatActivity implements View.O
         mfilter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(myReceiver, mfilter);
 
+
         config = Config.getInstance();
         pageFactory = PageFactory.getInstance();
 
+
+
         mSettingDialog = new SettingDialog(this);
         mPageModeDialog = new PageModeDialog(this);
+
 
         WindowManager manage = getWindowManager();
         Display display = manage.getDefaultDisplay();
@@ -156,6 +165,9 @@ public class BookContentActivity extends BaseAppCompatActivity implements View.O
         initListener();
         initDayOrNight();
         initView();
+
+
+
 
     }
 
@@ -192,8 +204,14 @@ public class BookContentActivity extends BaseAppCompatActivity implements View.O
                 pageFactory.nextChapter();
                 break;
             case R.id.tv_directory:
+                hideReadSetting();
+                catalogueList.addAll(pageFactory.getDirectoryList());
+                LogUtil.showLog("目录："+ MyApplication.gson.toJson(catalogueList));
                 Intent intent = new Intent(BookContentActivity.this, CatalogActivity.class);
+                intent.putExtra("catalogueList",catalogueList);
+                intent.putExtra("title",bookList.getBookname());
                 startActivity(intent);
+
                 break;
             case R.id.tv_dayornight:
                 changeDayOrNight();
@@ -366,9 +384,12 @@ public class BookContentActivity extends BaseAppCompatActivity implements View.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtil.showLog("destroy");
         pageFactory.clear();
         unregisterReceiver(myReceiver);
     }
+
+
 
 
     @Override

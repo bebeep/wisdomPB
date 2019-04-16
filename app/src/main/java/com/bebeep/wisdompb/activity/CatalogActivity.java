@@ -15,6 +15,8 @@ import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
+import com.bebeep.readpage.bean.BookCatalogue;
+import com.bebeep.readpage.util.PageFactory;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.adapter.PerformerListAdapter;
@@ -40,11 +42,10 @@ import me.free.sticky.StickyItemDecoration;
  */
 public class CatalogActivity extends BaseSlideActivity {
     private ActivityCatalogBinding binding;
-    private List<CommonTypeEntity> list = new ArrayList<>();
     private CommonAdapter adapter;
 
-    private String id;//图书id
-
+    private ArrayList<BookCatalogue> list = new ArrayList<>();//目录
+    private PageFactory pageFactory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,13 +55,14 @@ public class CatalogActivity extends BaseSlideActivity {
     }
 
     private void init(){
-        id = getIntent().getStringExtra("id");
         String title = getIntent().getStringExtra("title");
-        if(TextUtils.isEmpty(id) || TextUtils.isEmpty(title)){
+        list = (ArrayList<BookCatalogue>) getIntent().getSerializableExtra("catalogueList");
+        if(TextUtils.isEmpty(title)){
             MyTools.showToast(this,"该书籍不存在");
             finish();
             return;
         }
+        pageFactory = PageFactory.getInstance();
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText(title);
         binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
@@ -70,19 +72,19 @@ public class CatalogActivity extends BaseSlideActivity {
             }
         });
         initAdapter();
-        getData();
     }
 
     private void initAdapter(){
-        adapter = new CommonAdapter<CommonTypeEntity>(this,R.layout.item_catalog_title,list){
+        adapter = new CommonAdapter<BookCatalogue>(this,R.layout.item_catalog_title,list){
             @Override
-            protected void convert(ViewHolder holder, final CommonTypeEntity entity, int position) {
-                holder.setText(R.id.tv_top,entity.getTitle());
+            protected void convert(ViewHolder holder, final BookCatalogue entity, final int position) {
+                holder.setText(R.id.tv_top,entity.getBookCatalogue());
                 holder.setOnClickListener(R.id.ll_parent, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //点击目录
-                        startActivity(new Intent(CatalogActivity.this,BookContentActivity.class).putExtra("id",entity.getId()));
+                        pageFactory.changeChapter(list.get(position).getBookCatalogueStartPos());
+                        finish();
                     }
                 });
             }
@@ -92,28 +94,28 @@ public class CatalogActivity extends BaseSlideActivity {
     }
 
 
-    private void getData() {
-        HashMap header = new HashMap(), map = new HashMap();
-        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
-        map.put("books.id", id);
-        OkHttpClientManager.postAsyn(URLS.LIBRARY_CATALOG_LIST, new OkHttpClientManager.ResultCallback<BaseList<CommonTypeEntity>>() {
-            @Override
-            public void onError(Request request, Exception e, int code) {
-                statusMsg(e, code);
-            }
-            @Override
-            public void onResponse(BaseList<CommonTypeEntity> response) {
-                Log.e("TAG", "图书目录 response: " + MyApplication.gson.toJson(response));
-                if (response.isSuccess()) {
-                      list = response.getData();
-                      adapter.refresh(list);
-                } else {
-                    MyTools.showToast(CatalogActivity.this,response.getMsg());
-                    if (response.getErrorCode() == 1) refreshToken();
-                }
-            }
-        }, header, map);
-    }
+//    private void getData() {
+//        HashMap header = new HashMap(), map = new HashMap();
+//        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+//        map.put("books.id", id);
+//        OkHttpClientManager.postAsyn(URLS.LIBRARY_CATALOG_LIST, new OkHttpClientManager.ResultCallback<BaseList<CommonTypeEntity>>() {
+//            @Override
+//            public void onError(Request request, Exception e, int code) {
+//                statusMsg(e, code);
+//            }
+//            @Override
+//            public void onResponse(BaseList<CommonTypeEntity> response) {
+//                Log.e("TAG", "图书目录 response: " + MyApplication.gson.toJson(response));
+//                if (response.isSuccess()) {
+//                      list = response.getData();
+//                      adapter.refresh(list);
+//                } else {
+//                    MyTools.showToast(CatalogActivity.this,response.getMsg());
+//                    if (response.getErrorCode() == 1) refreshToken();
+//                }
+//            }
+//        }, header, map);
+//    }
 
 
 

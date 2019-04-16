@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.PopupWindow;
+
+import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.showbigimage.ShowSingleBigImageDialog;
 import com.bebeep.commontools.utils.CompressImageUtils;
 import com.bebeep.commontools.utils.MyTools;
@@ -26,6 +28,7 @@ import com.bebeep.wisdompb.adapter.GridView_ChannelAdapter;
 import com.bebeep.wisdompb.base.BaseEditActivity;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.FileUploadEntity;
+import com.bebeep.wisdompb.bean.GalleryEntity;
 import com.bebeep.wisdompb.bean.ImageVideoEntity;
 import com.bebeep.wisdompb.databinding.ActivityReleaseDiscoverBinding;
 import com.bebeep.wisdompb.util.LogUtil;
@@ -58,7 +61,7 @@ import static com.bebeep.wisdompb.MyApplication.FILEKEY;
  */
 public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWatcher{
     private ActivityReleaseDiscoverBinding binding;
-
+    private ShowSingleBigImageDialog showSingleBigImageDialog;
     private List<ImageVideoEntity> imgList = new ArrayList<>();
 
     private GridView_ChannelAdapter adapter;
@@ -67,7 +70,6 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
     private int maxPic = 9;
     private ChoosePicPopWindow popWindow;
     private boolean showCamera = false;
-    private ShowSingleBigImageDialog showSingleBigImageDialog;
 
     private long currentUploadData = 0, totalFileSize =0;
     private ProgressDialogWithNum progressDialogWithNum;
@@ -82,9 +84,10 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
     }
 
     private void init(){
-        showSingleBigImageDialog = new ShowSingleBigImageDialog(ReleaseDiscoverActivity.this);
+        showSingleBigImageDialog = new ShowSingleBigImageDialog(this);
         progressDialogWithNum = new ProgressDialogWithNum(this);
         customProgressDialog = new CustomProgressDialog(this);
+        customProgressDialog.setCanceledOnTouchOutside(false);
         initAdapter();
         initTakePhoto();
         binding.title.ivBack.setVisibility(View.VISIBLE);
@@ -103,8 +106,11 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
         binding.title.tvRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.title.tvRight.setEnabled(false);
+                LogUtil.showLog("ReleaseDiscoverActivity:tvRight");
                 //发布
                 uploadFiles();
+
             }
         });
 
@@ -161,7 +167,8 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
                         startActivity(new Intent(ReleaseDiscoverActivity.this, PlayVideoActivity.class).putExtra("url", "file://"  + imgList.get(0).getVideoPath()));
                     }else{//图片
                         if(imgList.get(0).getFlag() == 1){
-                            showSingleBigImageDialog.show("file://" +imgList.get(position).getUrl(),R.drawable.default_error); //单张图片
+//                            showSingleBigImageDialog.show("file://" +imgList.get(position).getUrl(),R.drawable.default_error); //单张图片
+                            new ShowMultiBigImageDialog(ReleaseDiscoverActivity.this,getList()).show(position);
                         }
                     }
                 }
@@ -169,6 +176,15 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
         });
     }
 
+    private List<String> getList(){
+        if(imgList == null||imgList.size()==0)return null;
+        List<String> list = new ArrayList<>();
+        for (ImageVideoEntity entity:imgList)
+        {
+            if(entity.getFlag() == 1) list.add("file://" + entity.getUrl());
+        }
+        return list;
+    }
 
     //选择相册
     private void pickImage() {
@@ -176,7 +192,7 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
         int columns = 3;
         Load load = PhotoPicker.load()
                 .showCamera(showCamera)
-                .filter(PhotoFilter.build().showGif(false).minSize(2 * 1024))
+                .filter(PhotoFilter.build().showGif(false).minWidth(300).minHeight(300))
                 .gridColumns(columns);
         PhotoSelectBuilder builder = load.multi().maxPickSize(9).selectedPaths(mSelectPath);
         builder.start(this);
@@ -259,7 +275,6 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
     }
 
     public void uploadFiles(){
-        if(imgList ==null|| imgList.size()==0)return;
         List<File> fileList = new ArrayList<>();
         currentUploadData = 0;
         totalFileSize = 0;
@@ -278,13 +293,13 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
             }
         }
 
+        customProgressDialog.show();
         if(fileList!=null && fileList.size()!=0){
             int size = fileList.size();
 //            progressDialogWithNum.setProgress(0,"已上传:0/"+size);
 //            progressDialogWithNum.show();
-            customProgressDialog.show();
             for (int i=0;i<fileList.size();i++) upload(fileList.get(i),i,size);
-        }
+        }else submit();
     }
 
 
@@ -300,9 +315,11 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
                 uploadVideoUrl = "";
                 statusMsg(e,code);
                 customProgressDialog.cancel();
+                binding.title.tvRight.setEnabled(true);
             }
             @Override
             public void onResponse(BaseObject response) {
+                binding.title.tvRight.setEnabled(true);
                 customProgressDialog.cancel();
                 MyTools.showToast(ReleaseDiscoverActivity.this, response.getMsg());
                 if(response.isSuccess()){
@@ -335,6 +352,7 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
              @Override
              public void onFailure(Request request, IOException e) {
                  MyTools.showToast(ReleaseDiscoverActivity.this,"上传失败");
+                 binding.title.tvRight.setEnabled(true);
              }
              @Override
              public void onResponse(String json) {
@@ -366,8 +384,8 @@ public class ReleaseDiscoverActivity extends BaseEditActivity implements TextWat
     private HashMap getMap(){
         HashMap map = new HashMap();
         map.put("title",binding.etContent.getText().toString());
-        if(imgList==null||imgList.size()==0){
-            map.put("type","2");
+        if(imgList==null||imgList.size()==0||(TextUtils.isEmpty(uploadPics)&&TextUtils.isEmpty(uploadVideoUrl))){
+            map.put("type","1");
             return map;
         }else if(imgList.size()==1 && imgList.get(0).getFlag() == 2){
             map.put("type","0");

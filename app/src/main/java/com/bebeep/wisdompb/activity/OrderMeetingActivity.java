@@ -128,6 +128,7 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
                 break;
             case R.id.tv_release://发布
                 if(checkInput()){
+                    binding.tvRelease.setEnabled(false);
                     upload(uploadFile);
                 }
                 break;
@@ -141,11 +142,13 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
         OkHttpClientManager.postAsyn(URLS.MEETING_ORDER, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
+                binding.tvRelease.setEnabled(true);
                 customProgressDialog.cancel();
                 statusMsg(e,code);
             }
             @Override
             public void onResponse(BaseObject response) {
+                binding.tvRelease.setEnabled(true);
                 LogUtil.showLog("预定会议 提交response："+MyApplication.gson.toJson(response));
                 customProgressDialog.cancel();
                 MyTools.showToast(OrderMeetingActivity.this, response.getMsg());
@@ -159,12 +162,13 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
 
 
     private void upload(File file){
-        if(!file.exists()){
-            MyTools.showToast(this,"文件不存在，请重新选择文件");
+        if(file == null || !file.exists()){
+//            MyTools.showToast(this,"文件不存在，请重新选择文件");
             uploadFile = null;
             fileName = "";
             filePath = "";
             setFileIcon(fileName);
+            submit();
             return;
         }
         customProgressDialog.show();
@@ -180,6 +184,7 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
         OkHttpClientManager.getInstance().uploadPost2ServerProgress(this, URLS.UPLOAD, requestBody, new OkHttpClientManager.MyCallBack() {
             @Override
             public void onFailure(Request request, IOException e) {
+                binding.tvRelease.setEnabled(true);
                 customProgressDialog.cancel();
                 MyTools.showToast(OrderMeetingActivity.this,"上传失败，请重试");
                 uploadFile = null;
@@ -203,6 +208,7 @@ public class OrderMeetingActivity extends BaseEditActivity implements View.OnCli
                     filePath = "";
                     setFileIcon(fileName);
                     customProgressDialog.cancel();
+                    binding.tvRelease.setEnabled(true);
                 }
             }
         }, new OkHttpClientManager.UIchangeListener() {

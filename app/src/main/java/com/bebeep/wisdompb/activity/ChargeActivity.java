@@ -7,28 +7,41 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.MultiItemTypeAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
+import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
+import com.bebeep.wisdompb.base.BaseSlideActivity;
+import com.bebeep.wisdompb.bean.BaseList;
+import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.PayEntity;
+import com.bebeep.wisdompb.bean.PayRecordEntity;
 import com.bebeep.wisdompb.databinding.ActivityChargeBinding;
+import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.appsdream.nestrefresh.base.AbsRefreshLayout;
 import cn.appsdream.nestrefresh.base.OnPullListener;
 
-public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCheckedChangeListener,
-        OnPullListener,SwipeRefreshLayout.OnRefreshListener{
+public class ChargeActivity extends BaseSlideActivity implements OnPullListener,SwipeRefreshLayout.OnRefreshListener{
 
     private ActivityChargeBinding binding;
-    private List<String> list = new ArrayList<>();
+    private List<PayRecordEntity> list = new ArrayList<>();
     private CommonAdapter adapter;
+    private int pageNo = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,29 +53,13 @@ public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCh
 
     private void init(){
         initAdapter();
+        getData();
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
         binding.nrl.setOnLoadingListener(this);
-        binding.title.tvTitle.setText("党费缴纳");
-
-
-
-        binding.rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rb1://待缴费
-
-                        break;
-                    case R.id.rb2://已缴费
-
-                        break;
-                }
-            }
-        });
-
+        binding.title.tvTitle.setText("缴纳记录");
         binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,14 +69,13 @@ public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCh
     }
 
     private void initAdapter(){
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        adapter = new CommonAdapter<String>(this,R.layout.item_charge,list){
+        adapter = new CommonAdapter<PayRecordEntity>(this,R.layout.item_charge,list){
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-
+            protected void convert(ViewHolder holder, PayRecordEntity entity, int position) {
+                holder.setText(R.id.tv_name,entity.getTitle());
+                holder.setText(R.id.tv_num,"￥ "+entity.getAmountMoney());
+                holder.setText(R.id.tv_tag, TextUtils.equals("0",entity.getType())?"线上支付":"线下支付");
+                holder.setText(R.id.tv_time,entity.getCreateDate());
             }
         };
 
@@ -88,7 +84,7 @@ public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCh
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(ChargeActivity.this, PayDetailsActivity.class));
+
             }
 
             @Override
@@ -98,10 +94,40 @@ public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCh
         });
     }
 
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-
+    /**
+     * 获取缴费记录
+     */
+    private void getData() {
+        HashMap header = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("", "");
+        OkHttpClientManager.postAsyn(URLS.PARTY_PAY_RECORD, new OkHttpClientManager.ResultCallback<BaseList<PayRecordEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                binding.srl.setRefreshing(false);
+                binding.nrl.onLoadFinished();
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+                statusMsg(e, code);
+            }
+            @Override
+            public void onResponse(BaseList<PayRecordEntity> response) {
+                binding.srl.setRefreshing(false);
+                binding.nrl.onLoadFinished();
+                Log.e("TAG", "getData json=" + MyApplication.gson.toJson(response));
+                if (response.isSuccess()) {
+                    if(pageNo == 1)list = response.getData();
+                    else{
+                        if(response==null||response.getData()==null||response.getData().size()==0) MyTools.showToast(ChargeActivity.this,"没有更多记录了");
+                        else list.addAll(response.getData());
+                    }
+                    adapter.refresh(list);
+                } else {
+                    MyTools.showToast(ChargeActivity.this, response.getMsg());
+                }
+                binding.tvEmpty.setVisibility(list==null||list.size()==0?View.VISIBLE:View.GONE);
+            }
+        }, header, map);
     }
 
     @Override
@@ -109,7 +135,9 @@ public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCh
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+                pageNo = 1;
+                getData();
+
             }
         },500);
     }
@@ -122,10 +150,8 @@ public class ChargeActivity extends SlideBackActivity implements RadioGroup.OnCh
         binding.nrl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.add("");
-                list.add("");
-                adapter.refresh(list);
-                binding.nrl.onLoadFinished();
+                pageNo ++;
+                getData();
             }
         },500);
     }

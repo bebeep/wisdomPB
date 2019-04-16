@@ -3,6 +3,7 @@ package com.bebeep.wisdompb.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.renderscript.BaseObj;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.SlideBackActivity;
+import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseSlideActivity;
@@ -42,6 +44,9 @@ public class MyBookrackActivity extends BaseSlideActivity implements OnPullListe
     private CommonAdapter adapter;
     private List<BookEntity> list = new ArrayList<>();
 
+    private CustomDialog cancelDialog;
+    private String booksId;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -57,6 +62,7 @@ public class MyBookrackActivity extends BaseSlideActivity implements OnPullListe
 
 
     private void init(){
+        initDialog();
         initAdapter();
         getData();
         binding.title.ivBack.setVisibility(View.VISIBLE);
@@ -73,6 +79,25 @@ public class MyBookrackActivity extends BaseSlideActivity implements OnPullListe
                 finish();
             }
         });
+
+
+    }
+
+    private void initDialog(){
+        cancelDialog = new CustomDialog.Builder(this)
+                .setMessage("是否从书架移除这本书？")
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelDialog.cancel();
+                    }
+                }).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelDialog.cancel();
+                        del();
+                    }
+                }).createTwoButtonDialog();
     }
 
     private void initAdapter(){
@@ -100,6 +125,15 @@ public class MyBookrackActivity extends BaseSlideActivity implements OnPullListe
                         }else {
                             startActivity(new Intent(MyBookrackActivity.this, BookDetailsActivity.class).putExtra("id",entity.getId()).putExtra("flag",1));
                         }
+                    }
+                });
+
+                holder.setOnLongClickListener(R.id.ll_parent, new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        booksId = entity.getId();
+                        cancelDialog.show();
+                        return true;
                     }
                 });
             }
@@ -131,6 +165,28 @@ public class MyBookrackActivity extends BaseSlideActivity implements OnPullListe
                     if(list==null) list =new ArrayList<>();
                     list.add(new BookEntity());
                     adapter.refresh(list);
+                }else{
+                    MyTools.showToast(MyBookrackActivity.this, response.getMsg());
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+            }
+        },header,map);
+    }
+
+    private void del(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("booksId",booksId);
+        OkHttpClientManager.postAsyn(URLS.MY_BOOK_DEL, new OkHttpClientManager.ResultCallback<BaseObject>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject response) {
+                LogUtil.showLog("del 我的书架："+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    getData();
                 }else{
                     MyTools.showToast(MyBookrackActivity.this, response.getMsg());
                     if(response.getErrorCode() == 1)refreshToken();

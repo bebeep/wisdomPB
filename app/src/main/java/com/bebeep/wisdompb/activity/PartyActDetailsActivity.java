@@ -53,6 +53,7 @@ import com.bebeep.wisdompb.databinding.ActivityPartyActDetailsBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
+import com.ufreedom.uikit.FloatingText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +81,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
     private CustomProgressDialog progressDialog;
     private String  parentId="0",repliedUserId="0",delCommentId="";
     private UserInfo userInfo;
-
+    private FloatingText floatingText;//漂浮文字
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
     private void init(){
         id = getIntent().getStringExtra("id");
         userInfo = MyApplication.getInstance().getUserInfo();
+        initFloatingText();
         initAdapter();
         initDialog();
         getOrgDetails();
@@ -132,7 +134,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
             binding.tvUserNames.setText(names);
         }
 
-        if(userInfo.getActivitySignJurisdictionType() == 1){
+        if(entity.getActivitySignJurisdictionType() == 1){
             binding.tvJoin.setText("统计活动签到");
         }else{
             binding.tvJoin.setText(TextUtils.equals("1",entity.getIsParticipate())?"已参与":"我要参与");
@@ -172,7 +174,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
                     @Override
                     public boolean onLongClick(View v) {
                         LogUtil.showLog("用户信息："+MyApplication.gson.toJson(MyApplication.getInstance().getUserInfo()));
-                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getId())) {//表示是用户自己发布的评论
+                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getUserId())) {//表示是用户自己发布的评论
                             delCommentId = entity.getId();
                             if(customDialog!=null)customDialog.show();
                             return true;
@@ -186,7 +188,15 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
     }
 
 
-
+    private void initFloatingText(){
+        floatingText = new FloatingText.FloatingTextBuilder(this)
+                .textColor(Color.RED) // 漂浮字体的颜色
+                .textSize(60)  // 浮字体的大小
+                .textContent(" +1 ") // 浮字体的内容
+                .offsetY(-50) // FloatingText 相对其所贴附View的垂直位移偏移量
+                .build();
+        floatingText.attach2Window(); //将FloatingText贴附在Window上
+    }
 
     @Override
     public void onClick(View v) {
@@ -217,6 +227,9 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
             case R.id.tv_send://发送评论
                 if(TextUtils.isEmpty(binding.etComment.getText().toString().replaceAll(" ",""))){
                     MyTools.showToast(this,"评论内容不能为空");
+                    binding.etComment.setText("");
+                    binding.etComment.clearFocus();
+                    binding.tvSend.setClickable(false);
                 }else submitComment();
                 break;
         }
@@ -411,6 +424,7 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
                 if(response.isSuccess()){
                     int errorCode = response.getErrorCode();
                     binding.ivZan.setImageResource(errorCode == 6?R.drawable.icon_zan:R.drawable.icon_zan_c);
+                    if(errorCode == 7) floatingText.startFloating(binding.ivZan);
                 }else MyTools.showToast(PartyActDetailsActivity.this, response.getMsg());
             }
         },header,map);

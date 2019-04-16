@@ -3,15 +3,22 @@ package com.bebeep.wisdompb.util;
 public class URLS {
 
 
+    public static final String UMENG_APPKEY = "5c3551cdf1f5569920000489";
+
+    public static final String UMENG_MESSAGE_SECRET = "93199e9ce2e1b51f4748216c1055873b";
+
+//    public static final String PAY_URLS = "http://u6.gg/dEVKs";
+    public static final String PAY_URLS = "https://a.app.qq.com/o/simple.jsp?pkgname=com.chinatelecom.bestpayclient&g_f=991653";
+
     //数据地址
-    public static final String  HOST = "http://203.6.227.248:400/api";
+    public static final String  HOST = "http://182.61.58.52:8766/api";
 //    public static final String  HOST = "http://192.168.153.1/api";
 
     //图片上传地址
-    public static final String FILE_UPLOAD = "http://203.6.227.248:7070/upload";
+    public static final String FILE_UPLOAD = "http://182.61.58.52:5555/upload";
 
     //图片访问地址
-    public static final String IMAGE_PRE  = "http://203.6.227.248:400/resource/";
+    public static final String IMAGE_PRE  = "http://182.61.58.52:80/resource/";
 
 
     //刷新token
@@ -52,12 +59,28 @@ public class URLS {
     //版本更新
     public static final String VERSION =  HOST + "/version?type=0";
 
+    //党费缴纳跳转
+    public static final String CHARGE =  "http://u6.gg/dEVKs";
+
+    //消息数量
+    public static final String NEWS_NUM =  HOST + "/notice/announcement/my/read/count";
+
+    //消息已读
+    public static final String NEWS_READ =  HOST + "/notice/announcement/my/edit/read";
+
+    //弹窗消息
+    public static final String HOST_DIALOG =  HOST + "/notice/announcement/my/msg";
+
+
 
     /**
      * 首页
      */
     //广告
     public static final String ADS =  HOST + "/gd/data";
+
+    //广告详情
+    public static final String ADS_DETAILS =  HOST + "/gd/info";
 
     //获取新闻类型
     public static final String HOST_TYPE =  HOST + "/home/news/typedata";
@@ -74,6 +97,9 @@ public class URLS {
      */
     //我的书架
     public static final String MY_BOOK =  HOST + "/books/my/booksdata";
+
+    //我的书架
+    public static final String MY_BOOK_DEL =  HOST + "/books/bookshelf/cancel";
 
     //我的笔记
     public static final String MY_NOTE_LIST =  HOST + "/books/chapters/note/my/note";
@@ -119,6 +145,12 @@ public class URLS {
 
     //通知公告
     public static final String MY_NOTICE = HOST + "/notice/announcement/my/data";
+
+    //删除通知公告
+    public static final String MY_NOTICE_DEL = HOST + "/notice/announcement/delete";
+
+    //修改密码
+    public static final String UPDATE_PASSWORD = HOST + "/user/update/password";
 
 
     /**
@@ -173,6 +205,8 @@ public class URLS {
     //获取新闻详情
     public static final String SPECIAL_EDU_DETAILS =  HOST + "/thematiceducation/news/info";
 
+    //广告详情
+    public static final String SPECIAL_EDU_ADS_DETAILS =  HOST + "/thematiceducation/gd/info";
 
     /**
      * 党内公示
@@ -185,6 +219,20 @@ public class URLS {
 
     //党内公示详情
     public static final String PUBLIC_SHOW_DETAILS =  HOST + "/within/news/info";
+
+
+    /**
+     * 党费缴纳
+     */
+    //缴费详情
+    public static final String PARTY_PAY_DETAILS = HOST + "/apply/info";
+
+    //获取支付签名
+    public static final String PARTY_PAY_SIGN = HOST + "/apply/sign";
+
+    //获取缴费记录
+    public static final String PARTY_PAY_RECORD = HOST + "/apply/my/record";
+
 
 
     /**
@@ -256,7 +304,7 @@ public class URLS {
     public static final String MEETING_JOIN = HOST + "/meeting/participate";
 
     //会议纪要
-    public static final String MEETING_MINUTES = HOST + "/meeting/data";
+    public static final String MEETING_MINUTES = HOST + "/meeting/my/data";
 
     //会议纪要详情
     public static final String MEETING_MINUTES_DETAILS = HOST + "/meeting/summary/info";
@@ -272,6 +320,12 @@ public class URLS {
 
     //签到
     public static final String ACT_SIGN = HOST + "/sign/scan";
+
+    //获取会议纪要编辑内容
+    public static final String MEETING_MINITES_EDIT = HOST + "/meeting/summary/getMeetingSummary";
+
+    //发布会议纪要
+    public static final String MEETING_MINITES_RELEASE = HOST + "/meeting/summary/insert";
 
 
     /**

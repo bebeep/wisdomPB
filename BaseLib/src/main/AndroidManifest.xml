@@ -7,11 +7,11 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:supportsRtl="true"
         >
         <activity android:name=".seclectcity.SeclectCityActivity">
-
+        </activity>
+        <activity android:name=".activity.PhotoViewActivity"  android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
 
     </application>

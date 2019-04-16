@@ -1,10 +1,14 @@
 package com.bebeep.wisdompb.base;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.umeng.message.PushAgent;
 
 public class BaseEditActivity extends BaseAppCompatActivity {
 
@@ -48,5 +52,12 @@ public class BaseEditActivity extends BaseAppCompatActivity {
             }
         }
         return false;
+    }
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
     }
 }

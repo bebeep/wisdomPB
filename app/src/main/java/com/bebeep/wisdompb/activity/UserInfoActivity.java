@@ -38,6 +38,8 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +87,9 @@ public class UserInfoActivity extends BaseSlideActivity implements View.OnClickL
         binding.tvNation.setText(userInfo.getNation());
         binding.tvEdu.setText(userInfo.getEducation());
         binding.tvJoinTime.setText(userInfo.getJoiningPartyOrganizationDate());
-
+        binding.tvOrgPosition.setText(userInfo.getPartyPosts());
+        binding.tvOrgType.setText(userInfo.getTypeName());
+        binding.tvOrgComment.setText(userInfo.getDemocraticAppraisal());
 
     }
 
@@ -100,9 +104,11 @@ public class UserInfoActivity extends BaseSlideActivity implements View.OnClickL
                 pickImage();
                 break;
             case R.id.tv_logout://退出登录
+                deleteAlias(userInfo.getUserId());
                 PreferenceUtils.setPrefString("access_token","");
                 PreferenceUtils.setPrefString("refresh_token", "");
                 PreferenceUtils.setPrefString("userInfo", "");
+
                 setResult(RESULT_OK);
                 finish();
                 break;
@@ -112,6 +118,14 @@ public class UserInfoActivity extends BaseSlideActivity implements View.OnClickL
 
 
 
+    private void deleteAlias(String userId){
+        PushAgent.getInstance(this).deleteAlias(userId, MyApplication.ALIAS_NAME, new UTrack.ICallBack(){
+            @Override
+            public void onMessage(boolean isSuccess, String message) {
+                LogUtil.showLog("deleteAlias:"+message);
+            }
+        });
+    }
 
 
 
@@ -121,7 +135,7 @@ public class UserInfoActivity extends BaseSlideActivity implements View.OnClickL
         int columns = 3;
         Load load = PhotoPicker.load()
                 .showCamera(true)
-                .filter(PhotoFilter.build().showGif(false).minSize(2 * 1024))
+                .filter(PhotoFilter.build().showGif(false))
                 .gridColumns(columns);
         PhotoSelectBuilder builder = load.single();
         builder.start(this);

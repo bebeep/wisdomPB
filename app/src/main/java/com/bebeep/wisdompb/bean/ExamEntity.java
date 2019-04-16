@@ -10,12 +10,21 @@ public class ExamEntity {
     private String startTime;//
     private String endTime;//
     private int examinationTime;// 考试时间  分钟
-    private String state;// 状态 0 未开始 1 进行中 2已过期
+    private String state;// 状态 0 未开始 1 进行中 2已过期  3正在考试
     private String totalScore;// 总分
     private String passingGrade;// 及格分
     private String totalNumberQuestions;// 总题数
     private String examinationNotes;// 考试说明
+    private String templateId;//模板id
 
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
 
     public String getTotalScore() {
         return totalScore;

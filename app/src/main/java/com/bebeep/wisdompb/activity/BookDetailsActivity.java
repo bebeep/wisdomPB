@@ -117,7 +117,7 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
 
     private void initUI(){
         if(entity == null) return;
-        PicassoUtil.setImageUrl(this,binding.ivHead, URLS.IMAGE_PRE+entity.getImgsrc(),R.drawable.default_error,90,120);
+        PicassoUtil.setImageUrl(this,binding.ivHead, URLS.IMAGE_PRE+entity.getImgsrc(),R.drawable.default_error,180,240);
         binding.tvName.setText("书名："+entity.getTitle());
         binding.tvAuthor.setText(entity.getAuthor());
         binding.tvBookWords.setText((entity.getWordNumber()>=10000?MyTools.formatDecimal(String.valueOf(entity.getWordNumber()/10000.0))+"万":entity.getWordNumber())+"字");
@@ -157,6 +157,7 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
                 break;
             case R.id.tv_read_now://立即阅读
                 //TODO 如果小说已下载，直接打开；如果没有下载，先下载小说
+
                 if(TextUtils.isEmpty(entity.getContentUrl())){
                     MyTools.showToast(BookDetailsActivity.this,"该书籍内容缺失");
                     return;
@@ -208,7 +209,7 @@ public class BookDetailsActivity extends BaseEditActivity implements View.OnClic
                     @Override
                     public boolean onLongClick(View v) {
                         LogUtil.showLog("用户信息："+MyApplication.gson.toJson(MyApplication.getInstance().getUserInfo()));
-                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getId())) {//表示是用户自己发布的评论
+                        if(TextUtils.equals(entity.getUserId(),MyApplication.getInstance().getUserInfo().getUserId())) {//表示是用户自己发布的评论
                             delCommentId = entity.getId();
                             if(customDialog!=null)customDialog.show();
                             return true;

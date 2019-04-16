@@ -2,10 +2,12 @@ package com.bebeep.readpage.bean;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by Lxq on 2016/4/9.
  */
-public class BookCatalogue extends DataSupport {
+public class BookCatalogue extends DataSupport implements Serializable{
     private int id;
     private String bookpath;
     private String bookCatalogue;

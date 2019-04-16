@@ -12,11 +12,9 @@ import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
-import com.bebeep.wisdompb.base.BaseActivity;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.LoginEntity;
 import com.bebeep.wisdompb.bean.UserInfo;
-import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
 import com.squareup.okhttp.Request;
@@ -61,7 +59,7 @@ public class StartActivity extends Activity {
             }
             @Override
             public void onResponse(BaseObject<LoginEntity> response) {
-                Log.e("TAG","刷新token json="+ MyApplication.gson.toJson(response));
+                Log.e("TAG","刷新token json="+ response);
                 if(response.isSuccess()){
                     LoginEntity entity = response.getData();
                     PreferenceUtils.setPrefString("access_token",entity.getAccess_token());

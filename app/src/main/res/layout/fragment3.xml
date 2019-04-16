@@ -8,196 +8,207 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/theme">
+        android:background="@color/theme"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/title"
             layout="@layout/layout_title" />
 
-
-        <ImageView
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="45dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/bg_f3" />
+            android:layout_height="match_parent">
 
-
-        <FrameLayout
-            android:id="@+id/fl_head"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/bg_circle_white_35"
-            android:padding="1dp">
-
-            <com.bebeep.commontools.views.RoundImage
-                android:id="@+id/rimg_head"
-                android:layout_width="68dp"
-                android:layout_height="68dp"
-                android:src="@drawable/icon_head" />
-
-            <TextView
-                android:id="@+id/tv_num"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="right"
-                android:background="@drawable/bg_circle_red_9"
-                android:gravity="center"
-                android:textColor="@color/c_white"
-                android:textSize="11sp"
-                android:visibility="gone" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fl_head"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:text="待参加会议"
-            android:textColor="@color/c_white"
-            android:textSize="14sp" />
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/tv_title"
-            android:layout_marginBottom="100dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/bg_rec_5dp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:padding="10dp" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_empty"
-                android:textColor="@color/c_gray"
-                android:textSize="14sp"
-                android:text="没有待参加的会议"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/bg_rec_5dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/ll_f3_1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="@{onClickListener}"
-                android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icon_f3_1" />
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/bg_f3" />
+
+
+                <FrameLayout
+                    android:id="@+id/fl_head"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/bg_circle_white_35"
+                    android:padding="1dp">
+
+                    <com.bebeep.commontools.views.RoundImage
+                        android:id="@+id/rimg_head"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:src="@drawable/icon_head" />
+
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/bg_circle_red_9"
+                        android:gravity="center"
+                        android:textColor="@color/c_white"
+                        android:textSize="11sp"
+                        android:visibility="gone" />
+                </FrameLayout>
 
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="预约会议"
-                    android:textColor="@color/c_gray"
-                    android:textSize="12sp" />
+                    android:layout_below="@+id/fl_head"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:text="参加的会议"
+                    android:textColor="@color/c_white"
+                    android:textSize="14sp" />
 
-            </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/c_line" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_rec_5dp">
 
-            <LinearLayout
-                android:id="@+id/ll_f3_2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="@{onClickListener}"
-                android:orientation="vertical">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:padding="10dp" />
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icon_f3_2" />
+                    <TextView
+                        android:id="@+id/tv_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="没有待参加的会议"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="我的会议"
-                    android:textColor="@color/c_gray"
-                    android:textSize="12sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_rec_5dp"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_f3_1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:onClick="@{onClickListener}"
+                        android:orientation="vertical">
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/c_line" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_f3_1" />
 
-            <LinearLayout
-                android:id="@+id/ll_f3_3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="@{onClickListener}"
-                android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="预约会议"
+                            android:textColor="@color/c_gray"
+                            android:textSize="12sp" />
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/icon_f3_3" />
+                    </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="会议纪要"
-                    android:textColor="@color/c_gray"
-                    android:textSize="12sp" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/c_line" />
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_f3_2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:onClick="@{onClickListener}"
+                        android:orientation="vertical">
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/c_line" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_f3_2" />
 
-        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="我的会议"
+                            android:textColor="@color/c_gray"
+                            android:textSize="12sp" />
 
-    </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/c_line" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_f3_3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:onClick="@{onClickListener}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/icon_f3_3" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="会议纪要"
+                            android:textColor="@color/c_gray"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/c_line" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
 </layout>

@@ -55,6 +55,16 @@
         android:textSize="14sp" />
 
     <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/c_white"
+        android:textSize="13sp" />
+
+    <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -64,7 +74,6 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:text="09:30~10:30   一号会议室"
         android:textColor="@color/c_gray"
         android:textSize="12sp" />
 

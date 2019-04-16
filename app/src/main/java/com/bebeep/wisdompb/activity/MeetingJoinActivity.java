@@ -94,6 +94,7 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
         binding.title.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                handler.removeCallbacksAndMessages(null);
                 finish();
             }
         });
@@ -203,7 +204,7 @@ public class MeetingJoinActivity extends BaseSlideActivity implements SwipeRefre
         binding.srl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.srl.setRefreshing(false);
+               getSignList();
             }
         },500);
     }

@@ -19,8 +19,26 @@ public class MeetingEntity {
     private int mettingJurisdictionType; //预约会议权限；0否；1有
     private int activitySignJurisdictionType;//活动签到权限；0否；1有
     private int mettingSignJurisdictionType;//会议签到权限；0否；1有
+    private int minutesMeetingType;//会议纪要权限 0否 1有
     private List<UserInfo> meetingInFoUserBizList;//参与用户列表
+    private int ifRecord;//会议纪要列表中是否已记录 0未记录；1已记录
 
+
+    public int getMinutesMeetingType() {
+        return minutesMeetingType;
+    }
+
+    public void setMinutesMeetingType(int minutesMeetingType) {
+        this.minutesMeetingType = minutesMeetingType;
+    }
+
+    public int getIfRecord() {
+        return ifRecord;
+    }
+
+    public void setIfRecord(int ifRecord) {
+        this.ifRecord = ifRecord;
+    }
 
     public int getMettingJurisdictionType() {
         return mettingJurisdictionType;

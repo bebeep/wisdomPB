@@ -1,22 +1,30 @@
 package com.bebeep.commontools.showbigimage;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bebeep.commontools.R;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.PicassoUtil;
+import com.bebeep.commontools.views.CustomDialog;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +32,23 @@ import java.util.List;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+
+/**
+ * 查看大图
+ */
 public class ShowMultiBigImageDialog extends Dialog {
 
+    private Dialog dialog;
     private View mView ;
-    private Context mContext;
+    private Activity mContext;
     private ShowImagesViewPager mViewPager;
     private List<String> mImgUrls;
     private List<View> mViews;
-    private ShowImagesAdapter mAdapter;
     private TextView tv;
+    private FrameLayout fl_parent;
 
-    public ShowMultiBigImageDialog(@NonNull Context context, List<String> imgUrls) {
-        super(context, R.style.BigPicDialog);
+    public ShowMultiBigImageDialog(@NonNull Activity context, List<String> imgUrls) {
+        super(context, R.style.showMultiImagesDialog);
         this.mContext = context;//传入上下文
         this.mImgUrls = imgUrls;//传入图片String数组
         initView();
@@ -43,76 +56,103 @@ public class ShowMultiBigImageDialog extends Dialog {
     }
 
     private void initView() {
-        mView = View.inflate(mContext, R.layout.dialog_images_brower, null);//通过inflate()方法找到我们写好的包含ViewPager的布局文件
-        mViewPager = (ShowImagesViewPager) mView.findViewById(R.id.vp_images);//找到ViewPager控件并且实例化
+        dialog = new CustomDialog(mContext, R.style.showMultiImagesDialog);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mView = inflater.inflate(R.layout.dialog_images_brower, null);
+        mViewPager =  mView.findViewById(R.id.vp_images);//找到ViewPager控件并且实例化
+        fl_parent =  mView.findViewById(R.id.fl_parent);//找到ViewPager控件并且实例化
         mViews = new ArrayList<>();//创建一个控件的数组，我们可以在ViewPager中加入很多图片，滑动改变图片
         tv = mView.findViewById(R.id.tv);
-    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(mView);
-        Window window = getWindow();
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = 0;
-        wl.height =  DeviceConfig.EXACT_SCREEN_HEIGHT;
-        wl.width = DeviceConfig.EXACT_SCREEN_WIDTH;
-        wl.gravity = Gravity.CENTER;
-        window.setAttributes(wl);
-        //EXACT_SCREEN_HEIGHT,EXACT_SCREEN_WIDTH为自定义Config类中的静态变量
-        //在MainActivity中会给这两个变量赋值，分别对应手机屏幕高度和宽度
-        //在这里我们通过WindowManager.LayoutParams把当前dialog的大小设置为全屏
-    }
-
-    private void initData() {
-        //当PhotoView被点击时，添加相应的点击事件
-        PhotoViewAttacher.OnPhotoTapListener listener = new PhotoViewAttacher.OnPhotoTapListener() {
+        fl_parent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPhotoTap(View view, float x, float y) {
-                dismiss();//点击图片后，返回到原来的界面
-            }
-        };
-        for (int i = 0; i < mImgUrls.size(); i++) {
-            Log.e("TAG","mImgUrls:"+mImgUrls.get(i));
-            final PhotoView photoView = new uk.co.senab.photoview.PhotoView(mContext);
-            //创建一个PhotoView对象
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            photoView.setLayoutParams(layoutParams);
-            //我们通过ViewGroup.LayoutParams来设置子控件PhotoView的大小
-            photoView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            photoView.setOnPhotoTapListener(listener);//给PhotoView添加点击事件
-            PicassoUtil.setImageUrl(mContext,photoView,mImgUrls.get(i), MyTools.getWidth(mContext),MyTools.getHight(mContext));
-            mViews.add(photoView);//最后把我们加载的所有PhotoView传给View数组
-        }
-
-        tv.setText("1/"+mImgUrls.size());
-        mAdapter = new ShowImagesAdapter(mViews);//给适配器传入图片控件数组
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            //给ViewPager添加监听事件
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
+    }
+
+
+    private void initData() {
+        mViewPager.setAdapter(pagerAdapter);
+        //设置滑动监听事件
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            //滑动到第几张图片的调用的方法，position当前显示图片位置
+            @Override
+            public void onPageSelected(int position) {
+                mViewPager.setCurrentItem(position);
+                tv.setText((position+1)+"/"+mImgUrls.size());
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        dialog.addContentView(mView,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
 
     public void show(int position){
         tv.setText((position+1)+"/"+mImgUrls.size());
         mViewPager.setCurrentItem(position);
-        show();
+        dialog.show();
+
+        WindowManager windowManager = mContext.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        dialog.getWindow().setAttributes(lp);
+
+
+        applyCompat();
     }
+
+
+    PagerAdapter pagerAdapter = new PagerAdapter() {
+        @Override
+        public int getCount() {
+            return mImgUrls.size();
+            //return Integer.MAX_VALUE;    返回一个比较大的值，目的是为了实现无限轮播
+        }
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            PhotoView photoView = new PhotoView(mContext);
+            Picasso.with(mContext)
+                    .load(mImgUrls.get(position))
+                    .into(photoView);
+            container.addView(photoView);
+            photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
+                    dialog.dismiss();
+                }
+            });
+            return photoView;
+        }
+        //PagerAdapter只缓存三张要显示的图片，如果滑动的图片超出了缓存的范围，就会调用这个方法，将图片销毁
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+//            container.removeView(mViews.get(position));
+        }
+    };
+
+
+
+    private void applyCompat() {
+        if (Build.VERSION.SDK_INT < 19) {
+            return;
+        }
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
 }

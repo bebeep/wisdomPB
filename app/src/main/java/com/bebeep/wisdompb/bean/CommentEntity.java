@@ -16,7 +16,7 @@ public class CommentEntity {
     private String themeId;//主题id
     private String themeImgsrcs; //缩略图
     private String themeTitle; //标题
-    private int type; //主题类；0首页新闻；1专题教育；2党内公示；3发现;4活动;5图书评论
+    private String type; //主题类；0首页新闻；1专题教育；2党内公示；3发现;4活动;5图书评论
 
 
     public String getThemeId() {
@@ -43,11 +43,11 @@ public class CommentEntity {
         this.themeTitle = themeTitle;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

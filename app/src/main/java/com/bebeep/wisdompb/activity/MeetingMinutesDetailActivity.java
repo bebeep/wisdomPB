@@ -1,10 +1,14 @@
 package com.bebeep.wisdompb.activity;
 
+import android.app.Application;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -22,6 +26,7 @@ import android.widget.TextView;
 import com.bebeep.commontools.listener.SoftKeyBoardListener;
 import com.bebeep.commontools.recylcerview_adapter.CommonAdapter;
 import com.bebeep.commontools.recylcerview_adapter.base.ViewHolder;
+import com.bebeep.commontools.showbigimage.ShowMultiBigImageDialog;
 import com.bebeep.commontools.utils.MyTools;
 import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.views.CustomDialog;
@@ -32,7 +37,10 @@ import com.bebeep.wisdompb.base.BaseEditActivity;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.BaseObject;
 import com.bebeep.wisdompb.bean.CommentEntity;
+import com.bebeep.wisdompb.bean.MeetingMinitesEntity;
 import com.bebeep.wisdompb.bean.NewsEntity;
+import com.bebeep.wisdompb.bean.UserInfo;
+import com.bebeep.wisdompb.databinding.ActivityMeetingMinitesDetailsBinding;
 import com.bebeep.wisdompb.databinding.ActivityNewsDetailBinding;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.URLS;
@@ -44,32 +52,43 @@ import java.util.List;
 
 public class MeetingMinutesDetailActivity extends BaseEditActivity implements View.OnClickListener{
 
-    private ActivityNewsDetailBinding binding;
-    private WebSettings settings;
-    private String id;
+    private ActivityMeetingMinitesDetailsBinding binding;
+    private String id,title;
+    private MeetingMinitesEntity entity;
+    private boolean open = false;
+    private CommonAdapter adapter;
+    private List<String> imgList = new ArrayList<>();
+    private ShowMultiBigImageDialog showMultiBigImageDialog;
 
 
-    private NewsEntity entity;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(adapter!=null) getData();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_news_detail);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_meeting_minites_details);
         init();
     }
 
     private void init(){
-        String title = getIntent().getStringExtra("title");
+        title = getIntent().getStringExtra("title");
         id = getIntent().getStringExtra("id");
+        UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+
+        binding.title.ivTitleRight.setImageResource(R.drawable.icon_f3_edit);
+        binding.title.ivTitleRight.setVisibility(userInfo.getMinutesMeetingType() == 1?View.VISIBLE:View.GONE);
+
+
+        initAdapter();
         getData();
         binding.setOnClickListener(this);
         binding.title.ivBack.setVisibility(View.VISIBLE);
         binding.title.tvTitle.setText(title);
 
-        binding.ivZan.setVisibility(View.GONE);
-        binding.ivCollect.setVisibility(View.GONE);
-        binding.llZan.setVisibility(View.GONE);
-        binding.flComment.setVisibility(View.GONE);
     }
 
 
@@ -77,42 +96,45 @@ public class MeetingMinutesDetailActivity extends BaseEditActivity implements Vi
 
     private void initUI(){
         if(entity == null) return;
-        initWeb(URLS.HOST+entity.getInfoUrl());
-        if(TextUtils.isEmpty(entity.getEnclosureNmae()) || TextUtils.isEmpty(entity.getEnclosureUrl())) binding.flFile.setVisibility(View.GONE);
-        else{
-            if(entity.getEnclosureNmae().endsWith(".doc")||entity.getEnclosureNmae().endsWith(".docx")){
-                binding.imgFileType.setImageResource(R.drawable.icon_doc);
-            }else if(entity.getEnclosureNmae().endsWith(".pdf")){
-                binding.imgFileType.setImageResource(R.drawable.icon_file_pdf);
-            }else if(entity.getEnclosureNmae().endsWith(".xls")||entity.getEnclosureNmae().endsWith(".xlsx")){
-                binding.imgFileType.setImageResource(R.drawable.icon_file_excel);
-            }
-            binding.tvFileName.setText(entity.getEnclosureNmae());
-            binding.tvFileSize.setText(entity.getFilesSize());
+        binding.tvTitle.setText(title);
+        binding.tvTime.setText(entity.getName()+"  "+entity.getUpdateDate());
+        if(!TextUtils.isEmpty(entity.getRemarks())) {
+            binding.llRemark.setVisibility(View.VISIBLE);
+            binding.tvRemark.setText(entity.getRemarks());
         }
+        binding.tvContent.setText(entity.getContents());
 
-
-    }
-
-
-    //加载webview
-    private void initWeb(String url) {
-        settings = binding.webview.getSettings();
-        settings.setDomStorageEnabled(true);
-        settings.setJavaScriptEnabled(true);
-        settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        binding.webview.loadUrl(url);
-        binding.webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
-                view.loadUrl(url);
-                return true;
+        List<UserInfo> userList = entity.getUserList();
+        if(userList!=null && userList.size()>0){
+            binding.flRead.setVisibility(View.VISIBLE);
+            binding.tvReadNum.setText("已读成员（"+userList.size()+"）");
+            String names = "";
+            for (UserInfo userInfo:userList){
+                if(!TextUtils.isEmpty(userInfo.getName())) names+= userInfo.getName()+",";
             }
-        });
-        binding.webview.setWebViewClient(new WebViewClient());
+            if(!TextUtils.isEmpty(names) && names.length()>0) names = names.substring(0,names.length()-1);
+            binding.tvUserNames.setText(names);
+        }
+        String img = entity.getImgsrcs();
+        String[] imgs = img.split(",");
+        if(imgs!=null && imgs.length>0){
+            imgList.clear();
+            for (String s : imgs)imgList.add(URLS.IMAGE_PRE + s);
+            showMultiBigImageDialog = new ShowMultiBigImageDialog(MeetingMinutesDetailActivity.this,imgList);
+            adapter.refresh(imgList);
+        }
     }
 
+
+    private void setUserNames(boolean open){
+        if(open){
+            binding.ivUserOpen.setRotation(180);
+            binding.tvUserNames.setMaxLines(Integer.MAX_VALUE);
+        }else {
+            binding.ivUserOpen.setRotation(0);
+            binding.tvUserNames.setMaxLines(2);
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -120,12 +142,35 @@ public class MeetingMinutesDetailActivity extends BaseEditActivity implements Vi
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.fl_file://下载文件
-                downloadFile();
+            case R.id.iv_title_right:
+                startActivity(new Intent(MeetingMinutesDetailActivity.this,ReleaseMeetingMinitesActivity.class).putExtra("id",entity.getId()));
+                break;
+            case R.id.ll_user_open:
+                open = !open;
+                setUserNames(open);
                 break;
         }
     }
 
+
+    //图
+    private void initAdapter(){
+        adapter = new CommonAdapter<String>(this, R.layout.item_f4_inner1,imgList){
+            @Override
+            protected void convert(ViewHolder holder, final String s, final int position) {
+                holder.setImageUrl((ImageView)holder.getView(R.id.iv), s,R.drawable.default_error,90,60);
+                holder.setOnClickListener(R.id.iv, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //查看大图
+                        showMultiBigImageDialog.show(position);
+                    }
+                });
+            }
+        };
+        binding.recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        binding.recyclerView.setAdapter(adapter);
+    }
 
 
 
@@ -134,16 +179,21 @@ public class MeetingMinutesDetailActivity extends BaseEditActivity implements Vi
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         HashMap map = new HashMap();
         map.put("id", id);
-        OkHttpClientManager.postAsyn(URLS.MEETING_MINUTES_DETAILS, new OkHttpClientManager.ResultCallback<BaseObject<NewsEntity>>() {
+        Log.e("TAG","获取会议纪要详情 map="+ map.toString());
+        OkHttpClientManager.postAsyn(URLS.MEETING_MINUTES_DETAILS, new OkHttpClientManager.ResultCallback<BaseObject<MeetingMinitesEntity>>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
             }
             @Override
-            public void onResponse(BaseObject<NewsEntity> response) {
+            public void onResponse(BaseObject<MeetingMinitesEntity> response) {
                 Log.e("TAG","获取会议纪要详情 json="+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     entity = response.getData();
+                    if(entity == null || TextUtils.isEmpty(entity.getId())){
+                        finish();
+                        return;
+                    }
                     initUI();
                 }else{
                     MyTools.showToast(MeetingMinutesDetailActivity.this, response.getMsg());
@@ -155,19 +205,4 @@ public class MeetingMinutesDetailActivity extends BaseEditActivity implements Vi
 
 
 
-    private void downloadFile(){
-        OkHttpClientManager.downloadAsyn(URLS.IMAGE_PRE + entity.getEnclosureUrl(), MyApplication.FILE_PATH, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e, int code) {
-                MyTools.showToast(MeetingMinutesDetailActivity.this,"下载出错，请重试");
-            }
-            @Override
-            public void onResponse(String response) {
-                LogUtil.showLog("下载文件："+ MyApplication.gson.toJson(response));
-                if(!TextUtils.isEmpty(response)){
-                    MyTools.showToast(MeetingMinutesDetailActivity.this,"下载文件成功，已保存到"+MyApplication.FILE_PATH+"文件夹下");
-                }else  MyTools.showToast(MeetingMinutesDetailActivity.this,"下载失败，请重试");
-            }
-        });
-    }
 }

@@ -106,6 +106,7 @@ public class TestResultActivity extends BaseEditActivity implements View.OnClick
             public void onResponse(BaseObject<ExamResultEntity> response) {
 //                LogUtil.showLog("考试结果："+ response);
                 LogUtil.showLog("考试结果：" + MyApplication.gson.toJson(response));
+                if(response == null) return;
                 if (response.isSuccess()) {
                     entity = response.getData();
                     if (entity != null) initUI();

@@ -3,26 +3,41 @@ package com.bebeep.wisdompb.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bebeep.commontools.file.FileUtil;
 import com.bebeep.commontools.utils.MyTools;
+import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.commontools.utils.PicassoUtil;
-import com.bebeep.slidemenu.DoubleSlideMenu;
+import com.bebeep.commontools.views.CustomDialog;
 import com.bebeep.wisdompb.BR;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.base.BaseAppCompatActivity;
+import com.bebeep.wisdompb.bean.BaseObject;
+import com.bebeep.wisdompb.bean.CommonTypeEntity;
+import com.bebeep.wisdompb.bean.MeetingMinitesEntity;
 import com.bebeep.wisdompb.bean.UserInfo;
-import com.bebeep.wisdompb.databinding.ActivityMainBinding;
+import com.bebeep.wisdompb.bean.VersionEntity;
+import com.bebeep.wisdompb.databinding.ActivityMain1Binding;
 import com.bebeep.wisdompb.fragment.Fragment1;
 import com.bebeep.wisdompb.fragment.Fragment2;
 import com.bebeep.wisdompb.fragment.Fragment3;
@@ -30,12 +45,16 @@ import com.bebeep.wisdompb.fragment.Fragment4;
 import com.bebeep.wisdompb.util.LogUtil;
 import com.bebeep.wisdompb.util.PreferenceUtils;
 import com.bebeep.wisdompb.util.URLS;
+import com.squareup.okhttp.Request;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseAppCompatActivity implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
-    private ActivityMainBinding binding;
+    private ActivityMain1Binding binding;
+    private static MainActivity mainActivity;
 
     private FrameLayout[] fls;
 
@@ -47,55 +66,43 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
     private Fragment3 fragment3;
     private Fragment4 fragment4;
 
+    private CustomDialog versionDialog;
+    private VersionEntity versionEntity = new VersionEntity();
+
+    public static MainActivity getInstance(){
+        return mainActivity;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(fragments!=null && fragments.size()>0){
             initUserInfo();
-
+            getNewsNum();
+            getRemindDialog();
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        mainActivity = this;
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main1);
         binding.rg.setOnCheckedChangeListener(this);
         init();
     }
 
     private void init(){
+        getVersion();
         initUserInfo();
+        initPopWindow();
         binding.setVariable(BR.onClickListener,this);
         initRadioButtonSize();
         initFrgament();
-        initArrowIcons();
-        binding.mDoubleSlideMenu.setOffsetX(0.8f);
-        binding.mainLayout.setMySlideMenu(binding.mDoubleSlideMenu);
-        binding.mDoubleSlideMenu.setOnDragstateChangeListener(new DoubleSlideMenu.onDragStateChangeListener() {
-            @Override
-            public void onOpen() {
-                fragment1.stopPlay();
-                LogUtil.showLog("open");
-            }
+        getNewsNum();
+        getRemindDialog();
+//        initArrowIcons();
 
-            @Override
-            public void onClose() {
-                fragment1.startPlay();
-                binding.flMenu.setVisibility(View.GONE);
-                LogUtil.showLog("close");
-            }
-
-            @Override
-            public void onDraging(float fraction) {
-                if(fraction==0)fragment1.startPlay();
-                else {
-                    binding.flMenu.setVisibility(View.VISIBLE);
-                    fragment1.stopPlay();
-                }
-            }
-        });
 
         long timestamp = System.currentTimeMillis();
         long deltaMillis = timestamp - PreferenceUtils.getPrefLong("timestamp",0);
@@ -104,6 +111,47 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
             refreshToken();
         }
 
+
+        binding.drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View view, float v) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        });
+
+
+
+    }
+
+    private void showDialog(){
+        versionDialog = new CustomDialog.Builder(this)
+                .setMessage("新版本提示：\n"+versionEntity.getContents())
+                .setSingleButton("立即更新", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        versionDialog.cancel();
+                        Toast.makeText(MainActivity.this,"后台下载中...",Toast.LENGTH_SHORT).show();
+                        downloadFile();
+                    }
+                })
+                .setCancelEnable(false)
+                .createSingleButtonDialog();
+        versionDialog.show();
     }
 
     private void initUserInfo(){
@@ -119,9 +167,7 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
     @Override
     public void onClick(final View v) {
         if(v.getId() != R.id.fl_msg){
-            if(binding.mDoubleSlideMenu.getDragState() == DoubleSlideMenu.DragState.STATE_CLOSE) return;
-            binding.mDoubleSlideMenu.close();
-            binding.mDoubleSlideMenu.postDelayed(new Runnable() {
+            binding.drawerLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     switch (v.getId()){
@@ -181,15 +227,15 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
     }
 
     public void showMenu(){
-        if(binding.mDoubleSlideMenu!=null)binding.mDoubleSlideMenu.open();
+        if(binding.drawerLayout!=null)binding.drawerLayout.openDrawer(binding.flMenu);
     }
 
     public void addIgnoredView(View view){
-        binding.mDoubleSlideMenu.addIgnoredView(view);
+//        binding.mDoubleSlideMenu.addIgnoredView(view);
     }
 
     public void removeIgnoredView(View view){
-        binding.mDoubleSlideMenu.reMoveIgnoredView(view);
+//        binding.mDoubleSlideMenu.reMoveIgnoredView(view);
     }
 
     private void initArrowIcons(){
@@ -272,23 +318,23 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rb_1:
-                binding.mDoubleSlideMenu.setEnable(true);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 switchFragment(0);
                 break;
             case R.id.rb_2:
-                binding.mDoubleSlideMenu.setEnable(false);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 switchFragment(1);
                 break;
             case R.id.rb_3:
-                binding.mDoubleSlideMenu.setEnable(false);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 switchFragment(2);
                 break;
             case R.id.rb_4:
-                binding.mDoubleSlideMenu.setEnable(false);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 switchFragment(3);
                 break;
             default:
-                binding.mDoubleSlideMenu.setEnable(true);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 switchFragment(0);
                 break;
         }
@@ -342,20 +388,168 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(binding.drawerLayout.isDrawerOpen(binding.flMenu)) binding.drawerLayout.closeDrawer(binding.flMenu);
+        else finish();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         LogUtil.showLog("onKeyDown:"+keyCode);
         if(keyCode == KeyEvent.KEYCODE_BACK){
-
+            if(binding.drawerLayout.isDrawerOpen(binding.flMenu)) binding.drawerLayout.closeDrawer(binding.flMenu);
+            else finish();
         }
         return super.onKeyDown(keyCode, event);
     }
 
 
+    private void getNewsNum(){
+        HashMap header = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("", "");
+        OkHttpClientManager.postAsyn(URLS.NEWS_NUM, new OkHttpClientManager.ResultCallback<BaseObject<CommonTypeEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+                binding.flMsgNum.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(BaseObject<CommonTypeEntity> response) {
+                Log.e("TAG","获取消息数量 json="+ MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    CommonTypeEntity entity = response.getData();
+                    if(entity != null &&entity.getCount()!=0 ){
+                        binding.flMsgNum.setVisibility(View.VISIBLE);
+                        binding.tvTvMsgNum.setText(String.valueOf(entity.getCount()));
+                    }else  binding.flMsgNum.setVisibility(View.GONE);
+                }else  binding.flMsgNum.setVisibility(View.GONE);
+            }
+        },header,map);
+    }
 
+
+    private void getRemindDialog(){
+        HashMap header = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        HashMap map = new HashMap();
+        map.put("", "");
+        OkHttpClientManager.postAsyn(URLS.HOST_DIALOG, new OkHttpClientManager.ResultCallback<BaseObject<CommonTypeEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+
+            }
+            @Override
+            public void onResponse(BaseObject<CommonTypeEntity> response) {
+                Log.e("TAG","获取首页弹窗消息 json="+ MyApplication.gson.toJson(response));
+                if(response!=null && response.isSuccess()){
+                    CommonTypeEntity entity = response.getData();
+                    if(!TextUtils.isEmpty(entity.getImgSrc())){
+                        showPop(entity.getImgSrc(),entity.getContent());
+                    }
+                }
+            }
+        },header,map);
+    }
+
+
+    private void getVersion(){
+        HashMap header = new HashMap(),map = new HashMap();
+        header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
+        map.put("","");
+        OkHttpClientManager.postAsyn(URLS.VERSION, new OkHttpClientManager.ResultCallback<BaseObject<VersionEntity>>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                statusMsg(e,code);
+            }
+            @Override
+            public void onResponse(BaseObject<VersionEntity> response) {
+                LogUtil.showLog("版本更新："+MyApplication.gson.toJson(response));
+                if(response.isSuccess()){
+                    versionEntity = response.getData();
+                    if(versionEntity!=null){
+                        boolean newVersion = versionEntity.getVersionsort() > MyTools.getVersionCode(MainActivity.this);
+                        if(newVersion){
+                            showDialog();
+                        }
+                    }
+                }else{
+                    if(response.getErrorCode() == 1)refreshToken();
+                }
+            }
+        },header,map);
+    }
+
+
+    private void downloadFile(){
+        OkHttpClientManager.downloadAsyn(URLS.IMAGE_PRE + versionEntity.getUrl(), MyApplication.FILE_PATH, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e, int code) {
+                MyTools.showToast(MainActivity.this,"下载出错，请重试");
+            }
+            @Override
+            public void onResponse(String response) {
+                LogUtil.showLog("下载文件："+ MyApplication.gson.toJson(response));
+                if(!TextUtils.isEmpty(response)){
+                    File file = new File(response);
+                    if(file.exists()){
+                        FileUtil.openFile(MainActivity.this,file);
+                    }else MyTools.showToast(MainActivity.this,"文件打开失败");
+                }else  MyTools.showToast(MainActivity.this,"下载失败，请重试");
+            }
+        });
+    }
+
+    private PopupWindow popupWindow;
+    private View popView;
+    private ImageView iv_content,iv_cancel;
+    private TextView tv_content;
+    private void initPopWindow(){
+        popView = View.inflate(this, R.layout.popwidnow_host_dialog,null);
+        iv_content = popView.findViewById(R.id.iv_content);
+        iv_cancel = popView.findViewById(R.id.iv_cancel);
+        tv_content = popView.findViewById(R.id.tv_content);
+
+        //获取屏幕宽高
+        int weight = MyTools.dip2px(this,180);
+        int height = MyTools.dip2px(this,180 + 45);
+        popupWindow = new PopupWindow(popView,weight,height);
+        popupWindow.setAnimationStyle(com.bebeep.commontools.R.style.popwin_anim_style);
+        popupWindow.setFocusable(true);
+        //点击外部popueWindow消失
+        popupWindow.setOutsideTouchable(true);
+        //popupWindow消失屏幕变为不透明
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1.0f;
+                getWindow().setAttributes(lp);
+            }
+        });
+
+        iv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+
+    private void showPop(String url,String content){
+        if(popupWindow!=null){
+            //popupWindow出现屏幕变为半透明
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.alpha = 0.5f;
+            getWindow().setAttributes(lp);
+            popupWindow.showAtLocation(popView, Gravity.CENTER,0,0);
+            PicassoUtil.setImageUrl(this,iv_content,URLS.IMAGE_PRE + url,R.drawable.default_error,180,180);
+            tv_content.setText(content);
+        }
+
+    }
 
 
 }

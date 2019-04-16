@@ -26,8 +26,7 @@ public class OrgActEntity {
     private int mettingJurisdictionType; //预约会议权限；0否；1有
     private int activitySignJurisdictionType;//活动签到权限；0否；1有
     private int mettingSignJurisdictionType;//会议签到权限；0否；1有
-
-
+    private List<LeaderUserEntity> leadershipRanksList;//领导班子
     private List<UserInfo> activityFoUserBizList;
 
 
@@ -39,6 +38,13 @@ public class OrgActEntity {
         this.activityFoUserBizList = activityFoUserBizList;
     }
 
+    public List<LeaderUserEntity> getLeadershipRanksList() {
+        return leadershipRanksList;
+    }
+
+    public void setLeadershipRanksList(List<LeaderUserEntity> leadershipRanksList) {
+        this.leadershipRanksList = leadershipRanksList;
+    }
 
     public int getMettingJurisdictionType() {
         return mettingJurisdictionType;

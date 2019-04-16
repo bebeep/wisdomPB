@@ -16,11 +16,47 @@ public class UserInfo {
     private int mettingJurisdictionType; //预约会议权限；0否；1有
     private int activitySignJurisdictionType;//活动签到权限；0否；1有
     private int mettingSignJurisdictionType;//会议签到权限；0否；1有
+    private int minutesMeetingType;//发布会议纪要权限；0否；1有
     private String signTime;//签到时间
     private String birthday;//生日
     private String education;//学历
     private String nation;//民族
+    private String typeName;//党员类型，预备党员/正式党员
+    private String type;//党员类型，预备党员/正式党员
+    private String democraticAppraisal;//民族评议
 
+
+    public int getMinutesMeetingType() {
+        return minutesMeetingType;
+    }
+
+    public void setMinutesMeetingType(int minutesMeetingType) {
+        this.minutesMeetingType = minutesMeetingType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDemocraticAppraisal() {
+        return democraticAppraisal;
+    }
+
+    public void setDemocraticAppraisal(String democraticAppraisal) {
+        this.democraticAppraisal = democraticAppraisal;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
     public String getBirthday() {
         return birthday;

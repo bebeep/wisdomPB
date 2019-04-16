@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_white"
+        android:orientation="vertical">
+
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/layout_title" />
+
+
+        <com.bebeep.commontools.views.MScrollView
+            android:id="@+id/msv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="10dp">
+
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="25dp"
+                    android:textColor="@color/c_sblack"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/c_gray"
+                    android:textSize="13sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/icon_f1_t1" />
+
+                    <TextView
+                        android:id="@+id/tv_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/c_gray"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+
+                <com.bebeep.commontools.views.JustifyTextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/c_sblack"
+                    android:textSize="14sp" />
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+                <FrameLayout
+                    android:id="@+id/fl_read"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="30dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/c_qing" />
+
+                    <TextView
+                        android:id="@+id/tv_read_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="已读成员（0）"
+                        android:textColor="@color/c_sblack"
+                        android:textSize="13sp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_user_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:gravity="center"
+                        android:onClick="@{onClickListener}"
+                        android:paddingLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/tv_user_open"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="展开"
+                            android:textColor="@color/c_blue"
+                            android:textSize="13sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_user_open"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="3dp"
+                            android:padding="2dp"
+                            android:src="@drawable/icon_arrow_down" />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_user_names"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="15dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/c_gray"
+                    android:textSize="13sp" />
+
+
+
+
+
+            </LinearLayout>
+
+        </com.bebeep.commontools.views.MScrollView>
+
+
+    </LinearLayout>
+
+</layout>

@@ -4,27 +4,35 @@
     package="com.bebeep.wisdompb">
 
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
-
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon_logo"
-        android:label="甘孜机关党建"
-        android:supportsRtl="true"
-        android:name=".MyApplication"
+        android:label="@string/app_name"
         android:screenOrientation="portrait"
-        tools:replace="android:icon, android:theme, android:label"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:theme, android:label">
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -37,7 +45,10 @@
         </provider>
 
 
-        <activity android:name=".activity.StartActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity
+            android:name=".activity.StartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,61 +56,207 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MainActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait">
-        </activity>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
 
 
-        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
 
 
-        <activity android:name=".activity.ChargeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.NewsDetailActivity"  android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PublicShowActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.AddressBookActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MemberInfoActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PartyActActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PartyActDetailsActivity" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UserInfoActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.JifenDetailsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MeetingMinutesActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PayDetailsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MeetingDetailsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MeetingLeaveActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MeetingJoinActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ConfigActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.WebViewActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.NoticeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.LibraryTypeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.LibraryListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.BookDetailsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.CatalogActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.BookContentActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activity.MyNoteListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MyNoteActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MyJifenActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MyCommentActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MyCollectionActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MyBookrackActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.MySubmitActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activity.TicklingActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activity.ReleaseDiscoverActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".activity.OrderMeetingActivity" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".activity.ExamActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.TestingActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.TestResultActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.SpecialEduActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.BirthdayCardActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.MyExamActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.MyActActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.MyMeetingActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.GalleryListActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.GalleryActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.TakePhotoActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.ChooseJoinerAcivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.MeetingMinutesDetailActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.PlayVideoActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:configChanges="orientation|screenSize" />
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ChargeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NewsDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.PublicShowActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddressBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MemberInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PartyActActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PartyActDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.JifenDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MeetingMinutesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PayDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MeetingDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MeetingLeaveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MeetingJoinActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ConfigActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LibraryTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LibraryListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BookDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CatalogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BookContentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.MyNoteListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyNoteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyJifenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyCommentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyCollectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyBookrackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MySubmitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TicklingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.ReleaseDiscoverActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.OrderMeetingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.ExamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TestingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TestResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SpecialEduActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BirthdayCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyExamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyActActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MyMeetingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GalleryListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TakePhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ChooseJoinerAcivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MeetingMinutesDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReleaseMeetingMinitesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UpdatePasswordActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.ForgetPasswordActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.PlayVideoActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait" />
+
+
+        <service
+            android:name="com.umeng.message.UmengMessageCallbackHandlerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.umeng.messge.registercallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.unregistercallback.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.message.handler.action" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.umeng.message.autoupdate.handler.action" />
+            </intent-filter>
+        </service>
+
+        <!-- V1.3.0添加的service，负责下载通知的资源 -->
+        <service android:name="com.umeng.message.UmengDownloadResourceService" />
+
+        <!-- V2.5.0添加的Service，用于本地通知 -->
+        <!-- 如果不使用本地通知，可以注释掉本地通知服务的配置 -->
+        <!--<service android:name="com.umeng.message.local.UmengLocalNotificationService"-->
+        <!--android:exported="false" />-->
     </application>
 
 </manifest>

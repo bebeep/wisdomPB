@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
-                android:text="清楚缓存"
+                android:text="清除缓存"
                 android:textColor="@color/c_sblack"
                 android:textSize="15sp" />
 

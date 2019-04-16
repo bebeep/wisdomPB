@@ -23,6 +23,9 @@ import com.bebeep.commontools.utils.OkHttpClientManager;
 import com.bebeep.wisdompb.MyApplication;
 import com.bebeep.wisdompb.R;
 import com.bebeep.wisdompb.activity.ExamActivity;
+import com.bebeep.wisdompb.activity.SearchActivity;
+import com.bebeep.wisdompb.activity.TestResultActivity;
+import com.bebeep.wisdompb.activity.TestingActivity;
 import com.bebeep.wisdompb.base.BaseFragment;
 import com.bebeep.wisdompb.bean.BaseList;
 import com.bebeep.wisdompb.bean.ExamEntity;
@@ -46,6 +49,13 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
     private List<ExamEntity> list = new ArrayList<>();
     private int flag = 1;
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter!=null)getData();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,13 +76,13 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.nrl.setPullLoadEnable(false);
         binding.nrl.setOnLoadingListener(this);
         binding.title.tvTitle.setText("在线考试");
-//        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
+        binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
 
         binding.title.ivTitleRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyTools.showToast(getActivity(),"search");
+                startActivity(new Intent(getActivity(), SearchActivity.class).putExtra("type",3));
             }
         });
 
@@ -126,16 +136,25 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
         adapter = new CommonAdapter<ExamEntity>(getActivity(),R.layout.item_f2,list){
             @Override
             protected void convert(ViewHolder holder, ExamEntity entity, int position) {
-                if(TextUtils.equals(entity.getState(),"1")) {
-                    holder.setText(R.id.tv_state,"进行中");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_yellow);
-                }else if(TextUtils.equals(entity.getState(),"0")) {
-                    holder.setText(R.id.tv_state,"未开始");
-                    holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
-                }else if(TextUtils.equals(entity.getState(),"2")) {
-                    holder.setText(R.id.tv_state,"已过期");
+                if(flag == 1){
+                    if(TextUtils.equals(entity.getState(),"0")) {
+                        holder.setText(R.id.tv_state,"未开始");
+                        holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_red);
+                    }else if(TextUtils.equals(entity.getState(),"1")) {
+                        holder.setText(R.id.tv_state,"进行中");
+                        holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_yellow);
+                    }else if(TextUtils.equals(entity.getState(),"2")) {
+                        holder.setText(R.id.tv_state,"已过期");
+                        holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
+                    }else if(TextUtils.equals(entity.getState(),"3")) {
+                        holder.setText(R.id.tv_state,"正在考试");
+                        holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_green);
+                    }
+                }else if(flag == 2){
+                    holder.setText(R.id.tv_state,"已考试");
                     holder.setBackgroundRes(R.id.tv_state, R.drawable.bg_rec_2dp_gray);
                 }
+
                 holder.setText(R.id.tv_title,entity.getTitle());
                 if(!TextUtils.isEmpty(entity.getStartTime())&& entity.getStartTime().length()>=16
                         && !TextUtils.isEmpty(entity.getEndTime())&& entity.getEndTime().length()>=16){
@@ -158,22 +177,39 @@ public class Fragment2 extends BaseFragment implements OnPullListener,SwipeRefre
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 ExamEntity entity = list.get(position);
-                if(TextUtils.equals(entity.getState(),"0")){
-                    MyTools.showToast(getActivity(),"考试还未开始");
-                }else if(TextUtils.equals(entity.getState(),"1")){
-                    startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
-                }else if(TextUtils.equals(entity.getState(),"2")){
-                    MyTools.showToast(getActivity(),"考试已过期");
+                if(flag == 1){
+                    if(TextUtils.equals(entity.getState(),"0")){
+                        MyTools.showToast(getActivity(),"考试还未开始");
+                    }else if(TextUtils.equals(entity.getState(),"1")){
+                        if(!isExaming())startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
+                        else MyTools.showToast(getActivity(),"请先完成已开启的考试");
+                    }else if(TextUtils.equals(entity.getState(),"2")){
+                        MyTools.showToast(getActivity(),"考试已过期");
+                    }else if(TextUtils.equals(entity.getState(),"3")){
+                        startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
+                    }
+                }else if(flag == 2){//已考试 -直接进入结果页面
+                    startActivity(new Intent(getActivity(),TestResultActivity.class).putExtra("templateId",entity.getTemplateId())
+                            .putExtra("title",entity.getTitle()));
                 }
-//                startActivityForResult(new Intent(getActivity(),ExamActivity.class).putExtra("id",entity.getId()), MyApplication.ACTIVITY_BACK_CODE);
-            }
 
+            }
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
         });
     }
+
+
+    //是否正在考试
+    private boolean isExaming(){
+        if(list==null||list.size()==0)return false;
+        boolean isExaming = false;
+        for (ExamEntity entity :list) if(TextUtils.equals(entity.getState(),"3")) isExaming = true;
+        return isExaming;
+    }
+
 
     @Override
     public void onRefresh() {

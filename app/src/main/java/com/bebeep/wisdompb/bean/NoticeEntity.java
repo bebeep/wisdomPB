@@ -8,7 +8,16 @@ public class NoticeEntity {
                          // 5政治生日卡提醒（点击跳转到 政治生日卡）；6意见反馈回复通知（点击条跳转到 我提前的）；7考试通知（点击跳转到 在线考试）；
     private String url;// 外链接地址，type=0时有效，如果url不为空，则打开网页；
     private String createDate;//
+    private int ifRead;//是否已读 0否 1是
 
+
+    public int getIfRead() {
+        return ifRead;
+    }
+
+    public void setIfRead(int ifRead) {
+        this.ifRead = ifRead;
+    }
 
     public String getTypeTitle() {
         return typeTitle;

@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/c_white"
         android:orientation="vertical">
 
 
@@ -39,7 +40,69 @@
                 android:paddingTop="10dp">
 
 
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="25dp"
+                    android:textColor="@color/c_sblack"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="2.5dp"
+                        android:src="@drawable/icon_time" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="23.5dp"
+                        android:textColor="@color/c_gray"
+                        android:textSize="12sp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_scan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:src="@drawable/icon_scan" />
+
+                        <TextView
+                            android:id="@+id/tv_scan_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:text="99"
+                            android:textColor="@color/c_gray"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </FrameLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/c_qing" />
 
 
                 <WebView
@@ -139,6 +202,7 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:text="立即评论"
+                        android:visibility="gone"
                         android:onClick="@{onClickListener}"
                         android:textColor="@color/c_blue"
                         android:textSize="14sp" />
@@ -180,7 +244,6 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
-            android:visibility="gone"
             android:paddingRight="10dp"
             android:paddingTop="5dp">
 

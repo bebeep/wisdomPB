@@ -121,7 +121,7 @@ public class MeetingDetailsActivity extends BaseSlideActivity implements View.On
             binding.tvLeave.setClickable(false);
         }
 
-        if(userInfo.getActivitySignJurisdictionType() == 1){
+        if(entity.getMettingSignJurisdictionType() == 1){
             binding.tvJoin.setText("统计会议签到");
         }else{
             if(TextUtils.equals(state, "0")){
