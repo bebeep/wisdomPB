@@ -115,8 +115,7 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
                                 startActivity(new Intent(NoticeActivity.this,PayDetailsActivity.class));
                                 break;
                             case 3://会议
-                                setResult(1);
-                                finish();
+                                if(!TextUtils.isEmpty(entity.getId()))startActivity(new Intent(NoticeActivity.this, MeetingDetailsActivity.class).putExtra("id",entity.getId()));
                                 break;
                             case 4://活动
                                 startActivity(new Intent(NoticeActivity.this, MyActActivity.class));
@@ -128,8 +127,7 @@ public class NoticeActivity extends BaseEditActivity implements View.OnClickList
                                 startActivity(new Intent(NoticeActivity.this, MySubmitActivity.class));
                                 break;
                             case 7://考试通知
-                                setResult(2);
-                                finish();
+                                if(!TextUtils.isEmpty(entity.getId()))startActivity(new Intent(NoticeActivity.this, ExamActivity.class).putExtra("id",entity.getId()));
                                 break;
                         }
                     }

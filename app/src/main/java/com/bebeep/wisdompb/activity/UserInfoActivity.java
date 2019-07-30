@@ -184,8 +184,9 @@ public class UserInfoActivity extends BaseSlideActivity implements View.OnClickL
         HashMap header = new HashMap(),map = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
         map.put("photo",path);
+        map.put("userId", userInfo.getUserId());
         LogUtil.showLog("提交："+ map.toString());
-        OkHttpClientManager.postAsyn(URLS.DISCOVER_RELEASE, new OkHttpClientManager.ResultCallback<BaseObject>() {
+        OkHttpClientManager.postAsyn(URLS.UPDATE_HEAD, new OkHttpClientManager.ResultCallback<BaseObject>() {
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
@@ -200,6 +201,7 @@ public class UserInfoActivity extends BaseSlideActivity implements View.OnClickL
                     PicassoUtil.setImageUrl(UserInfoActivity.this,binding.ivHead, URLS.IMAGE_PRE +path,R.drawable.icon_head,60,60);
                     userInfo.setPhoto(path);
                     PreferenceUtils.setPrefString("userInfo",MyApplication.gson.toJson(userInfo));
+                    MainActivity.getInstance().refreshF3Head();
                 }else {
                     MyTools.showToast(UserInfoActivity.this,response.getMsg());
                     if(response.getErrorCode() == 1)refreshToken();

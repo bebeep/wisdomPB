@@ -54,6 +54,12 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
         if(binding!=null) getData();
     }
 
+
+    public void refreshHead(){
+        PicassoUtil.setImageUrl(getActivity(),binding.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,60,60);
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class Fragment3 extends BaseFragment implements View.OnClickListener{
     private void init(){
         initAdapter();
         getData();
-        PicassoUtil.setImageUrl(getActivity(),binding.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,60,60);
+        refreshHead();
         binding.setVariable(BR.onClickListener,this);
         binding.title.tvTitle.setText("三会一课");
         binding.title.ivTitleRight.setVisibility(View.VISIBLE);

@@ -69,7 +69,7 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
         binding.nrl.setPullRefreshEnable(false);
-        binding.nrl.setPullLoadEnable(false);
+//        binding.nrl.setPullLoadEnable(false);
         binding.nrl.setOnLoadingListener(this);
         binding.recyclerView2.setVisibility(View.GONE);
         binding.rg.setOnCheckedChangeListener(this);
@@ -228,7 +228,8 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
     private void getJifenList(){
         HashMap header = new HashMap(),map = new HashMap();
         header.put(MyApplication.AUTHORIZATION, MyApplication.getInstance().getAccessToken());
-        map.put("","");
+        map.put("pageNo",String.valueOf(pageNo));
+        map.put("pageSize",MyApplication.pageSize);
         LogUtil.showLog("积分列表map:"+map);
         OkHttpClientManager.postAsyn(JIFEN_LIST, new OkHttpClientManager.ResultCallback<BaseList<JifenEntity>>() {
             @Override
@@ -318,7 +319,8 @@ public class MyJifenActivity extends BaseSlideActivity implements View.OnClickLi
         binding.nrl.postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                pageNo++;
+                getJifenList();
             }
         },500);
     }

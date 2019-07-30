@@ -10,15 +10,26 @@ public class URLS {
 //    public static final String PAY_URLS = "http://u6.gg/dEVKs";
     public static final String PAY_URLS = "https://a.app.qq.com/o/simple.jsp?pkgname=com.chinatelecom.bestpayclient&g_f=991653";
 
+
+    /**
+     * 甘孜机关党建
+     */
     //数据地址
-    public static final String  HOST = "http://182.61.58.52:8766/api";
-//    public static final String  HOST = "http://192.168.153.1/api";
-
+    public static final String  HOST = "http://140.246.178.64:400/api";
     //图片上传地址
-    public static final String FILE_UPLOAD = "http://182.61.58.52:5555/upload";
-
+    public static final String FILE_UPLOAD = "http://140.246.161.230:7070/upload";
     //图片访问地址
-    public static final String IMAGE_PRE  = "http://182.61.58.52:80/resource/";
+    public static final String IMAGE_PRE  = "http://140.246.161.230:400/resource/";
+
+    /**
+     * 甘孜县智慧党建
+     */
+//    //数据地址
+//    public static final String  HOST = "http://140.246.151.222:400/api";
+//    //图片上传地址
+//    public static final String FILE_UPLOAD = "http://140.246.151.222:7070/upload";
+//    //图片访问地址
+//    public static final String IMAGE_PRE  = "http://140.246.151.222:400/resource/";
 
 
     //刷新token
@@ -29,6 +40,9 @@ public class URLS {
 
     //用户信息
     public static final String USERINFO =  HOST + "/user/info";
+
+    //修改头像
+    public static final String UPDATE_HEAD =  HOST + "/user/updatePhoto";
 
     //上传文件
     public static final String UPLOAD = FILE_UPLOAD + "/file";

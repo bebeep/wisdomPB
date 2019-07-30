@@ -458,10 +458,11 @@ public class PartyActDetailsActivity extends BaseEditActivity implements View.On
     /**
      * 签到
      */
-    private void sign(String id){
+    private void sign(String qrId){
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);
+        map.put("qrId",qrId);
         map.put("type","1");
         LogUtil.showLog("活动签到："+map.toString());
         OkHttpClientManager.postAsyn(URLS.ACT_SIGN, new OkHttpClientManager.ResultCallback<BaseObject>() {

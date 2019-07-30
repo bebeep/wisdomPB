@@ -191,10 +191,11 @@ public class MeetingDetailsActivity extends BaseSlideActivity implements View.On
     /**
      * 签到
      */
-    private void sign(String id){
+    private void sign(String qrId){
         HashMap header = new HashMap(),map =new HashMap();
         header.put(MyApplication.AUTHORIZATION,MyApplication.getInstance().getAccessToken());
         map.put("themeId",id);
+        map.put("qrId",qrId);
         map.put("type","0");
         LogUtil.showLog("会议签到："+map.toString());
         OkHttpClientManager.postAsyn(URLS.ACT_SIGN, new OkHttpClientManager.ResultCallback<BaseObject>() {

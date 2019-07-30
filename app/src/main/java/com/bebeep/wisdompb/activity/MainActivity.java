@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -90,6 +91,8 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main1);
         binding.rg.setOnCheckedChangeListener(this);
         init();
+
+
     }
 
     private void init(){
@@ -161,6 +164,10 @@ public class MainActivity extends BaseAppCompatActivity implements RadioGroup.On
         binding.ivSex.setImageResource(info.getSex() == 1?R.drawable.icon_sex_man:R.drawable.icon_sex_woman);
         binding.tvGroup.setText(info.getOffice());
 
+    }
+
+    public void refreshF3Head(){
+        fragment3.refreshHead();
     }
 
 

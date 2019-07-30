@@ -50,11 +50,13 @@ public class LoginActivity extends BaseEditActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        dialog = new CustomProgressDialog(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         init();
     }
 
     private void init(){
+
         initDialog();
         tag = getIntent().getIntExtra("tag",0);
         dialog = new CustomProgressDialog(this);
@@ -94,6 +96,7 @@ public class LoginActivity extends BaseEditActivity implements View.OnClickListe
 
 
     private void login(){
+        dialog.show();
         HashMap map = new HashMap();
         map.put("username", binding.etUsername.getText().toString());
         map.put("password", binding.etPassword.getText().toString());
@@ -101,6 +104,7 @@ public class LoginActivity extends BaseEditActivity implements View.OnClickListe
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
+                dialog.cancel();
                 MyTools.showToast(LoginActivity.this, "无法连接服务器");
             }
             @Override
@@ -112,7 +116,10 @@ public class LoginActivity extends BaseEditActivity implements View.OnClickListe
                     PreferenceUtils.setPrefString("refresh_token",entity.getRefresh_token());
                     PreferenceUtils.setSettingLong("timestamp", System.currentTimeMillis());
                     getUserInfo(entity.getAccess_token());
-                }else  MyTools.showToast(LoginActivity.this, response.getMsg());
+                }else  {
+                    dialog.cancel();
+                    MyTools.showToast(LoginActivity.this, response.getMsg());
+                }
             }
         },null,map);
     }
@@ -127,9 +134,12 @@ public class LoginActivity extends BaseEditActivity implements View.OnClickListe
             @Override
             public void onError(Request request, Exception e, int code) {
                 statusMsg(e,code);
+                MyTools.showToast(LoginActivity.this, "获取用户信息失败");
+                dialog.cancel();
             }
             @Override
             public void onResponse(BaseObject<UserInfo> response) {
+                dialog.cancel();
                 Log.e("TAG","getUserInfo json="+ MyApplication.gson.toJson(response));
                 if(response.isSuccess()){
                     UserInfo entity = response.getData();

@@ -123,7 +123,7 @@ public class Fragment1 extends BaseFragment implements OnPullListener,SwipeRefre
         binding.title.flHead.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setVisibility(View.VISIBLE);
         binding.title.ivTitleRight.setImageResource(R.drawable.icon_search);
-        binding.title.tvTitle.setText("甘孜机关党建");
+        binding.title.tvTitle.setText(getString(R.string.app_name));
         PicassoUtil.setImageUrl(getActivity(),binding.title.rimgHead, URLS.IMAGE_PRE + MyApplication.getInstance().getUserInfo().getPhoto(),R.drawable.icon_head,40,40);
         binding.srl.setColorSchemeColors(getResources().getColor(R.color.theme));
         binding.srl.setOnRefreshListener(this);
